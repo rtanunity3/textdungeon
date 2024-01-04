@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json;
@@ -80,18 +81,20 @@ namespace textdungeon.Play
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
-            Console.WriteLine($"{Name} (전사)");
+            Printing.HighlightText($"{Health,3}/100\n", ConsoleColor.White);
 
             Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
-            if (ItemAttPow > 0) { Console.Write($" (+{ItemAttPow,2})"); }
+            if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
             Console.WriteLine();
 
             Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
-            if (ItemDefPow > 0) { Console.Write($" (+{ItemDefPow,2})"); }
+            if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
             Console.WriteLine();
 
-            Console.WriteLine($"체 력 : {Health}");
-            Console.WriteLine($"Gold : {Gold} G");
+            Console.Write("체 력 : ");
+            Printing.HighlightText($"{Health,3}/100\n", ConsoleColor.Red);
+            Console.Write("Gold : ");
+            Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
 
             Console.SetCursorPosition(30, 3);

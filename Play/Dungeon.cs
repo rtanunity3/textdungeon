@@ -124,12 +124,14 @@ namespace textdungeon.Play
             // 방어력에 따른 체력 손실 계산
             int minusHP = Util.GenRandomNumber(20 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef)
                 , 35 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef));
-            Console.WriteLine($"체력 {player.Health} -> {player.Health - minusHP}");
+            Console.Write("체 력 : ");
+            Printing.HighlightText($"{player.Health} -> {player.Health - minusHP}\n", ConsoleColor.Red);
             player.Health -= minusHP;
 
             // 공격력에 따른 보상 계산. 보상의 1.n배
             int plusGold = DungeonList[ReservedDungeon].RewardGold * (Util.GenRandomNumber(playerAttSum, playerAttSum * 2) + 100) / 100;
-            Console.WriteLine($"Gold {player.Gold} G -> {player.Gold + plusGold} G");
+            Console.Write("Gold : ");
+            Printing.HighlightText($"{player.Gold} G -> {player.Gold + plusGold} G\n", ConsoleColor.Yellow);
             player.Gold += plusGold;
 
             // 경험치

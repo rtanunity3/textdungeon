@@ -9,12 +9,18 @@ namespace textdungeon.Play
 {
     public class Inn
     {
-        public void InnMenu(int gold)
+        public void InnMenu(Player player)
         {
             Console.Clear();
             Printing.HighlightText("휴식하기", ConsoleColor.DarkYellow);
             Console.WriteLine();
-            Console.WriteLine($"500 G 를 내면 체력을 회복할 수 있습니다. (보유 골드 : {gold} G)");
+            Console.WriteLine($"500 G 를 내면 체력을 회복할 수 있습니다.");
+
+            Console.WriteLine();
+            Console.Write("보유 골드 : ");
+            Printing.HighlightText($"{player.Gold} G\n", ConsoleColor.Yellow);
+            Console.Write("현재 체력 : ");
+            Printing.HighlightText($"{player.Health,3}/100\n", ConsoleColor.Red);
 
             Console.WriteLine();
             Printing.SelectWriteLine(1, "휴식하기");
@@ -32,7 +38,8 @@ namespace textdungeon.Play
 
                 return ResponseCode.REST;
             }
-            else {
+            else
+            {
                 return ResponseCode.NOTENOUGHGOLD;
             }
         }

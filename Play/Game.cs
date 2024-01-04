@@ -347,7 +347,7 @@ namespace textdungeon.Play
                         inputCount = 1;
                         break;
                     case GameState.Inn:
-                        inn.InnMenu(player.Gold);
+                        inn.InnMenu(player);
                         inputCount = 2;
                         break;
                 }
@@ -410,7 +410,6 @@ namespace textdungeon.Play
                             }
                             break;
                         case "test":
-                            //dungeonGate.DisplayDungeonList();
                             break;
                         default:
                             response = ResponseCode.BADREQUEST;
