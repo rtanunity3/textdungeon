@@ -1,41 +1,31 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using System.Text.RegularExpressions;
 using textdungeon.Screen;
-using static System.Formats.Asn1.AsnWriter;
 
-namespace textdungeon
+namespace textdungeon.Play
 {
     class Game
     {
-        public enum GameState
-        {
-            Intro,
-            Quit,
-            Village,
-            Status,
-            Inventory,
-            Equipment,
-            Store,
-            StoreSale,
-            Dungeon,
-            Inn,
-        }
         public GameState CurrentState { get; set; }
 
 
         private Player player;
         private Store store;
+        private Inn inn;
+        private DungeonGate dungeonGate;
 
 
         public bool menuActive = true;
-        public bool warning = false;
+        ResponseCode response;
 
         public Game()
         {
             CurrentState = GameState.Intro;
             store = new Store();
+            inn = new Inn();
+            dungeonGate = new DungeonGate();
             StartMenu();
         }
 
@@ -57,6 +47,7 @@ namespace textdungeon
         private void SaveGame()
         {
             string jsonData = player.Serialize();
+            //Console.WriteLine(jsonData);
             File.WriteAllText("save/save.json", jsonData);
         }
 
@@ -83,6 +74,9 @@ namespace textdungeon
 
                     case 2:
                         player = LoadGame();
+                        player.EquipItemAll();
+                        // 스토어랑 템 싱크
+                        store.ItemBoughtSync(player.Items);
                         VillageMenu();
                         break;
 
@@ -111,16 +105,18 @@ namespace textdungeon
                     case 1: // 상태보기
                         PlayerStateMenu();
                         break;
-
                     case 2: // 인벤토리
                         PlayerInventoryMenu();
                         break;
                     case 3: // 상점
                         StoreMenu();
                         break;
-
-                    case 4: // 던전입장
+                    case 4: // 던전
+                        DungeonMenu();
+                        break;
                     case 5: // 휴식하기
+                        InnMenu();
+                        break;
                     default: // 저장 후 게임 종료
                         Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
                         string input = Console.ReadLine() ?? "";
@@ -134,8 +130,63 @@ namespace textdungeon
             }
         }
 
+        private void InnMenu()
+        {
+            CurrentState = GameState.Inn;
+            while (CurrentState == GameState.Inn)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 1:
+                        response = inn.Rest(player);
+                        break;
+                    default:
+                        CurrentState = GameState.Village;
+                        break;
+
+                }
+            }
+        }
+
+        private void DungeonMenu()
+        {
+            CurrentState = GameState.DungeonGate;
+            while (CurrentState == GameState.DungeonGate)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                        dungeonGate.SetExploreDungeon(select);
+                        ExploreDungeon();
+                        break;
+                    default:
+                        CurrentState = GameState.Village;
+                        break;
+                }
+            }
+        }
+
+        private void ExploreDungeon()
+        {
+            CurrentState = GameState.DungeonResult;
+            while (CurrentState == GameState.DungeonResult)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.DungeonGate;
+                        break;
+                }
+            }
+        }
 
 
+        // 상점
         private void StoreMenu()
         {
             CurrentState = GameState.Store;
@@ -156,24 +207,28 @@ namespace textdungeon
                 }
             }
         }
+
+        // 상점 - 2. 아이템 판매
         private void StoreSellMenu()
         {
-            //CurrentState = GameState.StoreSale;
-            //while (CurrentState == GameState.StoreSale)
-            //{
-            //    int select = UserChoice(CurrentState);
-            //    switch (select)
-            //    {
-            //        case 0:
-            //            CurrentState = GameState.Store;
-            //            break;
-            //        default:
-            //            // 해당 아이템 구매
-
-            //            break;
-            //    }
-            //}
+            CurrentState = GameState.StoreSell;
+            while (CurrentState == GameState.StoreSell)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Store;
+                        break;
+                    default:
+                        // 해당 아이템 판매
+                        response = store.SellItems(player, select);
+                        break;
+                }
+            }
         }
+
+        // 상점 - 1. 아이템 구매
         private void StoreSaleMenu()
         {
             CurrentState = GameState.StoreSale;
@@ -186,8 +241,7 @@ namespace textdungeon
                         CurrentState = GameState.Store;
                         break;
                     default:
-                        // 해당 아이템 구매
-
+                        response = store.BuyItems(player, select);
                         break;
                 }
             }
@@ -223,15 +277,7 @@ namespace textdungeon
                         CurrentState = GameState.Inventory;
                         break;
                     default:
-                        int equipType = player.Equipment(select);
-                        if (equipType == 0)
-                        {
-                            warning = true;
-                        }
-                        else
-                        {
-                            warning = false;
-                        }
+                        response = player.Equipment(select);
                         break;
                 }
             }
@@ -245,7 +291,7 @@ namespace textdungeon
                 int select = UserChoice(CurrentState);
                 switch (select)
                 {
-                    default:
+                    case 0:
                         CurrentState = GameState.Village;
                         break;
                 }
@@ -255,7 +301,6 @@ namespace textdungeon
         private int UserChoice(GameState gameState)
         {
             menuActive = true;
-            warning = false;
             int inputCount = 0;
             while (menuActive)
             {
@@ -277,21 +322,46 @@ namespace textdungeon
                         player.DisplayInventory();
                         inputCount = 2;
                         break;
+                    case GameState.Equipment:
+                        player.EquipmentManager();
+                        inputCount = player.ItemCount();
+                        break;
                     case GameState.Store:
                         store.DisplayItems(player.Gold);
-                        inputCount = 2;
+                        inputCount = 3;
                         break;
                     case GameState.StoreSale:
                         store.ItemSaleList(player.Gold);
                         inputCount = store.ItemCount();
                         break;
+                    case GameState.StoreSell:
+                        store.ItemSellList(player);
+                        inputCount = player.ItemCount();
+                        break;
+                    case GameState.DungeonGate:
+                        dungeonGate.DisplayDungeonList();
+                        inputCount = dungeonGate.DunCount();
+                        break;
+                    case GameState.DungeonResult:
+                        dungeonGate.ExploreDungeonResult(player);
+                        inputCount = 1;
+                        break;
+                    case GameState.Inn:
+                        inn.InnMenu(player.Gold);
+                        inputCount = 2;
+                        break;
                 }
 
-                if (warning)
+                if (response != ResponseCode.SUCCESS)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("잘못된 입력입니다.");
-                    Console.ResetColor();
+                    if ((int)response < 200)
+                    {
+                        Printing.HighlightText(EnumHandler.GetMessage(response), ConsoleColor.Blue);
+                    }
+                    else
+                    {
+                        Printing.HighlightText(EnumHandler.GetMessage(response), ConsoleColor.Red);
+                    }
                 }
                 else
                 {
@@ -301,11 +371,13 @@ namespace textdungeon
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 if (inputCount > 1)
                 {
-                    Console.Write($"[0 - {inputCount - 1}]>> ");
+                    Printing.HighlightText($"[0 - {inputCount - 1}]", ConsoleColor.Green);
+                    Console.Write(" >> ");
                 }
                 else
                 {
-                    Console.Write($"[0]>> ");
+                    Printing.HighlightText("[0]", ConsoleColor.Green);
+                    Console.Write(" >> ");
                 }
 
                 string input = Console.ReadLine() ?? "";
@@ -313,12 +385,39 @@ namespace textdungeon
                 {
                     if (number >= 0 && number < inputCount)
                     {
+                        response = ResponseCode.SUCCESS;
                         menuActive = false;
                         return number;
                     }
+                    else
+                    {
+                        response = ResponseCode.BADREQUEST;
+                    }
+                }
+                else
+                {
+                    // 치트키
+                    switch (input)
+                    {
+                        case "gold":
+                            if (player != null)
+                            {
+                                player.Gold += 5000;
+                            }
+                            else
+                            {
+                                response = ResponseCode.BADREQUEST;
+                            }
+                            break;
+                        case "test":
+                            //dungeonGate.DisplayDungeonList();
+                            break;
+                        default:
+                            response = ResponseCode.BADREQUEST;
+                            break;
+                    }
                 }
 
-                warning = true;
             }
             return 0;
         }
@@ -336,9 +435,7 @@ namespace textdungeon
                 {
                     return input;
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("잘못된 입력입니다. 한글,영어,숫자만 2~8자 가능합니다.");
-                Console.ResetColor();
+                Printing.HighlightText("잘못된 입력입니다. 한글,영어,숫자만 2~8자 가능합니다.", ConsoleColor.Red);
             }
         }
     }

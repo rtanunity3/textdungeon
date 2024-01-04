@@ -1,4 +1,6 @@
-﻿namespace textdungeon
+using textdungeon.Play;
+
+namespace textdungeon
 {
     internal class Program
     {
@@ -8,7 +10,6 @@
             Console.BufferWidth = 120;
             Console.WindowHeight = 40;
             Console.BufferHeight = 40;
-
 
             // 게임 구동
             Game game = new Game();
