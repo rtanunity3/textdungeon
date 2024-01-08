@@ -81,7 +81,7 @@ namespace textdungeon.Play
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
-            Printing.HighlightText($"{Health,3}/100\n", ConsoleColor.White);
+            Printing.HighlightText($"{Name} (전사)\n", ConsoleColor.White);
 
             Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
             if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
