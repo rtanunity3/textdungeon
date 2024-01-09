@@ -33,7 +33,7 @@ namespace textdungeon.Play
         {
             Console.Clear();
             Console.WriteLine("\n=== 신규 케릭터 생성");
-            if (File.Exists("save/save.json"))
+            if (File.Exists("save.json"))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("새로운 게임이 시작되면 기존에 저장된 케릭터는 삭제 됩니다.");
@@ -48,12 +48,12 @@ namespace textdungeon.Play
         {
             string jsonData = player.Serialize();
             //Console.WriteLine(jsonData);
-            File.WriteAllText("save/save.json", jsonData);
+            File.WriteAllText("save.json", jsonData);
         }
 
         private static Player LoadGame()
         {
-            string jsonData = File.ReadAllText("save/save.json");
+            string jsonData = File.ReadAllText("save.json");
             return Player.Deserialize(jsonData);
         }
 
