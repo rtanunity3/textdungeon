@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,7 +58,7 @@ namespace textdungeon.Screen
             Console.Write("  |                   ");
             SelectWrite(1, "새로운 시작");
             Console.WriteLine("                    |");
-            if (File.Exists("save/save.json"))
+            if (File.Exists("save.json"))
             {
                 Console.Write("  |                   ");
                 SelectWrite(2, "이어서하기");
