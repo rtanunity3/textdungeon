@@ -19,7 +19,7 @@ namespace textdungeon.Play
         public int Shield { get; set; }
     }
 
-    public class Player
+    public class Player:ICharacter
     {
         public string Name { get; set; }
         public int AttPow { get; set; }
@@ -31,6 +31,8 @@ namespace textdungeon.Play
         public int Level { get; set; }
         public int Exp { get; set; }
         public int DisplayExp { get; set; }
+        public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
+
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
@@ -350,6 +352,13 @@ namespace textdungeon.Play
             Items.Remove(item);
         }
 
+        public void TakeDamage(int damage)
+        {
+            // hp 0~100 사이 유지
+            Health = Math.Max(Math.Min((Health - damage), 100), 0);
+        }
+
+
         public string Serialize()
         {
             return JsonSerializer.Serialize(this);
@@ -359,7 +368,5 @@ namespace textdungeon.Play
         {
             return JsonSerializer.Deserialize<Player>(jsonData);
         }
-
-
     }
 }

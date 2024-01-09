@@ -122,6 +122,7 @@ namespace textdungeon.Play
             Console.WriteLine("[탐험 결과]");
 
             // 방어력에 따른 체력 손실 계산
+            // FIXME : 방어력 오버로 최소값이 -인 경우 발생 가능
             int minusHP = Util.GenRandomNumber(20 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef)
                 , 35 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef));
             Console.Write("체 력 : ");
