@@ -34,12 +34,6 @@ namespace textdungeon.Play
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
-        //public Player()
-        //{
-        //    Equipped = new Equipment();
-        //    Items = new List<Item>();
-        // }
-
         int[] itemTableColWidth = { 25, 40, 55, 110 };
         int itemInfoTableTop = 4;
         int maxLevel = 10;
@@ -160,9 +154,9 @@ namespace textdungeon.Play
             if (select > 0 && select < Items.Count)
             {
                 // 이미 장착한 아이템이면 해제
-                if (Items[select].Equipped == true)
+                if (Items[select].IsEquipped == true)
                 {
-                    Items[select].Equipped = false;
+                    Items[select].IsEquipped = false;
                     switch (type)
                     {
                         case EquipmentType.Head: Equipped.Head = 0; break;
@@ -177,7 +171,7 @@ namespace textdungeon.Play
                 {
                     // 착용중인 아이템 해제하고 장착 || 그냥 장착
                     UnEquipTypeItem(type);
-                    Items[select].Equipped = true;
+                    Items[select].IsEquipped = true;
                     switch (type)
                     {
                         case EquipmentType.Head:
@@ -202,11 +196,11 @@ namespace textdungeon.Play
         {
             foreach (var item in Items)
             {
-                if (item.Equipped == true)
+                if (item.IsEquipped == true)
                 {
                     EquipmentType type = EnumHandler.GetEquipmentType(item.ItemId);
                     UnEquipTypeItem(type);
-                    item.Equipped = true;
+                    item.IsEquipped = true;
                     switch (type)
                     {
                         case EquipmentType.Head:
@@ -229,7 +223,7 @@ namespace textdungeon.Play
             {
                 if (item.ItemId == itemId)
                 {
-                    item.Equipped = false;
+                    item.IsEquipped = false;
                 }
             }
             if (Equipped.Head == itemId)
@@ -259,7 +253,7 @@ namespace textdungeon.Play
                     {
                         if (item.ItemId > 1000 && item.ItemId <= 2000)
                         {
-                            item.Equipped = false;
+                            item.IsEquipped = false;
                         }
                     }
                     break;
@@ -268,7 +262,7 @@ namespace textdungeon.Play
                     {
                         if (item.ItemId > 2000 && item.ItemId <= 3000)
                         {
-                            item.Equipped = false;
+                            item.IsEquipped = false;
                         }
                     }
                     break;
@@ -277,7 +271,7 @@ namespace textdungeon.Play
                     {
                         if (item.ItemId > 3000 && item.ItemId <= 4000)
                         {
-                            item.Equipped = false;
+                            item.IsEquipped = false;
                         }
                     }
                     break;
@@ -286,7 +280,7 @@ namespace textdungeon.Play
                     {
                         if (item.ItemId > 4000 && item.ItemId <= 5000)
                         {
-                            item.Equipped = false;
+                            item.IsEquipped = false;
                         }
                     }
                     break;
@@ -312,7 +306,7 @@ namespace textdungeon.Play
 
             foreach (var item in Items)
             {
-                if (item.Equipped)
+                if (item.IsEquipped)
                 {
                     ItemAttPow += item.ItemAttPow;
                     ItemDefPow += item.ItemDefPow;

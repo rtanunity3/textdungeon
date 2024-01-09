@@ -9,8 +9,8 @@ namespace textdungeon.Play
 {
     public class Item
     {
-        public bool Equipped { get; set; }
-        public bool Bought { get; set; }
+        public bool IsEquipped { get; set; }
+        public bool IsBought { get; set; }
 
         /*
         itemId
@@ -19,19 +19,19 @@ namespace textdungeon.Play
         3001~4000 : 무기
         4001~5000 : 방패
         */
-        public int ItemId { get; set; }
-        public int ItemAttPow { get; set; }
-        public int ItemDefPow { get; set; }
+        public int ItemId { get; }
+        public int ItemAttPow { get; }
+        public int ItemDefPow { get; }
 
-        public string Name { get; set; }
-        public string Desc { get; set; }
+        public string Name { get; }
+        public string Desc { get; }
 
-        public int Cost { get; set; }
+        public int Cost { get; }
 
         public Item(bool equipped, bool bought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost)
         {
-            Equipped = equipped;
-            Bought = bought;
+            IsEquipped = equipped;
+            IsBought = bought;
             ItemId = itemId;
             ItemAttPow = itemAttPow;
             ItemDefPow = itemDefPow;
@@ -47,7 +47,8 @@ namespace textdungeon.Play
         /// <param name="defaultHeight">테이블 시작 높이</param>
         /// <param name="i">인덱스</param>
         /// <param name="writeNum">숫자표시 여부</param>
-        /// <param name="isStore">가격표시 여부</param>
+        /// <param name="isSale">상점 여부 false=인벤토리</param>
+        /// <param name="isSell">아이템 판매인 경우</param>
         /// <returns>void</returns>
         public void ItemInfoWrite(int[] itemTableColWidth, int defaultHeight, int i
             , bool writeNum = false, bool isSale = true, bool isSell = false)
@@ -58,7 +59,7 @@ namespace textdungeon.Play
                 boughtColor = ConsoleColor.Gray;
             }
 
-            Printing.HighlightText("-", Bought ? boughtColor : ConsoleColor.Gray);
+            Printing.HighlightText("-", IsBought ? boughtColor : ConsoleColor.Gray);
             if (writeNum)
             {
                 Printing.HighlightText($"{i,2} ", ConsoleColor.Green);
@@ -70,12 +71,12 @@ namespace textdungeon.Play
 
             if (!isSale)
             {
-                if (Equipped)
+                if (IsEquipped)
                 {
                     Printing.HighlightText("[E]", ConsoleColor.Cyan);
                 }
             }
-            if (Bought)
+            if (IsBought)
             {
                 Console.ForegroundColor = boughtColor;
             }
@@ -103,7 +104,7 @@ namespace textdungeon.Play
 
             if (isSale)
             {
-                if (Bought)
+                if (IsBought)
                 {
                     Printing.HighlightText("구매완료\n", boughtColor);
                 }
@@ -116,7 +117,8 @@ namespace textdungeon.Play
             {
                 Printing.HighlightText($"{Cost * 0.85} G\n", ConsoleColor.Yellow);
             }
-            else {
+            else
+            {
                 Console.WriteLine();
             }
         }

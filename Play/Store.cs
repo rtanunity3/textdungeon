@@ -52,7 +52,7 @@ namespace textdungeon.Play
                 {
                     if (storeItem.ItemId == playerItem.ItemId)
                     {
-                        storeItem.Bought = true;
+                        storeItem.IsBought = true;
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace textdungeon.Play
 
         public ResponseCode BuyItems(Player player, int select)
         {
-            if (ItemList[select].Bought)
+            if (ItemList[select].IsBought)
             {
                 //이미 구매함
                 return ResponseCode.ALREADYBOUGHT;
@@ -145,7 +145,7 @@ namespace textdungeon.Play
                 player.Gold -= ItemList[select].Cost;
                 player.AddItem(ItemList[select]);
 
-                ItemList[select].Bought = true; // 구매 처리
+                ItemList[select].IsBought = true; // 구매 처리
                 // 구매 가능
                 return ResponseCode.BOUGHTCOMPLETE;
             }
@@ -161,7 +161,7 @@ namespace textdungeon.Play
             {
                 if (item.ItemId == player.Items[select].ItemId)
                 {
-                    item.Bought = false;
+                    item.IsBought = false;
                 }
             }
 
