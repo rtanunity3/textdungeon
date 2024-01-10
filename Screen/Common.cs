@@ -198,7 +198,6 @@ namespace textdungeon.Screen
             int length = 0;
             foreach (char c in text)
             {
-                //if (IsKorean(c))
                 if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
                 {
                     length += 2;
@@ -209,12 +208,6 @@ namespace textdungeon.Screen
                 }
             }
             return length;
-        }
-
-        static bool IsKorean(char c)
-        {
-            // 한글 유니코드 범위: AC00 ~ D7AF
-            return c >= '\uAC00' && c <= '\uD7AF';
         }
     }
 }

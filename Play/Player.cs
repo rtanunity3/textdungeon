@@ -173,7 +173,6 @@ namespace textdungeon.Play
                 Console.WriteLine();
             }
 
-
             Console.WriteLine();
             Console.WriteLine();
             Printing.SelectWriteLine(0, "나가기");
@@ -426,6 +425,7 @@ namespace textdungeon.Play
         public void TakeDamage(int damage)
         {
             // 임시
+            // 전투에 맞게 수정 바람
             TakeDamage(SkillType.Normal, damage);
         }
         public void TakeDamage(SkillType skillType, int damage)
