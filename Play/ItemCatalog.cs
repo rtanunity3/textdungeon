@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using textdungeon.Screen;
 
 namespace textdungeon.Play
 {
+    // 아이템 정보 저장
     public class NoviceHelmet : Item
     {
         public NoviceHelmet() : base(false, false, 1001, 0, 1, "수련자 투구", "수련에 도움을 주는 투구입니다.", 1000) { }
@@ -66,7 +69,15 @@ namespace textdungeon.Play
         public SpartanShield() : base(false, false, 4003, 3, 9, "스파르타의 방패", "스파르타의 전사들이 사용했다는 전설의 방패입니다.", 3500) { }
     }
 
-    public class HealingPotion : Item
+    // 소모품
+    public abstract class ConsumableItem : Item
+    {
+        public ConsumableItem(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost, int quantity = 1) : base(isEquipped, isBought, itemId, itemAttPow, itemDefPow, name, desc, cost, quantity) { }
+
+        public abstract bool UseItem(Player player);
+    }
+
+    public class HealingPotion : ConsumableItem
     {
         public int HealingAmount { get; set; }
 
@@ -75,11 +86,17 @@ namespace textdungeon.Play
             HealingAmount = healingAmount;
         }
 
-        public void UseItem(Player player)
+        public override bool UseItem(Player player)
         {
             player.Health += HealingAmount;
             if (player.Health > 100)
                 player.Health = 100;
+
+            Quantity -= 1;
+            if (Quantity <= 0)
+                return true;
+            else 
+                return false;
         }
     }
 }
