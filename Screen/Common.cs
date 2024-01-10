@@ -3,6 +3,7 @@ namespace textdungeon.Screen
     public enum GameState
     {
         Intro,
+        ClassSelect,
         Quit,
         Village,
         Status,
@@ -16,6 +17,15 @@ namespace textdungeon.Screen
         Inn,
     }
 
+    public enum CharacterClass
+    {
+        None,
+        Warrior,
+        Mage,
+        Archer,
+        Thief,
+        Cleric
+    }
     public enum ResponseCode
     {
         // Blue
@@ -70,7 +80,7 @@ namespace textdungeon.Screen
                 case ResponseCode.UNEQUIP:
                     return "장착을 해제했습니다.\n";
                 case ResponseCode.REST:
-                    return "휴식을 완료했습니다.\n"; 
+                    return "휴식을 완료했습니다.\n";
 
                 case ResponseCode.BADREQUEST:
                     return "잘못된 입력입니다.\n";
@@ -82,6 +92,26 @@ namespace textdungeon.Screen
                     return responseCode.ToString();
             }
         }
+
+        public static string GetjobKr(CharacterClass job)
+        {
+            switch (job)
+            {
+                case CharacterClass.Warrior:
+                    return "전사";
+                case CharacterClass.Mage:
+                    return "마법사";
+                case CharacterClass.Archer:
+                    return "궁수";
+                case CharacterClass.Thief:
+                    return "도적";
+                case CharacterClass.Cleric:
+                    return "성직자";
+                default:
+                    return "";
+            }
+        }
+
 
         public static EquipmentType GetEquipmentType(int itemId)
         {
@@ -114,6 +144,10 @@ namespace textdungeon.Screen
             }
         }
     }
+
+
+
+
     public static class Util
     {
         public static int GenRandomNumber(int min, int max)

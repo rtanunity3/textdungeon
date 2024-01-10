@@ -48,27 +48,30 @@ namespace textdungeon.Screen
         {
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine("   _____________________________________________________");
-            Console.WriteLine("  |                                                     |");
-            Console.WriteLine("  |                  용   사    마   을                 |");
-            Console.WriteLine("  |                                                     |");
-            Console.WriteLine("  |-----------------------------------------------------|");
-            Console.WriteLine("  |                                                     |");
-            Console.WriteLine("  |                                                     |");
-            Console.Write("  |                   ");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("    :::    ::: :::::::::: :::::::::   :::::::: ::::::::::: ::::::::  :::       ::: ::::    :::");
+            Console.WriteLine("    :+:    :+: :+:        :+:    :+: :+:    :+:    :+:    :+:    :+: :+:       :+: :+:+:   :+:");
+            Console.WriteLine("    +:+    +:+ +:+        +:+    +:+ +:+    +:+    +:+    +:+    +:+ +:+       +:+ :+:+:+  +:+");
+            Console.WriteLine("    +#++:++#++ +#++:++#   +#++:++#:  +#+    +:+    +#+    +#+    +:+ +#+  +:+  +#+ +#+ +:+ +#+");
+            Console.WriteLine("    +#+    +#+ +#+        +#+    +#+ +#+    +#+    +#+    +#+    +#+ +#+ +#+#+ +#+ +#+  +#+#+#");
+            Console.WriteLine("    #+#    #+# #+#        #+#    #+# #+#    #+#    #+#    #+#    #+#  #+#+# #+#+#  #+#   #+#+#");
+            Console.WriteLine("    ###    ### ########## ###    ###  ########     ###     ########    ###   ###   ###    ####");
+
+            Console.ResetColor();
+            int i = 0;
+            Console.SetCursorPosition(40, 13 + i);
             SelectWrite(1, "새로운 시작");
-            Console.WriteLine("                    |");
             if (File.Exists("save.json"))
             {
-                Console.Write("  |                   ");
+                ++i;
+                Console.SetCursorPosition(40, 13 + i);
                 SelectWrite(2, "이어서하기");
-                Console.WriteLine("                     |");
             }
-            Console.Write("  |                   ");
+            ++i;
+            Console.SetCursorPosition(40, 13 + i);
             SelectWrite(0, "게임 종료");
-            Console.WriteLine("                      |");
-            Console.WriteLine("  |                                                     |");
-            Console.WriteLine("  |_____________________________________________________|");
             Console.WriteLine();
         }
 
@@ -118,6 +121,19 @@ namespace textdungeon.Screen
             Console.SetCursorPosition(itemTableColWidth[2], itemInfoTableTop);
             Console.Write("| ");
             HighlightText("아이템 설명", ConsoleColor.DarkGray);
+            Console.WriteLine();
+        }
+
+        public static void SelectClassScene()
+        {
+            Console.Clear();
+            Console.WriteLine("선택할 수 있는 직업 목록입니다.");
+            SelectWriteLine(1, EnumHandler.GetjobKr(CharacterClass.Warrior));
+            SelectWriteLine(2, EnumHandler.GetjobKr(CharacterClass.Mage));
+            SelectWriteLine(3, EnumHandler.GetjobKr(CharacterClass.Archer));
+            SelectWriteLine(4, EnumHandler.GetjobKr(CharacterClass.Thief));
+            SelectWriteLine(5, EnumHandler.GetjobKr(CharacterClass.Cleric));
+            SelectWriteLine(0, "시작화면으로 나가기");
             Console.WriteLine();
         }
     }
