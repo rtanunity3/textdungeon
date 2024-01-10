@@ -112,20 +112,23 @@ namespace textdungeon.Play
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
-            Printing.HighlightText($"{Name} ({Job})\n", ConsoleColor.White);
+            Printing.HighlightText($"{Name} ({EnumHandler.GetjobKr(Job)})\n", ConsoleColor.White);
 
-            Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
-            if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
-            Console.WriteLine();
-
-            Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
-            if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
-            Console.WriteLine();
-
+            //
             Console.Write("HP : ");
             Printing.HighlightText($"{Health,3}/{MaxHealth}\n", ConsoleColor.Red);
             Console.Write("MP : ");
             Printing.HighlightText($"{Mana,3}/{MaxMana}\n", ConsoleColor.Blue);
+
+            //
+            Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
+            if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
+            Console.WriteLine();
+            Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
+            if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
+            Console.WriteLine();
+
+            //
             Console.Write("Gold : ");
             Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
