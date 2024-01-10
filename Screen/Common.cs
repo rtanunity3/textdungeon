@@ -14,6 +14,10 @@ namespace textdungeon.Screen
         DungeonGate,
         DungeonResult,
         Inn,
+        BattleGround,
+        BattleAttack,
+        BattleSkillList,
+        BattleSkillAttack
     }
 
     public enum ResponseCode

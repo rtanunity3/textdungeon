@@ -14,6 +14,9 @@ namespace textdungeon.Play
         public int Gold { get; }
         public int Level { get; }
         public bool IsDead => Health <= 0;
+        public string ToStringName => $"Lv.{Level} {Name}";
+        public string ToStringEnemie => $"{ToStringName} {(IsDead ? "Dead" : $"HP {Health}")}";
+
 
         public Monster(string name, int health, int attPow, int gold, int level)
         {

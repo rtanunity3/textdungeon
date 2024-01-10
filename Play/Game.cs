@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using textdungeon.Screen;
 
@@ -15,6 +15,7 @@ namespace textdungeon.Play
         private Store store;
         private Inn inn;
         private DungeonGate dungeonGate;
+        private Battle battle;
 
 
         public bool menuActive = true;
@@ -26,6 +27,7 @@ namespace textdungeon.Play
             store = new Store();
             inn = new Inn();
             dungeonGate = new DungeonGate();
+            battle = new Battle();
             StartMenu();
         }
 
@@ -163,13 +165,16 @@ namespace textdungeon.Play
                         dungeonGate.SetExploreDungeon(select);
                         ExploreDungeon();
                         break;
+                    case 4: // 배틀
+                        ExploreBattle();
+                        break;
                     default:
                         CurrentState = GameState.Village;
                         break;
                 }
             }
         }
-
+        
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
@@ -184,7 +189,47 @@ namespace textdungeon.Play
                 }
             }
         }
+        // 전투화면(공격, 스킬, 아이템 선택화면)
+        private void ExploreBattle()
+        {
+            CurrentState = GameState.BattleGround;
+            while (CurrentState == GameState.BattleGround)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.BattleAttack;
+                        AtteckBattle();
+                        break;
+                        //case 1: // 스킬?
+                        //    break;
+                }
+            }
+        }
 
+        // 전투공격화면(작 몬스터를 선택해서 공격)
+        private void AtteckBattle()
+        {
+            CurrentState = GameState.BattleAttack;
+            while (CurrentState == GameState.BattleAttack)
+            {
+                int select = UserChoice(CurrentState);
+                if (select == 0) // 공격취소
+                {
+                    CurrentState = GameState.BattleGround;
+                }
+                else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
+                {
+                    Monster monster = battle.Enemies[select - 1];
+                    if (!monster.IsDead) // 공격가능한 대상 선택함
+                    {
+                        monster.Health -= player.AttPow;
+                        Debug.WriteLine("공격가능한 대상 선택하여 공격함");
+                    }
+                }
+            }
+        }
 
         // 상점
         private void StoreMenu()
@@ -340,7 +385,7 @@ namespace textdungeon.Play
                         break;
                     case GameState.DungeonGate:
                         dungeonGate.DisplayDungeonList();
-                        inputCount = dungeonGate.DunCount();
+                        inputCount = dungeonGate.DunCount() + 1;
                         break;
                     case GameState.DungeonResult:
                         dungeonGate.ExploreDungeonResult(player);
@@ -350,6 +395,26 @@ namespace textdungeon.Play
                         inn.InnMenu(player);
                         inputCount = 2;
                         break;
+                    // 전투 흐름 구현 필요
+                    case GameState.BattleGround:
+                        battle.DisplayBattle(false, GameState.BattleGround, player);
+                        inputCount = 1;
+                        break;
+                    case GameState.BattleAttack:
+                        battle.DisplayBattle(true, GameState.BattleAttack, player);
+                        inputCount = battle.Enemies.Count + 1;
+                        break;
+                        // case GameState.BattleSkill:
+                        //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
+                        //     // inputCount = // 스킬개수
+                        //     break;
+                        // case GameState.BattleSkillAttack:
+                        //     battle.DisplayBattle(false, BattleAttack.BattleSkillAttack, player);
+                        //     // inputCount = // 스킬개수
+                        //     break;
+
+                        // case GameState.BattleSkillList: break;
+                        // case GameState.BattleSkillAttack: break;
                 }
 
                 if (response != ResponseCode.SUCCESS)
