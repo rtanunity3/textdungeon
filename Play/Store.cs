@@ -49,11 +49,16 @@ namespace textdungeon.Play
         {
             foreach (var playerItem in playerItems)
             {
-                foreach (var storeItem in ItemList)
+                // 소모품이 아닌 경우만
+                EquipmentType type = EnumHandler.GetEquipmentType(playerItem.ItemId);
+                if (type != EquipmentType.Consumable)
                 {
-                    if (storeItem.ItemId == playerItem.ItemId)
+                    foreach (var storeItem in ItemList)
                     {
-                        storeItem.IsBought = true;
+                        if (storeItem.ItemId == playerItem.ItemId)
+                        {
+                            storeItem.IsBought = true;
+                        }
                     }
                 }
             }
@@ -146,7 +151,10 @@ namespace textdungeon.Play
                 player.Gold -= ItemList[select].Cost;
                 player.AddItem(ItemList[select]);
 
-                ItemList[select].IsBought = true; // 구매 처리
+                // 소모품이 아닐 경우 구매 처리
+                EquipmentType type = EnumHandler.GetEquipmentType(ItemList[select].ItemId);
+                if (type != EquipmentType.Consumable)
+                    ItemList[select].IsBought = true;
                 // 구매 가능
                 return ResponseCode.BOUGHTCOMPLETE;
             }

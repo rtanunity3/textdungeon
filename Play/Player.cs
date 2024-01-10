@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using textdungeon.Screen;
@@ -155,9 +156,18 @@ namespace textdungeon.Play
 
             if (select > 0 && select < Items.Count)
             {
-                // 이미 장착한 아이템이면 해제
-                if (Items[select].IsEquipped == true)
+                // 소모품의 경우 다운캐스팅을 사용해 UseItem Method를 호출.
+                if (type == EquipmentType.Consumable)
                 {
+                    var item = (ConsumableItem)Items[select];
+                    if (item.UseItem(this))
+                        RemoveItem(item);
+
+                    return ResponseCode.CONSUME;
+                }
+                else if (Items[select].IsEquipped == true)
+                {
+                    // 이미 장착한 아이템이면 해제
                     Items[select].IsEquipped = false;
                     switch (type)
                     {
@@ -345,11 +355,26 @@ namespace textdungeon.Play
 
         public void AddItem(Item item)
         {
-            Items.Add(item);
+            if (Items.Find(existItem => existItem.ItemId == item.ItemId) != null)
+            {
+                item.Quantity += 1;
+            }
+            else
+            {
+                Items.Add(item);
+            }
         }
+
         public void RemoveItem(Item item)
         {
-            Items.Remove(item);
+            if (item.Quantity > 1)
+            {
+                item.Quantity -= 1;
+            }
+            else
+            {
+                Items.Remove(item);
+            }
         }
 
         public void TakeDamage(int damage)
