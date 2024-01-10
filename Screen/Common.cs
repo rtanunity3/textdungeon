@@ -32,9 +32,10 @@ namespace textdungeon.Screen
 
     public enum SkillType
     {
-        Self,
+        Normal,
         Single,
         Multiple,
+        Self,
     }
     public enum ResponseCode
     {
@@ -126,14 +127,14 @@ namespace textdungeon.Screen
         {
             switch (skillType)
             {
-                case SkillType.Self:
-                    return "본인대상";
                 case SkillType.Single:
                     return "단일공격";
                 case SkillType.Multiple:
                     return "전체공격";
+                case SkillType.Self:
+                    return "본인대상";
                 default:
-                    return "";
+                    return "일반공격";
             }
         }
 

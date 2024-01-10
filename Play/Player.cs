@@ -422,10 +422,35 @@ namespace textdungeon.Play
             Items.Remove(item);
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(SkillType skillType, int damage)
         {
+            // 회피 계산 일반공격이고 10%확률
+            if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
+            {
+                Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                return;
+            }
+
+            // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
+            damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
+
+            // 치명타 계산 15%확률
+            if (Util.GenRandomFloat() <= 0.15)
+            {
+                damage = (int)Math.Floor(damage * 1.6f);
+            }
+
+            // 방어력 차감
+
+            // 데미지 적용
             // hp 0 ~ MaxHealth 사이 유지
             Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
+
+            // 사망확인
+            if (IsDead) { 
+                // 사망 동작
+
+            }
         }
 
 
