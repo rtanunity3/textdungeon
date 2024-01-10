@@ -30,6 +30,7 @@ namespace textdungeon.Play
         public int DisplayExp { get; set; } // 화면상에 보여질 경험치
         public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
 
+        public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
@@ -63,30 +64,40 @@ namespace textdungeon.Play
                     Health = 100; Mana = 20;
                     MaxHealth = 100; MaxMana = 20;
                     Gold = 1000;
+                    Skill.Add(new Skill("강격", 1.2f, 5, SkillType.Single));
+                    Skill.Add(new Skill("이중타격", 1.8f, 15, SkillType.Single));
                     break;
                 case CharacterClass.Mage:
                     AttPow = 5; DefPow = 3;
                     Health = 80; Mana = 50;
                     MaxHealth = 80; MaxMana = 50;
                     Gold = 3000;
+                    Skill.Add(new Play.Skill("불화살", 1.3f, 5, SkillType.Single));
+                    Skill.Add(new Play.Skill("블리자드", 1.8f, 20, SkillType.Multiple));
                     break;
                 case CharacterClass.Archer:
                     AttPow = 8; DefPow = 4;
                     Health = 90; Mana = 30;
                     MaxHealth = 90; MaxMana = 30;
                     Gold = 1500;
+                    Skill.Add(new Play.Skill("연사", 0.9f, 10, SkillType.Multiple));
+                    Skill.Add(new Play.Skill("저격", 2.2f, 20, SkillType.Single));
                     break;
                 case CharacterClass.Thief:
                     AttPow = 7; DefPow = 3;
                     Health = 85; Mana = 25;
                     MaxHealth = 85; MaxMana = 25;
                     Gold = 2500;
+                    Skill.Add(new Play.Skill("기습", 1.5f, 10, SkillType.Single));
+                    Skill.Add(new Play.Skill("함정", 2.0f, 15, SkillType.Single));
                     break;
                 case CharacterClass.Cleric:
                     AttPow = 6; DefPow = 4;
                     Health = 95; Mana = 40;
                     MaxHealth = 95; MaxMana = 40;
                     Gold = 3000;
+                    Skill.Add(new Play.Skill("신성타격", 1.5f, 10, SkillType.Single));
+                    Skill.Add(new Play.Skill("치료", 1.5f, 10, SkillType.Self));
                     break;
             }
         }
@@ -107,11 +118,24 @@ namespace textdungeon.Play
             CalcItemStat();
 
             Console.Clear();
+
+            Console.SetCursorPosition(30, 3);
+            Printing.HighlightText("착용장비", ConsoleColor.DarkYellow);
+            Console.SetCursorPosition(30, 4);
+            Console.WriteLine($"투구 : {GetItemName(Equipped.Head)}");
+            Console.SetCursorPosition(30, 5);
+            Console.WriteLine($"갑옷 : {GetItemName(Equipped.Body)}");
+            Console.SetCursorPosition(30, 6);
+            Console.WriteLine($"무기 : {GetItemName(Equipped.Weapon)}");
+            Console.SetCursorPosition(30, 7);
+            Console.WriteLine($"방패 : {GetItemName(Equipped.Shield)}");
+            Console.SetCursorPosition(0, 0);
+
             Printing.HighlightText("상태 보기", ConsoleColor.DarkYellow);
             Console.WriteLine();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
-            Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
+            Console.WriteLine($"Lv. {Level:D2} (Exp:{DisplayExp}/{Level})");
             Printing.HighlightText($"{Name} ({EnumHandler.GetjobKr(Job)})\n", ConsoleColor.White);
 
             //
@@ -132,19 +156,25 @@ namespace textdungeon.Play
             Console.Write("Gold : ");
             Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
+            Console.WriteLine();
 
-            Console.SetCursorPosition(30, 3);
-            Printing.HighlightText("착용장비", ConsoleColor.DarkYellow);
-            Console.SetCursorPosition(30, 4);
-            Console.WriteLine($"투구 : {GetItemName(Equipped.Head)}");
-            Console.SetCursorPosition(30, 5);
-            Console.WriteLine($"갑옷 : {GetItemName(Equipped.Body)}");
-            Console.SetCursorPosition(30, 6);
-            Console.WriteLine($"무기 : {GetItemName(Equipped.Weapon)}");
-            Console.SetCursorPosition(30, 7);
-            Console.WriteLine($"방패 : {GetItemName(Equipped.Shield)}");
-            Console.SetCursorPosition(0, 9);
 
+            Printing.HighlightText("스킬\n", ConsoleColor.DarkYellow);
+            Printing.SkillInfoTableTitle();
+
+            for (int i = 1; i < Skill.Count; i++)
+            {
+                Console.Write($"[{i}] : {Util.PadRightMixedText(Skill[i].Name, 10)}");
+                Console.Write($"{Util.PadRightMixedText(EnumHandler.GetSkillTypeKr(Skill[i].SkillType), 10)}");
+                Printing.HighlightText($"{Skill[i].Mana}".PadRight(10), ConsoleColor.Blue);
+                Console.Write($"{Skill[i].DamagePercentage * 100}%");
+                double skillDmg = (AttPow + ItemAttPow) * Skill[i].DamagePercentage;
+                Printing.HighlightText($" [{Math.Ceiling(skillDmg * 0.9)}-{Math.Ceiling(skillDmg * 1.1)}]", ConsoleColor.Red);
+                Console.WriteLine();
+            }
+
+
+            Console.WriteLine();
             Console.WriteLine();
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();

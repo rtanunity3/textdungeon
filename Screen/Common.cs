@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace textdungeon.Screen
 {
     public enum GameState
@@ -25,6 +28,13 @@ namespace textdungeon.Screen
         Archer,
         Thief,
         Cleric
+    }
+
+    public enum SkillType
+    {
+        Self,
+        Single,
+        Multiple,
     }
     public enum ResponseCode
     {
@@ -112,6 +122,20 @@ namespace textdungeon.Screen
             }
         }
 
+        public static string GetSkillTypeKr(SkillType skillType)
+        {
+            switch (skillType)
+            {
+                case SkillType.Self:
+                    return "본인대상";
+                case SkillType.Single:
+                    return "단일공격";
+                case SkillType.Multiple:
+                    return "전체공격";
+                default:
+                    return "";
+            }
+        }
 
         public static EquipmentType GetEquipmentType(int itemId)
         {
@@ -154,6 +178,36 @@ namespace textdungeon.Screen
         {
             Random random = new Random();
             return random.Next(min, max);
+        }
+
+        public static string PadRightMixedText(string text, int padLength)
+        {
+            int curLength = CalculateLength(text);
+            int padding = padLength - curLength;
+            return text.PadRight(text.Length + padding);
+        }
+        public static int CalculateLength(string text)
+        {
+            int length = 0;
+            foreach (char c in text)
+            {
+                //if (IsKorean(c))
+                if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
+                {
+                    length += 2;
+                }
+                else
+                {
+                    length += 1;
+                }
+            }
+            return length;
+        }
+
+        static bool IsKorean(char c)
+        {
+            // 한글 유니코드 범위: AC00 ~ D7AF
+            return c >= '\uAC00' && c <= '\uD7AF';
         }
     }
 }

@@ -150,6 +150,18 @@ namespace textdungeon.Screen
             Console.WriteLine();
         }
 
+        public static void SkillInfoTableTitle()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("      ");
+            Console.Write(Util.PadRightMixedText("스킬명", 10));
+            Console.Write(Util.PadRightMixedText("대상범위", 10));
+            Console.Write(Util.PadRightMixedText("소모마나", 10));
+            Console.Write(Util.PadRightMixedText("데미지", 15));
+            Console.ResetColor();
+            Console.WriteLine();
+        }
+
         public static void SelectClassScene()
         {
             Console.Clear();
