@@ -71,6 +71,7 @@ namespace textdungeon.Screen
 
         public static void GameOverScreen()
         {
+            // 아직 쓰는곳 없음. 필요하면 수정해서 쓰는 방향으로
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine();

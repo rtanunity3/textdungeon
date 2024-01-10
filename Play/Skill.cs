@@ -4,10 +4,10 @@ namespace textdungeon.Play
 {
     public class Skill
     {
-        public SkillType SkillType { get; }
-        public string Name { get; }
-        public float DamagePercentage { get; }
-        public int Mana { get; }
+        public SkillType SkillType { get; } // 스킬타입. 회피확률, 단일/복수타겟 판단
+        public string Name { get; } // 스킬명
+        public float DamagePercentage { get; } // 데미지 %
+        public int Mana { get; } // 사용 마나
 
         public Skill(string name, float damagePercentage, int mana, SkillType skillType)
         {
@@ -16,7 +16,6 @@ namespace textdungeon.Play
             Mana = mana;
             SkillType = skillType;
         }
-
 
         /*
         전사 
