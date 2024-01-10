@@ -9,6 +9,7 @@ using textdungeon.Screen;
 namespace textdungeon.Play
 {
     // 직렬화와 역직렬화때, Item class로 업캐스팅된 소모품 아이템들의 type을 명시하기 위함
+    [JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
     [JsonDerivedType(typeof(HealingPotion), typeDiscriminator: "consumable")]
     public class Item
     {
