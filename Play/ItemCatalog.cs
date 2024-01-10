@@ -11,9 +11,9 @@ namespace textdungeon.Play
         public NoviceHelmet() : base(false, false, 1001, 0, 1, "수련자 투구", "수련에 도움을 주는 투구입니다.", 1000) { }
     }
 
-    public class MetalHelmet : Item
+    public class IronHelmet : Item
     {
-        public MetalHelmet() : base(false, false, 1002, 0, 2, "무쇠 투구", "무쇠로 만들어져 튼튼한 투구입니다.", 2000) { }
+        public IronHelmet() : base(false, false, 1002, 0, 2, "무쇠 투구", "무쇠로 만들어져 튼튼한 투구입니다.", 2000) { }
     }
 
     public class SpartanHelmet : Item
@@ -26,9 +26,9 @@ namespace textdungeon.Play
         public NoviceArmor() : base(false, false, 2001, 0, 5, "수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", 1000) { }
     }
 
-    public class MetalArmor : Item
+    public class IronArmor : Item
     {
-        public MetalArmor() : base(false, false, 2002, 0, 9, "무쇠 갑옷", "무쇠로 만들어져 튼튼한 갑옷입니다.", 2000) { }
+        public IronArmor() : base(false, false, 2002, 0, 9, "무쇠 갑옷", "무쇠로 만들어져 튼튼한 갑옷입니다.", 2000) { }
     }
 
     public class SpartanArmor : Item
