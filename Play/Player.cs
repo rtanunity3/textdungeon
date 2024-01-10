@@ -167,9 +167,9 @@ namespace textdungeon.Play
                 Console.Write($"[{i}] : {Util.PadRightMixedText(Skill[i].Name, 10)}");
                 Console.Write($"{Util.PadRightMixedText(EnumHandler.GetSkillTypeKr(Skill[i].SkillType), 10)}");
                 Printing.HighlightText($"{Skill[i].Mana}".PadRight(10), ConsoleColor.Blue);
-                Console.Write($"{Skill[i].DamagePercentage * 100}%");
+                Console.Write($"{Skill[i].DamagePercentage * 100:F0}%");
                 double skillDmg = (AttPow + ItemAttPow) * Skill[i].DamagePercentage;
-                Printing.HighlightText($" [{Math.Ceiling(skillDmg * 0.9)}-{Math.Ceiling(skillDmg * 1.1)}]", ConsoleColor.Red);
+                Printing.HighlightText($" [{Math.Floor(skillDmg * 0.9):F0}-{Math.Ceiling(skillDmg * 1.1):F0}]", ConsoleColor.Red);
                 Console.WriteLine();
             }
 
@@ -422,6 +422,12 @@ namespace textdungeon.Play
             Items.Remove(item);
         }
 
+
+        public void TakeDamage(int damage)
+        {
+            // 임시
+            TakeDamage(SkillType.Normal, damage);
+        }
         public void TakeDamage(SkillType skillType, int damage)
         {
             // 회피 계산 일반공격이고 10%확률
@@ -447,7 +453,8 @@ namespace textdungeon.Play
             Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
 
             // 사망확인
-            if (IsDead) { 
+            if (IsDead)
+            {
                 // 사망 동작
 
             }
@@ -473,5 +480,6 @@ namespace textdungeon.Play
             //케릭터 데이터가 변하는 경우 호환성을 위한 체크를 해줘야함
             return JsonSerializer.Deserialize<Player>(jsonData);
         }
+
     }
 }

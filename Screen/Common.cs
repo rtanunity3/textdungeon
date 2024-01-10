@@ -175,6 +175,12 @@ namespace textdungeon.Screen
 
     public static class Util
     {
+        public static float GenRandomFloat()
+        {
+            Random random = new Random();
+            return random.NextSingle();
+        }
+
         public static int GenRandomNumber(int min, int max)
         {
             Random random = new Random();
