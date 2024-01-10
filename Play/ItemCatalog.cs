@@ -70,7 +70,7 @@ namespace textdungeon.Play
     {
         public int HealingAmount { get; set; }
 
-        public HealingPotion(int healingAmount = 30) : base(false, false, 5001, 0, 0, "힐링 포션", $"체력을 {healingAmount} 회복 시켜주는 물약입니다.", 100)
+        public HealingPotion(int quantity = 1, int healingAmount = 30) : base(false, false, 5001, 0, 0, "힐링 포션", $"체력을 {healingAmount} 회복 시켜주는 물약입니다.", 100, quantity)
         {
             HealingAmount = healingAmount;
         }

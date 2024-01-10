@@ -27,8 +27,9 @@ namespace textdungeon.Play
         public string Desc { get; }
 
         public int Cost { get; }
+        public int Quantity { get; set; }
 
-        public Item(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost)
+        public Item(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost, int quantity = 1)
         {
             IsEquipped = isEquipped;
             IsBought = isBought;
@@ -38,6 +39,7 @@ namespace textdungeon.Play
             Name = name;
             Desc = desc;
             Cost = cost;
+            Quantity = quantity;
         }
 
         /// <summary>
