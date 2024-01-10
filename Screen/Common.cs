@@ -1,8 +1,12 @@
+using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace textdungeon.Screen
 {
     public enum GameState
     {
         Intro,
+        ClassSelect,
         Quit,
         Village,
         Status,
@@ -16,6 +20,23 @@ namespace textdungeon.Screen
         Inn,
     }
 
+    public enum CharacterClass
+    {
+        None,
+        Warrior,
+        Mage,
+        Archer,
+        Thief,
+        Cleric
+    }
+
+    public enum SkillType
+    {
+        Normal,
+        Single,
+        Multiple,
+        Self,
+    }
     public enum ResponseCode
     {
         // Blue
@@ -70,7 +91,7 @@ namespace textdungeon.Screen
                 case ResponseCode.UNEQUIP:
                     return "장착을 해제했습니다.\n";
                 case ResponseCode.REST:
-                    return "휴식을 완료했습니다.\n"; 
+                    return "휴식을 완료했습니다.\n";
 
                 case ResponseCode.BADREQUEST:
                     return "잘못된 입력입니다.\n";
@@ -80,6 +101,40 @@ namespace textdungeon.Screen
                     return "골드가 부족합니다.\n";
                 default:
                     return responseCode.ToString();
+            }
+        }
+
+        public static string GetjobKr(CharacterClass job)
+        {
+            switch (job)
+            {
+                case CharacterClass.Warrior:
+                    return "전사";
+                case CharacterClass.Mage:
+                    return "마법사";
+                case CharacterClass.Archer:
+                    return "궁수";
+                case CharacterClass.Thief:
+                    return "도적";
+                case CharacterClass.Cleric:
+                    return "성직자";
+                default:
+                    return "";
+            }
+        }
+
+        public static string GetSkillTypeKr(SkillType skillType)
+        {
+            switch (skillType)
+            {
+                case SkillType.Single:
+                    return "단일공격";
+                case SkillType.Multiple:
+                    return "전체공격";
+                case SkillType.Self:
+                    return "본인대상";
+                default:
+                    return "일반공격";
             }
         }
 
@@ -114,12 +169,45 @@ namespace textdungeon.Screen
             }
         }
     }
+
+
+
+
     public static class Util
     {
+        public static float GenRandomFloat()
+        {
+            Random random = new Random();
+            return random.NextSingle();
+        }
+
         public static int GenRandomNumber(int min, int max)
         {
             Random random = new Random();
             return random.Next(min, max);
+        }
+
+        public static string PadRightMixedText(string text, int padLength)
+        {
+            int curLength = CalculateLength(text);
+            int padding = padLength - curLength;
+            return text.PadRight(text.Length + padding);
+        }
+        public static int CalculateLength(string text)
+        {
+            int length = 0;
+            foreach (char c in text)
+            {
+                if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
+                {
+                    length += 2;
+                }
+                else
+                {
+                    length += 1;
+                }
+            }
+            return length;
         }
     }
 }

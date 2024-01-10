@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using System.Text.RegularExpressions;
 using textdungeon.Screen;
 
@@ -29,7 +26,7 @@ namespace textdungeon.Play
             StartMenu();
         }
 
-        static Player MakeCharacter()
+        private Player MakeCharacter()
         {
             Console.Clear();
             Console.WriteLine("\n=== 신규 케릭터 생성");
@@ -41,7 +38,25 @@ namespace textdungeon.Play
             }
 
             string name = GetInputName("케릭터 이름을 입력하세요 (한글,영어,숫자 2~8자):");
-            return new Player(name);
+
+            // 직업 선택. 직업별 기본 스탯과 스킬은 다를 수 있다.
+            CurrentState = GameState.ClassSelect;
+            while (CurrentState == GameState.ClassSelect)
+            {
+                Console.Clear();
+                Console.WriteLine($"케릭터명 : {name}");
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Village;
+                        return null;
+                    default:
+                        return new Player(name, (CharacterClass)select);
+                }
+            }
+
+            return null;
         }
 
         private void SaveGame()
@@ -60,6 +75,7 @@ namespace textdungeon.Play
 
         private void StartMenu()
         {
+            CurrentState = GameState.Intro;
             while (CurrentState == GameState.Intro)
             {
                 //int select = Screen.Menu.StartMenu(3);
@@ -68,6 +84,11 @@ namespace textdungeon.Play
                 {
                     case 1:
                         player = MakeCharacter();
+                        if (player == null)
+                        {
+                            CurrentState = GameState.Intro;
+                            break;
+                        }
                         SaveGame();
                         VillageMenu();
                         break;
@@ -119,8 +140,7 @@ namespace textdungeon.Play
                         break;
                     default: // 저장 후 게임 종료
                         Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
-                        string input = Console.ReadLine() ?? "";
-                        if (input.ToLower() != "c")
+                        while (Console.ReadKey().Key != ConsoleKey.C)
                         {
                             SaveGame();
                             Environment.Exit(0);
@@ -310,6 +330,10 @@ namespace textdungeon.Play
                         Printing.StartScreen();
                         inputCount = 3;
                         break;
+                    case GameState.ClassSelect:
+                        Printing.SelectClassScene();
+                        inputCount = Enum.GetValues(typeof(CharacterClass)).Length;
+                        break;
                     case GameState.Village:
                         Printing.VillageScreen();
                         inputCount = 6;
@@ -434,8 +458,9 @@ namespace textdungeon.Play
                 {
                     return input;
                 }
-                Printing.HighlightText("잘못된 입력입니다. 한글,영어,숫자만 2~8자 가능합니다.", ConsoleColor.Red);
+                Printing.HighlightText("잘못된 입력입니다. 한글,영어,숫자만 2~8자 가능합니다.\n", ConsoleColor.Red);
             }
         }
+
     }
 }
