@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace textdungeon.Screen
 {
     public static class Printing
@@ -74,6 +68,38 @@ namespace textdungeon.Screen
             SelectWrite(0, "게임 종료");
             Console.WriteLine();
         }
+
+        public static void GameOverScreen()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("        ::::::::      :::       :::   :::   :::::::::: ::::::::  :::     ::: :::::::::: ::::::::: ");
+            Console.WriteLine("      :+:    :+:   :+: :+:    :+:+: :+:+:  :+:       :+:    :+: :+:     :+: :+:        :+:    :+: ");
+            Console.WriteLine("     +:+         +:+   +:+  +:+ +:+:+ +:+ +:+       +:+    +:+ +:+     +:+ +:+        +:+    +:+  ");
+            Console.WriteLine("    :#:        +#++:++#++: +#+  +:+  +#+ +#++:++#  +#+    +:+ +#+     +:+ +#++:++#   +#++:++#:    ");
+            Console.WriteLine("   +#+   +#+# +#+     +#+ +#+       +#+ +#+       +#+    +#+  +#+   +#+  +#+        +#+    +#+    ");
+            Console.WriteLine("  #+#    #+# #+#     #+# #+#       #+# #+#       #+#    #+#   #+#+#+#   #+#        #+#    #+#     ");
+            Console.WriteLine("  ########  ###     ### ###       ### ########## ########      ###     ########## ###    ###      ");
+
+            Console.ResetColor();
+            int i = 0;
+            Console.SetCursorPosition(40, 13 + i);
+            SelectWrite(1, "새로운 시작");
+            if (File.Exists("save.json"))
+            {
+                ++i;
+                Console.SetCursorPosition(40, 13 + i);
+                SelectWrite(2, "이어서하기");
+            }
+            ++i;
+            Console.SetCursorPosition(40, 13 + i);
+            SelectWrite(0, "게임 종료");
+            Console.WriteLine();
+        }
+
 
         public static void VillageScreen()
         {
