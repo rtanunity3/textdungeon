@@ -54,7 +54,28 @@ namespace textdungeon.Play
                     Console.WriteLine("0. 공격");
                     break;
                 case GameState.BattleAttack:
+                    Console.WriteLine("0. 공격취소");
+                    Console.WriteLine();
+                    Console.WriteLine("대상을 선택해주세요.");
+                    Console.Write(">> ");
                     break;
+                case GameState.BattleAttackEnd:
+                    Console.WriteLine("0. 다음");
+                    Console.Write(">> ");
+                    break;
+                /*
+Battle!!
+
+Chad 의 공격!
+Lv.3 공허충 을(를) 맞췄습니다. [데미지 : 10]
+
+Lv.3 공허충
+HP 10 -> Dead
+
+0. 다음
+
+>>
+                */
                 case GameState.BattleSkillList:
                     Console.WriteLine("스킬목록 구현필요");
                     break;

@@ -16,6 +16,7 @@ namespace textdungeon.Screen
         Inn,
         BattleGround,
         BattleAttack,
+        BattleAttackEnd,
         BattleSkillList,
         BattleSkillAttack
     }
