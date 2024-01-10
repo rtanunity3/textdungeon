@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,10 +28,10 @@ namespace textdungeon.Play
 
         public int Cost { get; }
 
-        public Item(bool equipped, bool bought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost)
+        public Item(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost)
         {
-            IsEquipped = equipped;
-            IsBought = bought;
+            IsEquipped = isEquipped;
+            IsBought = isBought;
             ItemId = itemId;
             ItemAttPow = itemAttPow;
             ItemDefPow = itemDefPow;
