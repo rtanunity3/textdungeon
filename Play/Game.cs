@@ -140,8 +140,7 @@ namespace textdungeon.Play
                         break;
                     default: // 저장 후 게임 종료
                         Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
-                        string input = Console.ReadLine() ?? "";
-                        if (input.ToLower() != "c")
+                        while (Console.ReadKey().Key != ConsoleKey.C)
                         {
                             SaveGame();
                             Environment.Exit(0);
