@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using textdungeon.Screen;
 
 namespace textdungeon.Play
 {
+    // 직렬화와 역직렬화때, Item class로 업캐스팅된 소모품 아이템들의 type을 명시하기 위함
+    [JsonDerivedType(typeof(HealingPotion), typeDiscriminator: "consumable")]
     public class Item
     {
         public bool IsEquipped { get; set; }
@@ -18,6 +21,7 @@ namespace textdungeon.Play
         2001~3000 : 갑옷
         3001~4000 : 무기
         4001~5000 : 방패
+        5001~6000 : 소모품
         */
         public int ItemId { get; }
         public int ItemAttPow { get; }
