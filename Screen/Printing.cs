@@ -133,6 +133,9 @@ namespace textdungeon.Screen
             Console.SetCursorPosition(itemTableColWidth[3], itemInfoTableTop);
             Console.Write("| ");
             HighlightText("가격", ConsoleColor.DarkGray);
+            Console.SetCursorPosition(itemTableColWidth[4], itemInfoTableTop);
+            Console.Write("| ");
+            HighlightText("수량", ConsoleColor.DarkGray);
             Console.WriteLine();
         }
 
@@ -148,6 +151,9 @@ namespace textdungeon.Screen
             Console.SetCursorPosition(itemTableColWidth[2], itemInfoTableTop);
             Console.Write("| ");
             HighlightText("아이템 설명", ConsoleColor.DarkGray);
+            Console.SetCursorPosition(itemTableColWidth[3], itemInfoTableTop);
+            Console.Write("| ");
+            HighlightText("수량", ConsoleColor.DarkGray);
             Console.WriteLine();
         }
 

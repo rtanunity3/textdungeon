@@ -34,7 +34,7 @@ namespace textdungeon.Play
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
-        int[] itemTableColWidth = { 25, 40, 55, 110 };
+        int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
         int maxLevel = 10;
 
@@ -423,13 +423,14 @@ namespace textdungeon.Play
 
         public void AddItem(Item item)
         {
-            if (Items.Find(existItem => existItem.ItemId == item.ItemId) != null)
+            var existItem = Items.Find(x => x.ItemId == item.ItemId);
+            if (existItem != null)
             {
-                item.Quantity += 1;
+                existItem.Quantity += 1;
             }
             else
             {
-                Items.Add(item);
+                Items.Add((Item)item.DeepCopy());
             }
         }
 

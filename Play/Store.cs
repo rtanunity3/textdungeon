@@ -11,7 +11,7 @@ namespace textdungeon.Play
     {
         public List<Item> ItemList;
 
-        int[] itemTableColWidth = { 25, 40, 55, 110 };
+        int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 7;
 
         public Store()
@@ -58,6 +58,7 @@ namespace textdungeon.Play
                         if (storeItem.ItemId == playerItem.ItemId)
                         {
                             storeItem.IsBought = true;
+                            storeItem.Quantity = 0;
                         }
                     }
                 }
@@ -154,7 +155,10 @@ namespace textdungeon.Play
                 // 소모품이 아닐 경우 구매 처리
                 EquipmentType type = EnumHandler.GetEquipmentType(ItemList[select].ItemId);
                 if (type != EquipmentType.Consumable)
+                {
+                    ItemList[select].Quantity = 0;
                     ItemList[select].IsBought = true;
+                }
                 // 구매 가능
                 return ResponseCode.BOUGHTCOMPLETE;
             }
@@ -168,8 +172,9 @@ namespace textdungeon.Play
             // 상점 데이터 업데이트 : Bought값
             foreach (Item item in ItemList)
             {
-                if (item.ItemId == player.Items[select].ItemId)
+                if (item.ItemId == player.Items[select].ItemId && player.Items[select].Quantity == 1)
                 {
+                    item.Quantity = 1;
                     item.IsBought = false;
                 }
             }

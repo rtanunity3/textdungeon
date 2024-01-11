@@ -1,4 +1,5 @@
 using textdungeon.Screen;
+using System.Text.Json.Serialization;
 
 namespace textdungeon.Play
 {
@@ -39,6 +40,11 @@ namespace textdungeon.Play
             Desc = desc;
             Cost = cost;
             Quantity = quantity;
+        }
+
+        public object DeepCopy()
+        {
+            return MemberwiseClone();
         }
 
         /// <summary>
@@ -107,16 +113,44 @@ namespace textdungeon.Play
             {
                 if (IsBought)
                 {
-                    Printing.HighlightText("구매완료\n", boughtColor);
+                    Printing.HighlightText($"{Cost} G", boughtColor);
                 }
                 else
                 {
-                    Printing.HighlightText($"{Cost} G\n", ConsoleColor.Yellow);
+                    Printing.HighlightText($"{Cost} G", ConsoleColor.Yellow);
                 }
             }
             else if (isSell)
             {
-                Printing.HighlightText($"{Cost * 0.85} G\n", ConsoleColor.Yellow);
+                Printing.HighlightText($"{Cost * 0.85} G", ConsoleColor.Yellow);
+            }
+            else
+            {
+                Printing.HighlightText($"{Quantity}\n", ConsoleColor.Yellow);
+            }
+
+            Console.SetCursorPosition(itemTableColWidth[4], defaultHeight + i);
+            if (isSale)
+            {
+                Console.Write($"| ");
+                if (IsBought)
+                {
+                    Printing.HighlightText($"{Quantity}\n", boughtColor);
+                }
+                else
+                {
+                    EquipmentType type = EnumHandler.GetEquipmentType(ItemId);
+                    if(type != EquipmentType.Consumable)
+                        Printing.HighlightText($"{Quantity}\n", ConsoleColor.Yellow);
+                    else
+                        Printing.HighlightText("∞\n", ConsoleColor.Yellow);
+
+                }
+            }
+            else if (isSell)
+            {
+                Console.Write($"| ");
+                Printing.HighlightText($"{Quantity}\n", ConsoleColor.Yellow);
             }
             else
             {
