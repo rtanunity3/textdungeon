@@ -445,6 +445,7 @@ namespace textdungeon.Play
             }
         }
 
+
         public void TakeDamage(int damage)
         {
             // 임시
