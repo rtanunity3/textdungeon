@@ -57,6 +57,7 @@ namespace textdungeon.Play
             return null;
         }
 
+        //TODO 전투흐름이 완성되면 어느 아이템을 얻었는지 출력 필요.
         public List<Item> ItemDrop()
         {
             var dropList = new List<Item>();
