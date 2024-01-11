@@ -8,13 +8,15 @@ namespace textdungeon.Play
         public int FailPer { get; set; }  //실패 확률
         public int RewardGold { get; set; } // 보상 골드
         public int RecomDef { get; set; } // 권장 방어력
+        public int RewardExp { get; set; } // 보상 경험치
 
-        public Dungeon(string name, int failPer, int rewardGold, int recomDef)
+        public Dungeon(string name, int failPer, int rewardGold, int recomDef, int rewardExp)
         {
             Name = name;
             FailPer = failPer;
             RewardGold = rewardGold;
             RecomDef = recomDef;
+            RewardExp = rewardExp;
         }
     }
 
@@ -26,10 +28,10 @@ namespace textdungeon.Play
         {
             ReservedDungeon = 0;
             DungeonList = new List<Dungeon> {
-                new Dungeon("", 0, 0, 0),
-                new Dungeon("쉬운 던전", 40, 1000, 5),
-                new Dungeon("일반 던전", 40, 1700, 11),
-                new Dungeon("어려운 던전", 40, 2500, 17)
+                new Dungeon("", 0, 0, 0, 0),
+                new Dungeon("쉬운 던전", 40, 1000, 5 , 1),
+                new Dungeon("일반 던전", 40, 1700, 11, 3),
+                new Dungeon("어려운 던전", 40, 2500, 17, 5)
             };
         }
 
@@ -136,7 +138,7 @@ namespace textdungeon.Play
             player.Gold += plusGold;
 
             // 경험치
-            player.AddExp(1);
+            player.AddExp(DungeonList[ReservedDungeon].RewardExp);
 
             Console.WriteLine();
             Printing.SelectWriteLine(0, "나가기");
