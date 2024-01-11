@@ -16,6 +16,7 @@ namespace textdungeon.Play
             new Monster("공허충", 10, 5, 100, 3, 2, 0)
         };
         public List<Monster> Enemies = new List<Monster>();
+        public string BattleAttackEndMessage = "";
 
         public Battle()
         {
@@ -44,38 +45,27 @@ namespace textdungeon.Play
             Printing.HighlightText("Battle!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
             Console.WriteLine();
-            PrintEnemies(writeNum);
-            Console.WriteLine();
-            PrintPlayer(player);
-            Console.WriteLine();
             switch (gameState)
             {
                 case GameState.BattleGround:
+                    PrintEnemies(writeNum);
+                    Console.WriteLine();
+                    PrintPlayer(player);
+                    Console.WriteLine();
                     Console.WriteLine("0. 공격");
                     break;
                 case GameState.BattleAttack:
-                    Console.WriteLine("0. 공격취소");
+                    PrintEnemies(writeNum);
                     Console.WriteLine();
-                    Console.WriteLine("대상을 선택해주세요.");
-                    Console.Write(">> ");
+                    PrintPlayer(player);
+                    Console.WriteLine();
+                    Console.WriteLine("0. 공격취소");
                     break;
                 case GameState.BattleAttackEnd:
+                    Console.WriteLine(BattleAttackEndMessage);
+                    Console.WriteLine();
                     Console.WriteLine("0. 다음");
-                    Console.Write(">> ");
                     break;
-                /*
-Battle!!
-
-Chad 의 공격!
-Lv.3 공허충 을(를) 맞췄습니다. [데미지 : 10]
-
-Lv.3 공허충
-HP 10 -> Dead
-
-0. 다음
-
->>
-                */
                 case GameState.BattleSkillList:
                     Console.WriteLine("스킬목록 구현필요");
                     break;
@@ -83,7 +73,6 @@ HP 10 -> Dead
                     Console.WriteLine("스킬공격 구현필요");
                     break;
             }
-            Console.WriteLine();
         }
     }
 }

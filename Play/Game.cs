@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -224,13 +225,34 @@ namespace textdungeon.Play
                     Monster monster = battle.Enemies[select - 1];
                     if (!monster.IsDead) // 공격가능한 대상 선택함
                     {
-                        monster.Health -= player.AttPow;
-                        Debug.WriteLine("공격가능한 대상 선택하여 공격함");
+                        int dmg = player.AttPow;
+                        int hp = monster.Health;
+                        monster.Health -= dmg;
+
+                        string msg = @$"{player.Name} 의 공격!
+{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {dmg}]
+
+{monster.ToStringName}
+HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
+                        battle.BattleAttackEndMessage = msg;
+                        AttackBattleEnd();
                     }
                 }
             }
         }
 
+        private void AttackBattleEnd()
+        {
+            CurrentState = GameState.BattleAttackEnd;
+            while (CurrentState == GameState.BattleAttackEnd)
+            {
+                int select = UserChoice(CurrentState);
+                if (select == 0) // 다음
+                {
+                    CurrentState = GameState.BattleGround;
+                }
+            }
+        }
         // 상점
         private void StoreMenu()
         {
