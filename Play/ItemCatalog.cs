@@ -48,8 +48,8 @@ namespace textdungeon.Play
         public override bool UseItem(Player player)
         {
             player.Health += HealingAmount;
-            if (player.Health > 100)
-                player.Health = 100;
+            if (player.Health > player.MaxHealth)
+                player.Health = player.MaxHealth;
 
             Quantity -= 1;
             if (Quantity <= 0)
