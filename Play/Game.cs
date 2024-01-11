@@ -23,7 +23,6 @@ namespace textdungeon.Play
             store = new Store();
             inn = new Inn();
             dungeonGate = new DungeonGate();
-            StartMenu();
         }
 
         private Player MakeCharacter()
@@ -73,7 +72,7 @@ namespace textdungeon.Play
         }
 
 
-        private void StartMenu()
+        public void StartMenu()
         {
             CurrentState = GameState.Intro;
             while (CurrentState == GameState.Intro)
