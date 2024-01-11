@@ -11,12 +11,14 @@ namespace textdungeon.Play
     {
         public List<Item> ItemList;
 
+        // 수량 부분 출력을 위해 추가.
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 7;
 
         public Store()
         {
             // 요구사항에 따라 아이템 항목을 유니크하도록 수정
+            // ItemCatalog에 있는 아이템들로 생성되게 변경.
             ItemList = new List<Item> {
                 new Item(false, false, 0, 0, 0, "", "", 0),
                 new NoviceHelmet(),
@@ -50,6 +52,7 @@ namespace textdungeon.Play
             foreach (var playerItem in playerItems)
             {
                 // 소모품이 아닌 경우만
+                //NOTE 현재 소모품 판매는 무한대로 하고 있음.
                 EquipmentType type = EnumHandler.GetEquipmentType(playerItem.ItemId);
                 if (type != EquipmentType.Consumable)
                 {
@@ -64,7 +67,6 @@ namespace textdungeon.Play
                 }
             }
         }
-
 
         public void DisplayItems(int gold)
         {
@@ -172,6 +174,9 @@ namespace textdungeon.Play
             // 상점 데이터 업데이트 : Bought값
             foreach (Item item in ItemList)
             {
+                // 수량이 1개일 경우에만 처리.
+                //NOTE 아이템A의 수량이 여러 개일 때, 판매시의 처리를 생각해봐야함.
+                //NOTE 현재는 모두 판매해야지만 상점에서 구매 가능.
                 if (item.ItemId == player.Items[select].ItemId && player.Items[select].Quantity == 1)
                 {
                     item.Quantity = 1;

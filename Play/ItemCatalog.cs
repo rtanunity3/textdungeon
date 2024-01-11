@@ -25,7 +25,9 @@ namespace textdungeon.Play
 
     public class SpartanShield : Item { public SpartanShield() : base(false, false, 4003, 3, 9, "스파르타의 방패", "스파르타의 전사들이 사용했다는 전설의 방패입니다.", 3500) { } }
 
-    // 소모품
+    // TODO 장비 추가
+
+    // 소모품, 확장성을 위한 추상 클래스 구현
     public abstract class ConsumableItem : Item
     {
         public ConsumableItem(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost, int quantity = 1) : base(isEquipped, isBought, itemId, itemAttPow, itemDefPow, name, desc, cost, quantity) { }
@@ -33,6 +35,7 @@ namespace textdungeon.Play
         public abstract bool UseItem(Player player);
     }
 
+    // 힐링 포션
     public class HealingPotion : ConsumableItem
     {
         public int HealingAmount { get; set; }
@@ -55,4 +58,6 @@ namespace textdungeon.Play
                 return false;
         }
     }
+
+    //TODO MP포션이나 다른 소모품 추가
 }

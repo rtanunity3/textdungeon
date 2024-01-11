@@ -224,7 +224,7 @@ namespace textdungeon.Play
 
             if (select > 0 && select < Items.Count)
             {
-                // 소모품의 경우 다운캐스팅을 사용해 UseItem Method를 호출.
+                // 소모품 사용. 소모품의 경우 다운캐스팅을 사용해 UseItem Method를 호출.
                 if (type == EquipmentType.Consumable)
                 {
                     var item = (ConsumableItem)Items[select];
@@ -423,6 +423,7 @@ namespace textdungeon.Play
 
         public void AddItem(Item item)
         {
+            // 가지고 있는 아이템이면 수량 추가.
             var existItem = Items.Find(x => x.ItemId == item.ItemId);
             if (existItem != null)
             {
@@ -430,12 +431,14 @@ namespace textdungeon.Play
             }
             else
             {
+                // 객체를 그대로 가져오면 상점과 공유하게 되니 DeepCopy를 통해 추가.
                 Items.Add((Item)item.DeepCopy());
             }
         }
 
         public void RemoveItem(Item item)
         {
+            // 아이템의 수량이 여러개일 경우 판정.
             if (item.Quantity > 1)
             {
                 item.Quantity -= 1;
@@ -445,7 +448,6 @@ namespace textdungeon.Play
                 Items.Remove(item);
             }
         }
-
 
         public void TakeDamage(int damage)
         {

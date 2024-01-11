@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 namespace textdungeon.Play
 {
     // 직렬화와 역직렬화때, Item class로 업캐스팅된 소모품 아이템들의 type을 명시하기 위함
+    //NOTE 첫쨋줄이 없을 경우, 게임 로드 후 ItemCatalog에 여러 장비들이 불러와지지 않음.
+    //NOTE 둘쨋줄이 없을 경우, 게임 로드 후 HealingPotion이 불러와지지 않음.
+    //HOTE 다른 소모품을 추가할 경우, 둘쨋줄을 복사하여 tpyeof와 typeDiscriminator를 수정하면 추가 가능.
     [JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
     [JsonDerivedType(typeof(HealingPotion), typeDiscriminator: "consumable")]
     public class Item
@@ -27,6 +30,7 @@ namespace textdungeon.Play
         public string Desc { get; }
 
         public int Cost { get; }
+        // 수량
         public int Quantity { get; set; }
 
         public Item(bool isEquipped, bool isBought, int itemId, int itemAttPow, int itemDefPow, string name, string desc, int cost, int quantity = 1)
@@ -42,6 +46,7 @@ namespace textdungeon.Play
             Quantity = quantity;
         }
 
+        // 플레이어 인벤토리에 아이템을 추가할 때, Item 객체를 복사하기 위함.
         public object DeepCopy()
         {
             return MemberwiseClone();
@@ -126,9 +131,11 @@ namespace textdungeon.Play
             }
             else
             {
+                // 인벤토리에서의 아이템 수량 표시 부분.
                 Printing.HighlightText($"{Quantity}\n", ConsoleColor.Yellow);
             }
 
+            // 상점에서의 아이템 수량 표시 부분.
             Console.SetCursorPosition(itemTableColWidth[4], defaultHeight + i);
             if (isSale)
             {
@@ -144,7 +151,6 @@ namespace textdungeon.Play
                         Printing.HighlightText($"{Quantity}\n", ConsoleColor.Yellow);
                     else
                         Printing.HighlightText("∞\n", ConsoleColor.Yellow);
-
                 }
             }
             else if (isSell)
