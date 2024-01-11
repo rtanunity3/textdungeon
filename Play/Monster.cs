@@ -40,10 +40,10 @@ namespace textdungeon.Play
 
     public class Goblin : Monster
     {
-        public Goblin(string name, int health, int attack, int gold, int level) : base(name, health, attack, gold, level) { }
+        public Goblin(string name, int health, int attack, int gold, int level, int id, int uniqueID) : base(name, health, attack, gold, level, id , uniqueID) { }
     }
     public class Dragon : Monster
     {
-        public Dragon(string name, int health, int attack, int gold, int level) : base(name, health, attack, gold, level) { }
+        public Dragon(string name, int health, int attack, int gold, int level, int id, int uniqueID) : base(name, health, attack, gold, level, id, uniqueID) { }
     }
 }
