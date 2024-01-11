@@ -181,14 +181,14 @@ namespace textdungeon.Play
                 {
                     item.Quantity = 1;
                     item.IsBought = false;
+
+                    // 플레이어 데이터 업데이트 : 장착, 소유아이템, 골드, 아이템 능력치
+                    player.UnEquipItem(player.Items[select].ItemId);
+                    player.CalcItemStat();
                 }
             }
-
-            // 플레이어 데이터 업데이트 : 장착, 소유아이템, 골드, 아이템 능력치
-            player.UnEquipItem(player.Items[select].ItemId);
             player.Gold += (int)(player.Items[select].Cost * 0.85f);
             player.RemoveItem(player.Items[select]);
-            player.CalcItemStat();
 
             return ResponseCode.SELLCOMPLETE;
         }
