@@ -400,13 +400,13 @@ namespace textdungeon.Play
                         battle.DisplayBattle(false, GameState.BattleGround, player);
                         inputCount = 1;
                         break;
+                    case GameState.BattleAttack: // 공격 화면
+                        battle.DisplayBattle(true, GameState.BattleAttack, player);
+                        inputCount = battle.Enemies.Count + 1;
+                        break;
                     case GameState.BattleAttackEnd: // 공격후 공격결과화면
                         battle.DisplayBattle(false, GameState.BattleAttackEnd, player);
                         inputCount = 1;
-                        break;
-                    case GameState.BattleAttack:
-                        battle.DisplayBattle(true, GameState.BattleAttack, player);
-                        inputCount = battle.Enemies.Count + 1;
                         break;
                         // case GameState.BattleSkill:
                         //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);

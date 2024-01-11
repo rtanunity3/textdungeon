@@ -11,9 +11,9 @@ namespace textdungeon.Play
     {
         private List<Monster> Monsters = new List<Monster>()
         {
-            new Monster("미니언", 15, 10, 100, 2),
-            new Monster("대포미니언", 25, 15, 100, 5),
-            new Monster("공허충", 10, 5, 100, 3)
+            new Monster("미니언", 15, 10, 100, 2, 0, 0),
+            new Monster("대포미니언", 25, 15, 100, 5, 1, 0),
+            new Monster("공허충", 10, 5, 100, 3, 2, 0)
         };
         public List<Monster> Enemies = new List<Monster>();
 
@@ -22,7 +22,7 @@ namespace textdungeon.Play
             for (int i = 0;  i < 3; i++) 
             {
                 Monster monster = Monsters[new Random().Next(0, Monsters.Count)];
-                Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level));
+                Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i));
             }
         }
 

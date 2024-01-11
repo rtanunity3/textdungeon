@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace textdungeon.Play
 {
@@ -13,19 +14,23 @@ namespace textdungeon.Play
         public int Health { get; set; }
         public int Gold { get; }
         public int Level { get; }
+        public int ID { get; }
+        public int UniqueID { get; }
         public bool IsDead => Health <= 0;
         public string ToStringName => $"Lv.{Level} {Name}";
         public string ToStringEnemie => $"{ToStringName} {(IsDead ? "Dead" : $"HP {Health}")}";
 
 
-        public Monster(string name, int health, int attPow, int gold, int level)
+        public Monster(string name, int health, int attPow, int gold, int level, int id, int uniqueID)
         {
             Name = name;
             Health = health;
             AttPow = attPow;
             Gold = gold;
             Level = level;
-        }
+            ID = id;
+            UniqueID = uniqueID;
+    }
 
         public void TakeDamage(int damage)
         {
