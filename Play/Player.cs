@@ -432,6 +432,25 @@ namespace textdungeon.Play
             }
         }
 
+        // ItemDropTable이 list로 item들을 return하여 list로 아이템을 받는 Method추가.
+        public void AddItem(List<Item> list)
+        {
+            foreach (var item in list)
+            {
+                // 가지고 있는 아이템이면 수량 추가.
+                var existItem = Items.Find(x => x.ItemId == item.ItemId);
+                if (existItem != null)
+                {
+                    existItem.Quantity += 1;
+                }
+                else
+                {
+                    // 객체 공유를 피하기 위한 DeepCopy.
+                    Items.Add((Item)item.DeepCopy());
+                }
+            }
+        }
+
         public void RemoveItem(Item item)
         {
             // 아이템의 수량이 여러개일 경우 판정.
