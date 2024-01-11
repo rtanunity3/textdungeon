@@ -37,6 +37,7 @@ namespace textdungeon.Screen
         Multiple,
         Self,
     }
+
     public enum ResponseCode
     {
         // Blue
@@ -48,6 +49,10 @@ namespace textdungeon.Screen
         UNEQUIP,
 
         REST,
+
+        QUESTSTART,
+        QUESTINPROGRESS,
+        QUESTDONE,
 
         // Red
         BADREQUEST = 200,
@@ -72,6 +77,25 @@ namespace textdungeon.Screen
         Normal,
         Hard,
     }
+
+    // 퀘스트의 진행상황
+    public enum QuestState
+    {
+        NotStarted,         // 퀘스트 수락 전
+        InProgress,         // 진행중
+        ObjectiveCompleted, // 목표 완료
+        RewardsClaimed,     // 보상 획득
+        Completed,          // 완료
+    }
+
+    // 퀘스트 타입
+    public enum QuestType
+    {
+        MonsterHunt,        // 몬스터 사냥
+        EquipItem,          // 장비 착용
+        LevelUp,            // 레벨업
+    }
+
 
     public static class EnumHandler
     {

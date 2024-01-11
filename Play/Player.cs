@@ -33,6 +33,7 @@ namespace textdungeon.Play
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
+        public List<Quest> Quest { get; set; }
 
         int[] itemTableColWidth = { 25, 40, 55, 110 };
         int itemInfoTableTop = 4;
@@ -53,6 +54,7 @@ namespace textdungeon.Play
             ItemDefPow = 0;
 
             Equipped = new Equipment();
+            Quest = new List<Quest>();
         }
 
         private void SetStats()
