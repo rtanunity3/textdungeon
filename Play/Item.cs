@@ -8,7 +8,9 @@ namespace textdungeon.Play
     //NOTE 둘쨋줄이 없을 경우, 게임 로드 후 HealingPotion이 불러와지지 않음.
     //HOTE 다른 소모품을 추가할 경우, 둘쨋줄을 복사하여 tpyeof와 typeDiscriminator를 수정하면 추가 가능.
     [JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
-    [JsonDerivedType(typeof(HealingPotion), typeDiscriminator: "consumable")]
+    [JsonDerivedType(typeof(HealingPotion), typeDiscriminator: "healing")]
+    [JsonDerivedType(typeof(ManaPotion), typeDiscriminator: "mana")]
+    [JsonDerivedType(typeof(PowerPotion), typeDiscriminator: "power")]
     public class Item
     {
         public bool IsEquipped { get; set; }
@@ -47,7 +49,7 @@ namespace textdungeon.Play
         }
 
         // 플레이어 인벤토리에 아이템을 추가할 때, Item 객체를 복사하기 위함.
-        public object DeepCopy()
+        public object ShallowCopy()
         {
             return MemberwiseClone();
         }

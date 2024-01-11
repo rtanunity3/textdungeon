@@ -427,8 +427,8 @@ namespace textdungeon.Play
             }
             else
             {
-                // 객체를 그대로 가져오면 상점과 공유하게 되니 DeepCopy를 통해 추가.
-                Items.Add((Item)item.DeepCopy());
+                // 객체를 그대로 가져오면 상점과 공유하게 되니 ShallowCopy 통해 추가.
+                Items.Add((Item)item.ShallowCopy());
             }
         }
 
@@ -445,8 +445,8 @@ namespace textdungeon.Play
                 }
                 else
                 {
-                    // 객체 공유를 피하기 위한 DeepCopy.
-                    Items.Add((Item)item.DeepCopy());
+                    // 객체 공유를 피하기 위한 ShallowCopy.
+                    Items.Add((Item)item.ShallowCopy());
                 }
             }
         }
