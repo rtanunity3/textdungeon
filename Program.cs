@@ -13,6 +13,7 @@ namespace textdungeon
 
             // 게임 구동
             Game game = new Game();
+            game.StartMenu();
         }
     }
 }
