@@ -58,7 +58,7 @@ namespace textdungeon.Play
         }
 
         //TODO 전투흐름이 완성되면 어느 아이템을 얻었는지 출력 필요.
-        //NOTE 사용방법 : new ItemTableDrop()로 만들고 아이템을 AddItem(new OldSword(), 5)로 추가.
+        //NOTE 사용방법 : new ItemDropTable()로 만들고 아이템을 AddItem(new OldSword(), 5)로 추가.
         //NOTE 사용방법 : 아이템 보상을 줄 땐, ItemDrop()으로 List를 받고 player.AddItem(ItemDrop())으로 추가.
         public List<Item> ItemDrop()
         {
