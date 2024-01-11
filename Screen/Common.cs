@@ -47,6 +47,7 @@ namespace textdungeon.Screen
 
         EQUIP,
         UNEQUIP,
+        CONSUME,
 
         REST,
 
@@ -67,6 +68,7 @@ namespace textdungeon.Screen
         Body,
         Weapon,
         Shield,
+        Consumable,
     }
 
 
@@ -116,6 +118,8 @@ namespace textdungeon.Screen
                     return "장착을 해제했습니다.\n";
                 case ResponseCode.REST:
                     return "휴식을 완료했습니다.\n";
+                case ResponseCode.CONSUME:
+                    return "아이템을 소모했습니다.\n";
 
                 case ResponseCode.BADREQUEST:
                     return "잘못된 입력입니다.\n";
@@ -170,6 +174,7 @@ namespace textdungeon.Screen
             2001~3000 : 갑옷
             3001~4000 : 무기
             4001~5000 : 방패
+            5001~6000 : 소모품
             */
             if (itemId > 1000 && itemId <= 2000)
             {
@@ -186,6 +191,10 @@ namespace textdungeon.Screen
             else if (itemId > 4000 && itemId <= 5000)
             {
                 return EquipmentType.Shield;
+            }
+            else if (itemId > 5000 && itemId <= 6000)
+            {
+                return EquipmentType.Consumable;
             }
             else
             {
