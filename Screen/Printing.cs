@@ -133,6 +133,9 @@ namespace textdungeon.Screen
             Console.SetCursorPosition(itemTableColWidth[3], itemInfoTableTop);
             Console.Write("| ");
             HighlightText("가격", ConsoleColor.DarkGray);
+            Console.SetCursorPosition(itemTableColWidth[4], itemInfoTableTop);
+            Console.Write("| ");
+            HighlightText("수량", ConsoleColor.DarkGray);
             Console.WriteLine();
         }
 
@@ -148,6 +151,34 @@ namespace textdungeon.Screen
             Console.SetCursorPosition(itemTableColWidth[2], itemInfoTableTop);
             Console.Write("| ");
             HighlightText("아이템 설명", ConsoleColor.DarkGray);
+            Console.SetCursorPosition(itemTableColWidth[3], itemInfoTableTop);
+            Console.Write("| ");
+            HighlightText("수량", ConsoleColor.DarkGray);
+            Console.WriteLine();
+        }
+
+        public static void SkillInfoTableTitle()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("      ");
+            Console.Write(Util.PadRightMixedText("스킬명", 10));
+            Console.Write(Util.PadRightMixedText("대상범위", 10));
+            Console.Write(Util.PadRightMixedText("소모마나", 10));
+            Console.Write(Util.PadRightMixedText("데미지", 15));
+            Console.ResetColor();
+            Console.WriteLine();
+        }
+
+        public static void SelectClassScene()
+        {
+            Console.Clear();
+            Console.WriteLine("선택할 수 있는 직업 목록입니다.");
+            SelectWriteLine(1, EnumHandler.GetjobKr(CharacterClass.Warrior));
+            SelectWriteLine(2, EnumHandler.GetjobKr(CharacterClass.Mage));
+            SelectWriteLine(3, EnumHandler.GetjobKr(CharacterClass.Archer));
+            SelectWriteLine(4, EnumHandler.GetjobKr(CharacterClass.Thief));
+            SelectWriteLine(5, EnumHandler.GetjobKr(CharacterClass.Cleric));
+            SelectWriteLine(0, "시작화면으로 나가기");
             Console.WriteLine();
         }
 

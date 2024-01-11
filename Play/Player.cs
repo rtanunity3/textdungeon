@@ -34,7 +34,7 @@ namespace textdungeon.Play
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
-        int[] itemTableColWidth = { 25, 40, 55, 110 };
+        int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
         int maxLevel = 10;
 
@@ -224,9 +224,18 @@ namespace textdungeon.Play
 
             if (select > 0 && select < Items.Count)
             {
-                // 이미 장착한 아이템이면 해제
-                if (Items[select].IsEquipped == true)
+                // 소모품 사용. 소모품의 경우 다운캐스팅을 사용해 UseItem Method를 호출.
+                if (type == EquipmentType.Consumable)
                 {
+                    var item = (ConsumableItem)Items[select];
+                    if (item.UseItem(this))
+                        RemoveItem(item);
+
+                    return ResponseCode.CONSUME;
+                }
+                else if (Items[select].IsEquipped == true)
+                {
+                    // 이미 장착한 아이템이면 해제
                     Items[select].IsEquipped = false;
                     switch (type)
                     {
@@ -410,11 +419,30 @@ namespace textdungeon.Play
 
         public void AddItem(Item item)
         {
-            Items.Add(item);
+            // 가지고 있는 아이템이면 수량 추가.
+            var existItem = Items.Find(x => x.ItemId == item.ItemId);
+            if (existItem != null)
+            {
+                existItem.Quantity += 1;
+            }
+            else
+            {
+                // 객체를 그대로 가져오면 상점과 공유하게 되니 DeepCopy를 통해 추가.
+                Items.Add((Item)item.DeepCopy());
+            }
         }
+
         public void RemoveItem(Item item)
         {
-            Items.Remove(item);
+            // 아이템의 수량이 여러개일 경우 판정.
+            if (item.Quantity > 1)
+            {
+                item.Quantity -= 1;
+            }
+            else
+            {
+                Items.Remove(item);
+            }
         }
 
 
