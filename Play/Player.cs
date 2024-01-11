@@ -61,7 +61,7 @@ namespace textdungeon.Play
         {
             return this;
         }
-
+        
         public int ItemCount()
         {
             return Items.Count;
@@ -76,7 +76,7 @@ namespace textdungeon.Play
             Console.WriteLine();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
-            Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
+            Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level * Level})"); //필요경험치 = Level * Level , 추후 변경해야함
             Printing.HighlightText($"{Name} (전사)\n", ConsoleColor.White);
 
             Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
@@ -318,20 +318,16 @@ namespace textdungeon.Play
 
         public void CalcLevel()
         {
-            int tmpExp = Exp;
-            int tmpLevel = 0;
-            // 경험치로 레벨set
-            for (int i = 0; i < maxLevel; i++)
+            //레벨업
+            int maxExp = Level * Level;
+            while(maxExp <= Exp)
             {
-                if (tmpExp >= i)
-                {
-                    tmpExp -= i;
-                    tmpLevel++;
-                }
+                Level++;
+                Exp -= maxExp;
+                Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다");
             }
-
-            DisplayExp = tmpExp;
-            Level = tmpLevel;
+            DisplayExp = Exp;
+            
             // 레벨 기준 공방 업데이트
             AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
             DefPow = 5 + (Level - 1);
