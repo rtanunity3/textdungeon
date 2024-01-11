@@ -28,37 +28,41 @@ namespace textdungeon.Play
 
         public Quest() { }
 
-
-        //public ResponseCode ChangeState(QuestState state)
-        //{
-        //    switch (state)
-        //    {
-        //        case QuestState.InProgress:
-        //            if (State == QuestState.NotStarted)
-        //            {
-        //                State = QuestState.InProgress;
-        //                return ResponseCode.QUESTSTART;
-        //            }
-        //            else
-        //            {
-        //                return ResponseCode.QUESTINPROGRESS;
-        //            }
-        //            case QuestState.:
-        //            return ResponseCode.QUESTINPROGRESS;
-        //    }
-
-        //}
+        //
 
 
         // 시작은 시작할수 있는 조건 확인
+        public ResponseCode QuestStart()
+        {
+            if (State == QuestState.NotStarted)
+            {
+                State = QuestState.InProgress;
+                return ResponseCode.QUESTSTART;
+            }
+            else
+            {
+                return ResponseCode.BADREQUEST;
+            }
+        }
 
         // 임무목표 갱신. 진행중인 퀘스트인지 확인. 갱신할때마다 목표 완료했는지 확인
+        public ResponseCode QuestProgress()
+        {
+
+
+            return ResponseCode.BADREQUEST;
+        }
 
         // 보상받기는 임무목표 달성 확인
         // 완료처리는 완료조건(임무 목표, 보상 받았는지 확인) 필요 => 보상받을때 통합 처리
+        public ResponseCode QuestComplete()
+        {
 
 
-        // 어느시점에 퀘스트 들을 상태 확인할 것인가?
+            return ResponseCode.BADREQUEST;
+        }
+
+        // 어느시점에 퀘스트들을 상태 확인할 것인가?
         // 메세지 처리를 어떻게 할것인가?
     }
 }
