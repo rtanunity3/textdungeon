@@ -53,6 +53,7 @@ namespace textdungeon.Screen
 
         QUESTSTART,
         QUESTINPROGRESS,
+        QUESTUPDATE,
         QUESTDONE,
 
         // Red
@@ -86,7 +87,7 @@ namespace textdungeon.Screen
         NotStarted,         // 퀘스트 수락 전
         InProgress,         // 진행중
         ObjectiveCompleted, // 목표 완료
-        RewardsClaimed,     // 보상 획득
+        //RewardsClaimed,     // 보상 획득
         Completed,          // 완료
     }
 
@@ -120,6 +121,15 @@ namespace textdungeon.Screen
                     return "휴식을 완료했습니다.\n";
                 case ResponseCode.CONSUME:
                     return "아이템을 소모했습니다.\n";
+
+                case ResponseCode.QUESTSTART:
+                    return "퀘스트를 받았습니다.\n";
+                case ResponseCode.QUESTINPROGRESS:
+                    return "퀘스트 진행중입니다.\n";
+                case ResponseCode.QUESTUPDATE:
+                    return "퀘스트내용이 업데이트 되었습니다.\n";
+                case ResponseCode.QUESTDONE:
+                    return "퀘스트 완료했습니다.\n";
 
                 case ResponseCode.BADREQUEST:
                     return "잘못된 입력입니다.\n";
