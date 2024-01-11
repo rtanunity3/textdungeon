@@ -268,16 +268,42 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
             }
         }
 
+
         // 전투중 적의 공격
         private void AttackEnemiesBattle()
         {
             CurrentState = GameState.BattleEnemiesAttack;
+            
+            // 적의 공격 함수 구현
+            var EnemiesAttack = () =>
+            {
+                int len = battle.BattleEnamiesAttackList.Count;
+                if (len == 0) return false;
+                int uniqueID = battle.BattleEnamiesAttackList[len - 1];
+                battle.BattleEnamiesAttackList.RemoveAt(len - 1);
+                Monster monster = battle.Enemies.Find(e => e.UniqueID == uniqueID);
+                int dmg = monster.AttPow;
+                int hp = player.Health;
+                player.Health -= dmg;
+                string msg = @$"{monster.ToStringName} 의 공격!
+{player.Name} 을(를) 맞췄습니다. [데미지: {dmg}]
+
+Lv.{player.Level} {player.Name}
+HP {hp} -> {player.Health}
+";
+                battle.BattleEnemiesAttackMessage = msg;
+                return true;
+            };
+            // 적의 공격 함수 사용
+            EnemiesAttack();
             while (CurrentState == GameState.BattleEnemiesAttack)
             {
                 int select = UserChoice(CurrentState);
                 if (select == 0) // 다음
                 {
-                    // 미구현
+                    // 적의 공격 함수 구현(true: 적 공격기회 남음, false: 적 공격 종료)
+                    if (EnemiesAttack()) CurrentState = GameState.BattleEnemiesAttack;
+                    else CurrentState = GameState.BattleGround;
                 }
             }
         }
@@ -463,17 +489,6 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                         battle.DisplayBattle(false, GameState.BattleEnemiesAttack, player);
                         inputCount = 1;
                         break;
-                        /*
-Battle!!
-
-Lv.2 미니언 의 공격!
-Chad 을(를) 맞췄습니다.  [데미지 : 6]
-
-Lv.1 Chad
-HP 100 -> 94
-
-0. 다음
-                        */
                         // case GameState.BattleSkill:
                         //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
                         //     // inputCount = // 스킬개수
