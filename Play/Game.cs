@@ -241,6 +241,7 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
             }
         }
 
+        // 전투 공격결과 화면
         private void AttackBattleEnd()
         {
             CurrentState = GameState.BattleAttackEnd;
@@ -249,10 +250,38 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                 int select = UserChoice(CurrentState);
                 if (select == 0) // 다음
                 {
-                    CurrentState = GameState.BattleGround;
+                    battle.BattleEnamiesAttackList.Clear();
+                    for (int i = 0; i < battle.Enemies.Count; i++)
+                    {
+                        if (!battle.Enemies[i].IsDead) battle.BattleEnamiesAttackList.Add(battle.Enemies[i].UniqueID);
+                    }
+                    if (battle.BattleEnamiesAttackList.Count != 0)
+                    {
+                        AttackEnemiesBattle();
+                    }
+                    else
+                    {
+                       // 전투 종료
+                    }
+                    
                 }
             }
         }
+
+        // 전투중 적의 공격
+        private void AttackEnemiesBattle()
+        {
+            CurrentState = GameState.BattleEnemiesAttack;
+            while (CurrentState == GameState.BattleEnemiesAttack)
+            {
+                int select = UserChoice(CurrentState);
+                if (select == 0) // 다음
+                {
+                    // 미구현
+                }
+            }
+        }
+
         // 상점
         private void StoreMenu()
         {
@@ -430,6 +459,21 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                         battle.DisplayBattle(false, GameState.BattleAttackEnd, player);
                         inputCount = 1;
                         break;
+                    case GameState.BattleEnemiesAttack: // 적의 턴
+                        battle.DisplayBattle(false, GameState.BattleEnemiesAttack, player);
+                        inputCount = 1;
+                        break;
+                        /*
+Battle!!
+
+Lv.2 미니언 의 공격!
+Chad 을(를) 맞췄습니다.  [데미지 : 6]
+
+Lv.1 Chad
+HP 100 -> 94
+
+0. 다음
+                        */
                         // case GameState.BattleSkill:
                         //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
                         //     // inputCount = // 스킬개수

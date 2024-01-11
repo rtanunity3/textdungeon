@@ -17,6 +17,8 @@ namespace textdungeon.Play
         };
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
+        public string BattleEnemiesAttackMessage = "";
+        public List<int> BattleEnamiesAttackList = new List<int>();
 
         public Battle()
         {
@@ -66,6 +68,12 @@ namespace textdungeon.Play
                     Console.WriteLine();
                     Console.WriteLine("0. 다음");
                     break;
+                case GameState.BattleEnemiesAttack:
+                    Console.WriteLine(BattleEnemiesAttackMessage);
+                    Console.WriteLine();
+                    Console.WriteLine("0. 다음");
+                    break;
+
                 case GameState.BattleSkillList:
                     Console.WriteLine("스킬목록 구현필요");
                     break;

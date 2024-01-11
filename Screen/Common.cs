@@ -18,7 +18,8 @@ namespace textdungeon.Screen
         BattleAttack,
         BattleAttackEnd,
         BattleSkillList,
-        BattleSkillAttack
+        BattleSkillAttack,
+        BattleEnemiesAttack
     }
 
     public enum ResponseCode
