@@ -42,7 +42,7 @@ namespace textdungeon.Play
         {
             Health = Math.Max(Math.Min((Health - damage), 100), 0);
         }
-        
+
         public virtual void LevelScailing(int level) { }
         
     }
