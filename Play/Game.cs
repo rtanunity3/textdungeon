@@ -2,6 +2,7 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using textdungeon.Screen;
 
@@ -222,19 +223,8 @@ namespace textdungeon.Play
                 }
                 else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
                 {
-                    Monster monster = battle.Enemies[select - 1];
-                    if (!monster.IsDead) // 공격가능한 대상 선택함
+                    if (battle.PlayerAttackAt(player, select))
                     {
-                        int dmg = player.AttPow;
-                        int hp = monster.Health;
-                        monster.Health -= dmg;
-
-                        string msg = @$"{player.Name} 의 공격!
-{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {dmg}]
-
-{monster.ToStringName}
-HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
-                        battle.BattleAttackEndMessage = msg;
                         AttackBattleEnd();
                     }
                 }
@@ -261,7 +251,7 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                     }
                     else
                     {
-                       // 전투 종료
+                        CurrentState = GameState.BattlePlayerWin; // 전투 종료
                     }
                     
                 }
@@ -273,37 +263,14 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
         private void AttackEnemiesBattle()
         {
             CurrentState = GameState.BattleEnemiesAttack;
-            
-            // 적의 공격 함수 구현
-            var EnemiesAttack = () =>
-            {
-                int len = battle.BattleEnamiesAttackList.Count;
-                if (len == 0) return false;
-                int uniqueID = battle.BattleEnamiesAttackList[len - 1];
-                battle.BattleEnamiesAttackList.RemoveAt(len - 1);
-                Monster monster = battle.Enemies.Find(e => e.UniqueID == uniqueID);
-                int dmg = monster.AttPow;
-                int hp = player.Health;
-                player.Health -= dmg;
-                string msg = @$"{monster.ToStringName} 의 공격!
-{player.Name} 을(를) 맞췄습니다. [데미지: {dmg}]
-
-Lv.{player.Level} {player.Name}
-HP {hp} -> {player.Health}
-";
-                battle.BattleEnemiesAttackMessage = msg;
-                return true;
-            };
             // 적의 공격 함수 사용
-            EnemiesAttack();
+            battle.EnemiesAttack(player);
             while (CurrentState == GameState.BattleEnemiesAttack)
             {
                 int select = UserChoice(CurrentState);
                 if (select == 0) // 다음
                 {
-                    // 적의 공격 함수 구현(true: 적 공격기회 남음, false: 적 공격 종료)
-                    if (EnemiesAttack()) CurrentState = GameState.BattleEnemiesAttack;
-                    else CurrentState = GameState.BattleGround;
+                    CurrentState = battle.EnemiesAttack(player);
                 }
             }
         }

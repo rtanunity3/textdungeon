@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using textdungeon.Screen;
@@ -40,7 +41,45 @@ namespace textdungeon.Play
             Console.WriteLine($"Lv.{player.Level} {player.Name} (전사)");
             Console.WriteLine($"HP {player.Health}/100");
         }
+        public bool PlayerAttackAt(Player player,int select)
+        {
+            Monster monster = Enemies[select - 1];
+            if (!monster.IsDead) // 공격가능한 대상 선택함
+            {
+                int dmg = player.AttPow;
+                int hp = monster.Health;
+                monster.Health -= dmg;
 
+                string msg = @$"{player.Name} 의 공격!
+{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {dmg}]
+
+{monster.ToStringName}
+HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
+                BattleAttackEndMessage = msg;
+                return true;
+            }
+            return false;
+        }
+        public GameState EnemiesAttack(Player player)
+        {
+            int len = BattleEnamiesAttackList.Count;
+            if (len == 0) return GameState.BattleGround;
+            int uniqueID = BattleEnamiesAttackList[len - 1];
+            BattleEnamiesAttackList.RemoveAt(len - 1);
+            Monster monster = Enemies.Find(e => e.UniqueID == uniqueID);
+            int dmg = monster.AttPow;
+            int hp = player.Health;
+            player.Health -= dmg;
+            string msg = @$"{monster.ToStringName} 의 공격!
+{player.Name} 을(를) 맞췄습니다. [데미지: {dmg}]
+
+Lv.{player.Level} {player.Name}
+HP {hp} -> {player.Health}
+";
+            BattleEnemiesAttackMessage = msg;
+            if (player.Health <= 0) return GameState.BattlePlayerDead;
+            else return GameState.BattleEnemiesAttack;
+        }
         public void DisplayBattle(bool writeNum, GameState gameState, Player player)
         {
             Console.Clear();
