@@ -419,12 +419,18 @@ namespace textdungeon.Play
                 {
                     tmpExp -= i;
                     tmpLevel++;
-                    UpdateQuestProgress(QuestType.LevelUp, 0, 1);
                 }
             }
 
             DisplayExp = tmpExp;
-            Level = tmpLevel;
+            if (Level != tmpLevel)
+            {
+                if (tmpLevel > Level)
+                {
+                    UpdateQuestProgress(QuestType.LevelUp, 0, 1);
+                }
+                Level = tmpLevel;
+            }
             // 레벨 기준 공방 업데이트
             AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
             DefPow = 5 + (Level - 1);
