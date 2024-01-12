@@ -12,7 +12,7 @@ namespace textdungeon.Play
         public string Name { get; }
         public int AttPow { get; set; }
         public int Health { get; set; }
-        public int Gold { get; }
+        public int Gold { get; set; }
         public int Level { get; }
         public int ID { get; }
         public int UniqueID { get; }
