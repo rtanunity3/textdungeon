@@ -15,6 +15,14 @@ namespace textdungeon.Screen
         DungeonGate,
         DungeonResult,
         Inn,
+        BattleGround,
+        BattleAttack,
+        BattleAttackEnd,
+        BattleSkillList,
+        BattleSkillAttack,
+        BattleEnemiesAttack,
+        BattlePlayerWin,
+        BattlePlayerDead
         Quest,
         QuestDetail,
     }

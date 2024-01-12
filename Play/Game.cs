@@ -383,6 +383,7 @@ namespace textdungeon.Play
                 }
             }
         }
+        #endregion
 
         #region Store
         // 상점
@@ -591,7 +592,18 @@ namespace textdungeon.Play
                         //     battle.DisplayBattle(false, BattleAttack.BattleSkillAttack, player);
                         //     // inputCount = // 스킬개수
                         //     break;
+                        // case GameState.BattleSkillList: break;
+                        // case GameState.BattleSkillAttack: break;
 
+                    case GameState.Quest:
+                        player.ShowAllQuestInfo();
+                        inputCount = player.GetAllQuestCount();
+                        break;
+                    case GameState.QuestDetail:
+                        player.ShowQuestDetail(args[0]);
+                        QuestState state = player.GetQuestState(args[0]);
+                        inputCount = (state == QuestState.NotStarted || state == QuestState.ObjectiveCompleted) ? 2 : 1;
+                        break;
                 }
 
                 if (response != ResponseCode.SUCCESS)
