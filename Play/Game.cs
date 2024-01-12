@@ -136,6 +136,9 @@ namespace textdungeon.Play
                     case 5: // 휴식하기
                         InnMenu();
                         break;
+                    case 6: // 퀘스트
+                        QuestMenu();
+                        break;
                     default: // 저장 후 게임 종료
                         Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
                         while (Console.ReadKey().Key != ConsoleKey.C)
@@ -148,6 +151,51 @@ namespace textdungeon.Play
             }
         }
 
+        private void QuestMenu()
+        {
+            // 길드. 퀘스트 받는곳
+            CurrentState = GameState.Quest;
+            while (CurrentState == GameState.Quest)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Village;
+                        break;
+                    default:
+                        QuestDetail(select);
+                        break;
+
+                }
+            }
+
+        }
+
+        private void QuestDetail(int questId)
+        {
+            // 길드. 퀘스트 받는곳
+            CurrentState = GameState.QuestDetail;
+            while (CurrentState == GameState.QuestDetail)
+            {
+                int select = UserChoice(CurrentState, new int[] { questId });
+                switch (select)
+                {
+                    case 1:
+                        // 수락
+                        player.StartQuest(select);
+                        CurrentState = GameState.Quest;
+                        break;
+                    case 0:
+                    case 2:
+                    default:
+                        CurrentState = GameState.Quest;
+                        break;
+                }
+            }
+        }
+
+        #region Inn
         private void InnMenu()
         {
             CurrentState = GameState.Inn;
@@ -166,7 +214,9 @@ namespace textdungeon.Play
                 }
             }
         }
+        #endregion
 
+        #region Dungeon
         private void DungeonMenu()
         {
             CurrentState = GameState.DungeonGate;
@@ -202,8 +252,9 @@ namespace textdungeon.Play
                 }
             }
         }
+        #endregion
 
-
+        #region Store
         // 상점
         private void StoreMenu()
         {
@@ -265,6 +316,9 @@ namespace textdungeon.Play
             }
         }
 
+        #endregion
+
+        #region Player
         private void PlayerInventoryMenu()
         {
             CurrentState = GameState.Inventory;
@@ -315,8 +369,9 @@ namespace textdungeon.Play
                 }
             }
         }
+        #endregion
 
-        private int UserChoice(GameState gameState)
+        private int UserChoice(GameState gameState, int[] args = null)
         {
             menuActive = true;
             int inputCount = 0;
@@ -334,7 +389,7 @@ namespace textdungeon.Play
                         break;
                     case GameState.Village:
                         Printing.VillageScreen();
-                        inputCount = 6;
+                        inputCount = 7;
                         break;
                     case GameState.Status:
                         player.DisplayCharacterStatus();
@@ -372,6 +427,15 @@ namespace textdungeon.Play
                         inn.InnMenu(player);
                         inputCount = 2;
                         break;
+                    case GameState.Quest:
+                        player.ShowAllQuestInfo();
+                        inputCount = player.GetAllQuestCount();
+                        break;
+                    case GameState.QuestDetail:
+                        player.ShowQuestDetail(args[0]);
+                        inputCount = 2;
+                        break;
+
                 }
 
                 if (response != ResponseCode.SUCCESS)
@@ -432,6 +496,9 @@ namespace textdungeon.Play
                             }
                             break;
                         case "test":
+                            break;
+                        case "questtest":
+
                             break;
                         default:
                             response = ResponseCode.BADREQUEST;

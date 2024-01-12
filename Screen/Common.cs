@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace textdungeon.Screen
 {
     public enum GameState
@@ -18,6 +15,8 @@ namespace textdungeon.Screen
         DungeonGate,
         DungeonResult,
         Inn,
+        Quest,
+        QuestDetail,
     }
 
     public enum CharacterClass
@@ -94,6 +93,7 @@ namespace textdungeon.Screen
     // 퀘스트 타입
     public enum QuestType
     {
+        None,
         MonsterHunt,        // 몬스터 사냥
         EquipItem,          // 장비 착용
         LevelUp,            // 레벨업
@@ -213,7 +213,11 @@ namespace textdungeon.Screen
         }
     }
 
+    public static class Menu
+    {
+        public static string[] VillageMenu = { "", "상태보기", "인벤토리", "상점", "던전입장", "휴식하기", "퀘스트" };
 
+    }
 
 
     public static class Util

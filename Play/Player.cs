@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using textdungeon.Screen;
@@ -33,7 +34,17 @@ namespace textdungeon.Play
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
-        public List<Quest> Quest { get; set; }
+
+        // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
+        //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
+        //        개발편의를 위해 지금처럼 진행하겠음.
+        public List<Quest> QuestList { get; set; } = new List<Quest>()
+        {
+            new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, new Item[]{ }, 0, 0),
+            new Quest(1, "마을을 위협하는 미니언 처치", "이봐! 마을 근처에 미니언들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!", 2, QuestState.NotStarted, QuestType.MonsterHunt, 0, 5,new Item[]{ new OldShield() }, 500, 5),
+            new Quest(2, "장비를 장착해보자", "전투에서 사용할 장비를 구매 후 장착해보자!", 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ new NoviceHelmet() }, 500, 1),
+            new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 5, new Item[]{ new NoviceArmor() }, 1500, 0)
+        };
 
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
@@ -54,7 +65,6 @@ namespace textdungeon.Play
             ItemDefPow = 0;
 
             Equipped = new Equipment();
-            Quest = new List<Quest>();
         }
 
         private void SetStats()
@@ -103,7 +113,6 @@ namespace textdungeon.Play
                     break;
             }
         }
-
 
         public Player GetPlayer()
         {
@@ -490,15 +499,13 @@ namespace textdungeon.Play
             }
         }
 
-
         public string Serialize()
         {
             var options = new JsonSerializerOptions
             {
                 Converters = { new JsonStringEnumConverter() }
             };
-
-            return JsonSerializer.Serialize(this);
+            return JsonSerializer.Serialize(this, options);
         }
 
         public static Player Deserialize(string jsonData)
@@ -507,9 +514,60 @@ namespace textdungeon.Play
             {
                 Converters = { new JsonStringEnumConverter() }
             };
-            //케릭터 데이터가 변하는 경우 호환성을 위한 체크를 해줘야함
-            return JsonSerializer.Deserialize<Player>(jsonData);
+            // TODO : 케릭터 데이터가 변하는 경우 호환성을 위한 체크를 해줘야함. 이번 과제에서는 다루지 않겠음.
+            return JsonSerializer.Deserialize<Player>(jsonData, options);
         }
+
+
+
+
+        //////////////////////////////////////////////////////////////////
+        //// XXX : 퀘스트 받는곳을 따로 만드려 했으나 시간관계상 생략.
+        //// 이하 퀘스트 관련
+        //////////////////////////////////////////////////////////////////
+
+        public int GetAllQuestCount()
+        {
+            return QuestList.Count;
+        }
+
+        // 진행중이거나 목표 완수한 퀘스트 개수
+        public int GetShowableQuestCount()
+        {
+            return QuestList.Count(q => q.State != QuestState.Completed);
+        }
+
+
+        public void ShowAllQuestInfo()
+        {
+            Console.Clear();
+            Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+
+            Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
+            for (int i = 1; i < QuestList.Count; i++)
+            {
+                QuestList[i].ShowQuestInfo(i);
+            }
+            Printing.SelectWriteLine(0, "나가기");
+        }
+
+        public void ShowQuestDetail(int select)
+        {
+            Console.Clear();
+            Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+            QuestList[select].ShowQuestDetail();
+
+            Printing.SelectWriteLine(1, "수락");
+            Printing.SelectWriteLine(0, "거절");
+        }
+
+        public ResponseCode StartQuest(int questId)
+        {
+            return QuestList[questId].QuestStart();
+        }
+
 
     }
 }

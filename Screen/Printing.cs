@@ -109,11 +109,10 @@ namespace textdungeon.Screen
             Console.WriteLine("마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
-            SelectWriteLine(1, "상태보기");
-            SelectWriteLine(2, "인벤토리");
-            SelectWriteLine(3, "상점");
-            SelectWriteLine(4, "던전입장");
-            SelectWriteLine(5, "휴식하기");
+            for (int i = 1; i < Menu.VillageMenu.Length; i++)
+            {
+                SelectWriteLine(i, Menu.VillageMenu[i]);
+            }
             SelectWriteLine(0, "게임 저장 후 종료");
             Console.WriteLine();
         }

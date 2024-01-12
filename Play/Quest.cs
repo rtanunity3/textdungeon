@@ -1,34 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using textdungeon.Screen;
 
 namespace textdungeon.Play
 {
     public class Quest
     {
-        public int QuestId { get; }
-        public string QuestName { get; }
-        public string QuestDesc { get; }
-        public int RequiredLevel { get; } // 요구레벨
+        public int QuestId { get; set; }
+        public string QuestName { get; set; }
+        public string QuestDesc { get; set; }
+        public int ReqLevel { get; set; } // 요구레벨
         public QuestState State { get; set; }
 
         // 퀘스트 목적
-        public QuestType Type { get; } // 몬스터잡기, 장비착용, 레벨업
-        public int GoalId { get; } // 목표 대상 ID
-        public int GoalCount { get; } // 목표 갯수
-        public int CurGoalCount { get; private set; } // 현재
+        public QuestType Type { get; set; } // 몬스터잡기, 장비착용, 레벨업
+        public int GoalId { get; set; } // 목표 대상 ID
+        public int GoalCount { get; set; } // 목표 갯수
+        public int CurGoalCount { get; set; } // 현재
 
         // 보상
         public Item[] RewardItem { get; set; }
         public int RewardGold { get; set; }
+        public int RewardExp { get; set; }
 
 
         public Quest() { }
-        // TODO : 세이브에 따라 추가 생성자 작성
 
+        public Quest(int questId, string questName, string questDesc, int reqLevel, QuestState state, QuestType type, int goalId, int goalCount, Item[] items, int rewardGold, int rewardExp, int curGoalCount = 0)
+        {
+            QuestId = questId;
+            QuestName = questName;
+            QuestDesc = questDesc;
+            ReqLevel = reqLevel;
+            State = state;
+            Type = type;
+            GoalId = goalId;
+            GoalCount = goalCount;
+            RewardItem = items;
+            RewardGold = rewardGold;
+            RewardExp = rewardExp;
+            CurGoalCount = curGoalCount;
+        }
 
         // 시작은 시작할수 있는 조건 확인
         public ResponseCode QuestStart()
@@ -82,10 +92,13 @@ namespace textdungeon.Play
                 {
                     player.AddItem(item);
                 }
+
                 // 보상 골드 지급.
-                // TODO : 시간되면 골드 컨트롤도 메소드로 처리하도록 변경
+                // FIXME : 시간되면 골드 컨트롤도 메소드로 처리하도록 변경
                 if (RewardGold > 0)
                     player.Gold += RewardGold;
+                if (RewardExp > 0)
+                    player.AddExp(RewardExp);
 
                 // 완료 처리
                 State = QuestState.Completed;
@@ -97,5 +110,24 @@ namespace textdungeon.Play
 
         // 어느시점에 퀘스트들을 상태 확인할 것인가?
         // 메세지 처리를 어떻게 할것인가?
+
+
+
+        // 목록 출력시 사용
+        public void ShowQuestInfo(int i)
+        {
+            // 퀘스트 출력
+            Printing.SelectWriteLine(i, QuestName);
+        }
+
+        // 세부 퀘스트 내용
+        public void ShowQuestDetail()
+        {
+            // 퀘스트 디테일한 내용 출력
+            Console.WriteLine(QuestName);
+
+            Console.WriteLine(QuestDesc);
+
+        }
     }
 }
