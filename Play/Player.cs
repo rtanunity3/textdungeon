@@ -411,28 +411,18 @@ namespace textdungeon.Play
 
         public void CalcLevel()
         {
-            int tmpExp = Exp;
-            int tmpLevel = 0;
-            // 경험치로 레벨set
-            for (int i = 0; i < maxLevel; i++)
+            //레벨업
+            int maxExp = (int)Math.Pow(Level, 2) + Level * 3;
+            while (maxExp <= Exp)
             {
-                if (tmpExp >= i)
-                {
-                    tmpExp -= i;
-                    tmpLevel++;
-                }
+                Level++;
+                Exp -= maxExp;
+                maxExp = (int)Math.Pow(Level, 2) + Level * 3;
+                Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다");
+                UpdateQuestProgress(QuestType.LevelUp, 0, 1);
             }
-            Debug.WriteLine($"==== level {Level} -> {tmpLevel}");
+            DisplayExp = Exp;
 
-            DisplayExp = tmpExp;
-            if (Level != tmpLevel)
-            {
-                if (tmpLevel > Level)
-                {
-                    UpdateQuestProgress(QuestType.LevelUp, 0, 1);
-                }
-                Level = tmpLevel;
-            }
             // 레벨 기준 공방 업데이트
             AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
             DefPow = 5 + (Level - 1);
