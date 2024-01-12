@@ -42,15 +42,14 @@ namespace textdungeon.Play
         //        퀘스트 레벨제한 미구현
         public List<Quest> QuestList { get; set; } = new List<Quest>()
         {
-            new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, new Item[]{ }, 0, 0),
-            new Quest(1, "마을을 위협하는 미니언 처치", "이봐! 마을 근처에 미니언들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!", 1, QuestState.NotStarted, QuestType.MonsterHunt, 0, 5, new Item[]{ new OldShield() }, 500, 5),
+            new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, Array.Empty<Item>(), 0, 0),
+            new Quest(1, "마을을 위협하는 적 처치", "이봐! 마을 근처에 적들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!", 1, QuestState.NotStarted, QuestType.MonsterHunt, 0, 3, new Item[]{ new OldShield() }, 500, 5),
             new Quest(2, "장비를 장착해보자", "전투에서 사용할 장비를 구매 후 장착해보자!", 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ new NoviceHelmet() }, 500, 1),
             new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
         };
 
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
-        int maxLevel = 10;
 
         public Player() { }
         public Player(string name, CharacterClass select)
@@ -120,7 +119,7 @@ namespace textdungeon.Play
         {
             return this;
         }
-        
+
         public int ItemCount()
         {
             return Items.Count;
