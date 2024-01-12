@@ -22,7 +22,7 @@ namespace textdungeon.Screen
         BattleSkillAttack,
         BattleEnemiesAttack,
         BattlePlayerWin,
-        BattlePlayerDead
+        BattlePlayerDead,
         Quest,
         QuestDetail,
     }
