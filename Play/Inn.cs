@@ -28,7 +28,7 @@ namespace textdungeon.Play
         {
             if (player.Gold >= 500)
             {
-                player.Health = 100;
+                player.Health = player.MaxHealth;
                 player.Gold -= 500;
 
                 return ResponseCode.REST;
