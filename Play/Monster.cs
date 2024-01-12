@@ -44,6 +44,6 @@ namespace textdungeon.Play
         }
 
         public virtual void LevelScailing(int level) { }
-
+        
     }
 }
