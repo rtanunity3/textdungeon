@@ -32,6 +32,8 @@ namespace textdungeon.Play
         public int DisplayExp { get; set; } // 화면상에 보여질 경험치
         public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
 
+        public int BaseAttPow { get; set; }
+        public int BaseDefPow { get; set; }
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
@@ -70,48 +72,36 @@ namespace textdungeon.Play
 
         private void SetStats()
         {
-            switch (Job)
+            string jsonFilePath = "data/Class.json";
+            string jsonContent = File.ReadAllText(jsonFilePath);
+            JsonDocument ClassObj = JsonDocument.Parse(jsonContent);
+
+            JsonElement jobObj = ClassObj.RootElement.GetProperty("CharacterClass").GetProperty(Job.ToString());
+            //Debug.WriteLine(jobObj.ToString());
+            AttPow = jobObj.GetProperty("AttPow").GetInt32();
+            BaseAttPow = AttPow;
+            DefPow = jobObj.GetProperty("DefPow").GetInt32();
+            BaseDefPow = DefPow;
+            MaxHealth = jobObj.GetProperty("MaxHealth").GetInt32();
+            Health = jobObj.GetProperty("Health").GetInt32();
+            MaxMana = jobObj.GetProperty("MaxMana").GetInt32();
+            Mana = jobObj.GetProperty("Mana").GetInt32();
+            Gold = jobObj.GetProperty("Gold").GetInt32();
+
+            Debug.WriteLine(jobObj.GetProperty("Skill")[0]);
+            Debug.WriteLine(jobObj.GetProperty("Skill")[1]);
+            for (int i = 0; i < jobObj.GetProperty("Skill").GetArrayLength(); i++)
             {
-                case CharacterClass.Warrior:
-                    AttPow = 10; DefPow = 5;
-                    Health = 100; Mana = 20;
-                    MaxHealth = 100; MaxMana = 20;
-                    Gold = 1000;
-                    Skill.Add(new Skill("강격", 1.2f, 5, SkillType.Single));
-                    Skill.Add(new Skill("이중타격", 1.8f, 15, SkillType.Single));
-                    break;
-                case CharacterClass.Mage:
-                    AttPow = 5; DefPow = 3;
-                    Health = 80; Mana = 50;
-                    MaxHealth = 80; MaxMana = 50;
-                    Gold = 3000;
-                    Skill.Add(new Play.Skill("불화살", 1.3f, 5, SkillType.Single));
-                    Skill.Add(new Play.Skill("블리자드", 1.8f, 20, SkillType.Multiple));
-                    break;
-                case CharacterClass.Archer:
-                    AttPow = 8; DefPow = 4;
-                    Health = 90; Mana = 30;
-                    MaxHealth = 90; MaxMana = 30;
-                    Gold = 1500;
-                    Skill.Add(new Play.Skill("연사", 0.9f, 10, SkillType.Multiple));
-                    Skill.Add(new Play.Skill("저격", 2.2f, 20, SkillType.Single));
-                    break;
-                case CharacterClass.Thief:
-                    AttPow = 7; DefPow = 3;
-                    Health = 85; Mana = 25;
-                    MaxHealth = 85; MaxMana = 25;
-                    Gold = 2500;
-                    Skill.Add(new Play.Skill("기습", 1.5f, 10, SkillType.Single));
-                    Skill.Add(new Play.Skill("함정", 2.0f, 15, SkillType.Single));
-                    break;
-                case CharacterClass.Cleric:
-                    AttPow = 6; DefPow = 4;
-                    Health = 95; Mana = 40;
-                    MaxHealth = 95; MaxMana = 40;
-                    Gold = 3000;
-                    Skill.Add(new Play.Skill("신성타격", 1.5f, 10, SkillType.Single));
-                    Skill.Add(new Play.Skill("치료", 1.5f, 10, SkillType.Self));
-                    break;
+                JsonElement skill = jobObj.GetProperty("Skill")[i];
+                if (Enum.TryParse<SkillType>(skill.GetProperty("SkillType").GetString(), out SkillType thisType))
+                {
+                    Skill.Add(new Skill(
+                        skill.GetProperty("Name").GetString(),
+                        skill.GetProperty("DamagePercentage").GetSingle(),
+                        skill.GetProperty("Mana").GetInt32(),
+                        thisType
+                    ));
+                }
             }
         }
 
@@ -426,8 +416,8 @@ namespace textdungeon.Play
             DisplayExp = Exp;
 
             // 레벨 기준 공방 업데이트
-            AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
-            DefPow = 5 + (Level - 1);
+            AttPow = BaseAttPow + (int)((Level - 1) * 0.5); // 소수점은 버림
+            DefPow = BaseDefPow + (Level - 1);
         }
 
         public void AddExp(int exp)
