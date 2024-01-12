@@ -254,7 +254,7 @@ namespace textdungeon.Play
                 }
             }
         }
-        
+
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
@@ -335,6 +335,7 @@ namespace textdungeon.Play
                     }
                     else
                     {
+                        player.UpdateQuestProgress(QuestType.MonsterHunt, 0, 3);
                         PlayerWinBattle();
                     }
                 }
@@ -373,7 +374,7 @@ namespace textdungeon.Play
                         case GameState.BattlePlayerDead:
                             PlayerDeadBattle();
                             break;
-                    } 
+                    }
                 }
             }
         }
@@ -591,17 +592,17 @@ namespace textdungeon.Play
                         inputCount = 1;
                         break;
 
-                        // case GameState.BattleSkill:
-                        //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
-                        //     // inputCount = // 스킬개수
-                        //     break;
-                        // case GameState.BattleSkillAttack:
-                        //     battle.DisplayBattle(false, BattleAttack.BattleSkillAttack, player);
-                        //     // inputCount = // 스킬개수
-                        //     break;
+                    // case GameState.BattleSkill:
+                    //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
+                    //     // inputCount = // 스킬개수
+                    //     break;
+                    // case GameState.BattleSkillAttack:
+                    //     battle.DisplayBattle(false, BattleAttack.BattleSkillAttack, player);
+                    //     // inputCount = // 스킬개수
+                    //     break;
 
-                        // case GameState.BattleSkillList: break;
-                        // case GameState.BattleSkillAttack: break;
+                    // case GameState.BattleSkillList: break;
+                    // case GameState.BattleSkillAttack: break;
                     case GameState.Quest:
                         player.ShowAllQuestInfo();
                         inputCount = player.GetAllQuestCount();
