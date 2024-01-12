@@ -32,11 +32,21 @@ namespace textdungeon.Screen
         }
         public static void SelectWrite(int num, string content)
         {
+            //SelectWrite(num, content, 0);
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write($"{num}. ");
             Console.ResetColor();
             Console.Write(content);
         }
+
+        //public static void SelectWrite(int num, string content, int padright)
+        //{
+        //    Console.ForegroundColor = ConsoleColor.Green;
+        //    Console.Write($"{num}. ");
+        //    Console.ResetColor();
+        //    Console.Write(Util.PadRightMixedText($"{content}", padright));
+        //}
 
         public static void StartScreen()
         {

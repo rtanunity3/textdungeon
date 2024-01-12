@@ -176,6 +176,23 @@ namespace textdungeon.Screen
             }
         }
 
+        public static string GetQuestStateKr(QuestState questState)
+        {
+            switch (questState)
+            {
+                case QuestState.NotStarted:
+                    return "미수락";
+                case QuestState.InProgress:
+                    return "진행중";
+                case QuestState.ObjectiveCompleted:
+                    return "목표 완료";
+                case QuestState.Completed:
+                    return "퀘스트 완료";
+                default:
+                    return "";
+            }
+        }
+
         public static EquipmentType GetEquipmentType(int itemId)
         {
             /*
@@ -238,7 +255,7 @@ namespace textdungeon.Screen
         {
             int curLength = CalculateLength(text);
             int padding = padLength - curLength;
-            return text.PadRight(text.Length + padding);
+            return text.PadRight(Math.Max(0, text.Length + padding));
         }
         public static int CalculateLength(string text)
         {

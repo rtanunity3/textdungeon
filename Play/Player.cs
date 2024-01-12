@@ -558,16 +558,16 @@ namespace textdungeon.Play
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
             QuestList[select].ShowQuestDetail();
-
-            Printing.SelectWriteLine(1, "수락");
-            Printing.SelectWriteLine(0, "거절");
         }
 
         public ResponseCode StartQuest(int questId)
         {
             return QuestList[questId].QuestStart();
         }
-
-
+        
+        public QuestState GetQuestState(int questId)
+        {
+            return QuestList[questId].State;
+        }
     }
 }

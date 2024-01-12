@@ -183,7 +183,7 @@ namespace textdungeon.Play
                 {
                     case 1:
                         // 수락
-                        player.StartQuest(select);
+                        response = player.StartQuest(questId);
                         CurrentState = GameState.Quest;
                         break;
                     case 0:
@@ -433,7 +433,8 @@ namespace textdungeon.Play
                         break;
                     case GameState.QuestDetail:
                         player.ShowQuestDetail(args[0]);
-                        inputCount = 2;
+                        QuestState state = player.GetQuestState(args[0]);
+                        inputCount = (state == QuestState.NotStarted || state == QuestState.ObjectiveCompleted) ? 2 : 1;
                         break;
 
                 }
