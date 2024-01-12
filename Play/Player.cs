@@ -573,7 +573,7 @@ namespace textdungeon.Play
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
 
-            Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
+            //Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
             for (int i = 1; i < QuestList.Count; i++)
             {
                 QuestList[i].ShowQuestInfo(i);
