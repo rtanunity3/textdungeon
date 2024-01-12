@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace textdungeon.Play
 {
-    public class kobold : Monster
+    public class Kobold : Monster
     {
         //TODO 아래의 모든몬스터 설정해야합니다.
-        public kobold(int level) : base("코볼트", 1, 5, 10, 100, level) 
+        public Kobold(int level) : base("코볼트", 10, 5, 100, level, 1, 0)
         {
             //TODO 몬스터별로 다르게 설정해줘야함
             PlusAttPow = 5;
@@ -29,7 +29,7 @@ namespace textdungeon.Play
     }
     public class Goblin : Monster
     {
-        public Goblin(int level) : base("고블린", 2, 15, 20, 120, level)
+        public Goblin(int level) : base("고블린", 20, 15, 120, level, 2, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -45,7 +45,7 @@ namespace textdungeon.Play
     }
     public class Hobgoblin : Monster
     {
-        public Hobgoblin(int level) : base("홉고블린", 3, 30, 50, 150, level)
+        public Hobgoblin(int level) : base("홉고블린", 50, 30, 150, level, 3, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -61,7 +61,7 @@ namespace textdungeon.Play
     }
     public class Zombie : Monster
     {
-        public Zombie(int level) : base("좀비", 4, 20, 20, 150, level)
+        public Zombie(int level) : base("좀비", 20, 20, 150, level, 4, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -77,7 +77,7 @@ namespace textdungeon.Play
     }
     public class Ghost : Monster
     {
-        public Ghost(int level) : base("고스트", 5, 20, 20, 150, level)
+        public Ghost(int level) : base("고스트", 20, 20, 150, level, 5, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -93,7 +93,7 @@ namespace textdungeon.Play
     }
     public class Ghoul : Monster
     {
-        public Ghoul(int level) : base("구울", 6, 35, 40, 300, level)
+        public Ghoul(int level) : base("구울", 40, 35, 300, level, 6, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -109,7 +109,7 @@ namespace textdungeon.Play
     }
     public class Banshee : Monster
     {
-        public Banshee(int level) : base("밴시", 7, 40, 30, 250, level)
+        public Banshee(int level) : base("밴시", 30, 40, 250, level, 7, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -125,7 +125,7 @@ namespace textdungeon.Play
     }
     public class Skeleton : Monster
     {
-        public Skeleton(int level) : base("스켈레톤", 8, 30, 35, 250, level)
+        public Skeleton(int level) : base("스켈레톤", 35, 30, 250, level, 8, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -141,7 +141,7 @@ namespace textdungeon.Play
     }
     public class Undine : Monster
     {
-        public Undine(int level) : base("운디네", 9, 35, 35, 250, level)
+        public Undine(int level) : base("밴시", 35, 35, 250, level, 9, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -157,7 +157,7 @@ namespace textdungeon.Play
     }
     public class sylph : Monster
     {
-        public sylph(int level) : base("실프", 10, 35, 35, 250, level)
+        public sylph(int level) : base("실프", 35, 35, 250, level, 9, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -173,7 +173,7 @@ namespace textdungeon.Play
     }
     public class salamandra : Monster
     {
-        public salamandra(int level) : base("실프", 11, 35, 35, 250, level)
+        public salamandra(int level) : base("실프", 35, 35, 250, level, 11, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -189,7 +189,7 @@ namespace textdungeon.Play
     }
     public class Gnome : Monster
     {
-        public Gnome(int level) : base("노움", 12, 35, 35, 250, level)
+        public Gnome(int level) : base("노움", 35, 35, 250, level, 12, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -205,7 +205,7 @@ namespace textdungeon.Play
     }
     public class Troll : Monster
     {
-        public Troll(int level) : base("트롤", 13, 100, 70, 350, level)
+        public Troll(int level) : base("트롤", 100, 70, 350, level, 13, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -221,7 +221,7 @@ namespace textdungeon.Play
     }
     public class Orc : Monster
     {
-        public Orc(int level) : base("오크", 14, 100, 70, 350, level)
+        public Orc(int level) : base("오크", 100, 70, 350, level, 14, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -237,7 +237,7 @@ namespace textdungeon.Play
     }
     public class Ogre : Monster
     {
-        public Ogre(int level) : base("오우거", 15, 100, 70, 350, level)
+        public Ogre(int level) : base("오우거", 100, 70, 350, level, 15, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -253,7 +253,7 @@ namespace textdungeon.Play
     }
     public class OgreMage : Monster
     {
-        public OgreMage(int level) : base("오우거메이지", 16, 100, 70, 350, level)
+        public OgreMage(int level) : base("오우거메이지", 70, 120, 350, level, 16, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -269,7 +269,7 @@ namespace textdungeon.Play
     }
     public class Unicon : Monster
     {
-        public Unicon(int level) : base("유니콘", 17, 200, 150, 500, level)
+        public Unicon(int level) : base("유니콘", 150, 200, 500, level, 17, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -285,7 +285,7 @@ namespace textdungeon.Play
     }
     public class Titan : Monster
     {
-        public Titan(int level) : base("타이탄", 18, 250, 200, 600, level)
+        public Titan(int level) : base("타이탄", 250, 200, 600, level, 18, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -301,7 +301,7 @@ namespace textdungeon.Play
     }
     public class Dragon : Monster
     {
-        public Dragon(int level) : base("드래곤", 19, 300, 300, 800, level)
+        public Dragon(int level) : base("드래곤", 300, 300, 800, level, 19, 0)
         {
             PlusAttPow = 5;
             PlusHealth = 10;

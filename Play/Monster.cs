@@ -12,8 +12,7 @@ namespace textdungeon.Play
         public string Name { get; }
         public int AttPow { get; set; }
         public int Health { get; set; }
-
-        public int Gold { get; }
+        public int Gold { get; set; }
         public int Level { get; }
         public int ID { get; }
         public int UniqueID { get; }
@@ -46,14 +45,5 @@ namespace textdungeon.Play
         
         public virtual void LevelScailing(int level) { }
         
-    }
-    
-    public class Goblin : Monster
-    {
-        public Goblin(string name, int health, int attack, int gold, int level, int id, int uniqueID) : base(name, health, attack, gold, level, id , uniqueID) { }
-    }
-    public class Dragon : Monster
-    {
-        public Dragon(string name, int health, int attack, int gold, int level, int id, int uniqueID) : base(name, health, attack, gold, level, id, uniqueID) { }
     }
 }
