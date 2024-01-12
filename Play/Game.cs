@@ -246,6 +246,7 @@ namespace textdungeon.Play
                         break;
                     case 4: // 배틀 시작
                         battle.PlayerPastHealth = player.Health;
+                        battle.NewBattle(3);
                         ExploreBattle();
                         break;
                     default:
