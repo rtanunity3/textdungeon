@@ -120,7 +120,7 @@ namespace textdungeon.Play
         {
             return this;
         }
-
+        
         public int ItemCount()
         {
             return Items.Count;
@@ -148,7 +148,9 @@ namespace textdungeon.Play
             Console.WriteLine();
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
-            Console.WriteLine($"Lv. {Level:D2} (Exp:{DisplayExp}/{Level})");
+            //필요경험치 = Level * Level , 추후 변경해야함
+            // Level ^ 2 + Level * 3
+            Console.WriteLine($"Lv.: {Level:D2} (Exp:{DisplayExp}/{Math.Pow(Level, 2) + Level * 3})");
             Printing.HighlightText($"{Name} ({EnumHandler.GetjobKr(Job)})\n", ConsoleColor.White);
 
             //
@@ -413,6 +415,7 @@ namespace textdungeon.Play
         {
             //레벨업
             int maxExp = (int)Math.Pow(Level, 2) + Level * 3;
+
             while (maxExp <= Exp)
             {
                 Level++;
