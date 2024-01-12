@@ -88,6 +88,8 @@ namespace textdungeon.Play
                             CurrentState = GameState.Intro;
                             break;
                         }
+                        // 직업에 맞춰 아이템 생성을 위한 ItemInit
+                        store.ItemInit(player.Job);
                         SaveGame();
                         VillageMenu();
                         break;
@@ -95,6 +97,8 @@ namespace textdungeon.Play
                     case 2:
                         player = LoadGame();
                         player.EquipItemAll();
+                        // 직업에 맞춰 아이템 생성을 위한 ItemInit
+                        store.ItemInit(player.Job);
                         // 스토어랑 템 싱크
                         store.ItemBoughtSync(player.Items);
                         VillageMenu();

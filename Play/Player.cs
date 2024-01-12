@@ -442,8 +442,27 @@ namespace textdungeon.Play
             }
             else
             {
-                // 객체를 그대로 가져오면 상점과 공유하게 되니 DeepCopy를 통해 추가.
-                Items.Add((Item)item.DeepCopy());
+                // 객체를 그대로 가져오면 상점과 공유하게 되니 ShallowCopy 통해 추가.
+                Items.Add((Item)item.ShallowCopy());
+            }
+        }
+
+        // ItemDropTable이 list로 item들을 return하여 list로 아이템을 받는 Method추가.
+        public void AddItem(List<Item> list)
+        {
+            foreach (var item in list)
+            {
+                // 가지고 있는 아이템이면 수량 추가.
+                var existItem = Items.Find(x => x.ItemId == item.ItemId);
+                if (existItem != null)
+                {
+                    existItem.Quantity += 1;
+                }
+                else
+                {
+                    // 객체 공유를 피하기 위한 ShallowCopy.
+                    Items.Add((Item)item.ShallowCopy());
+                }
             }
         }
 
