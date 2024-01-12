@@ -54,7 +54,7 @@ namespace textdungeon.Play
                 Console.SetCursorPosition(20, 2 + i);
                 Console.WriteLine($"| 방어력 {DungeonList[i].RecomDef} 이상 권장");
             }
-
+            Console.WriteLine("4. 임시전투 테스트");
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }

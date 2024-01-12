@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
 namespace textdungeon.Play
 {
     public class Monster : ICharacter
@@ -20,7 +27,6 @@ namespace textdungeon.Play
         public Monster(string name, int health, int attPow, int gold, int level, int id, int uniqueID)
         {
             Name = name;
-            MonsterID = monsterid;
             Health = health;
             AttPow = attPow;
             Gold = gold;
