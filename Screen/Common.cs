@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace textdungeon.Screen
 {
     public enum GameState
@@ -18,6 +15,8 @@ namespace textdungeon.Screen
         DungeonGate,
         DungeonResult,
         Inn,
+        Quest,
+        QuestDetail,
     }
 
     public enum CharacterClass
@@ -37,6 +36,7 @@ namespace textdungeon.Screen
         Multiple,
         Self,
     }
+
     public enum ResponseCode
     {
         // Blue
@@ -49,6 +49,11 @@ namespace textdungeon.Screen
         CONSUME,
 
         REST,
+
+        QUESTSTART,
+        QUESTINPROGRESS,
+        QUESTUPDATE,
+        QUESTDONE,
 
         // Red
         BADREQUEST = 200,
@@ -75,6 +80,26 @@ namespace textdungeon.Screen
         Hard,
     }
 
+    // 퀘스트의 진행상황
+    public enum QuestState
+    {
+        NotStarted,         // 퀘스트 수락 전
+        InProgress,         // 진행중
+        ObjectiveCompleted, // 목표 완료
+        //RewardsClaimed,     // 보상 획득
+        Completed,          // 완료
+    }
+
+    // 퀘스트 타입
+    public enum QuestType
+    {
+        None,
+        MonsterHunt,        // 몬스터 사냥
+        EquipItem,          // 장비 착용
+        LevelUp,            // 레벨업
+    }
+
+
     public static class EnumHandler
     {
         public static string GetMessage(ResponseCode responseCode)
@@ -96,6 +121,15 @@ namespace textdungeon.Screen
                     return "휴식을 완료했습니다.\n";
                 case ResponseCode.CONSUME:
                     return "아이템을 소모했습니다.\n";
+
+                case ResponseCode.QUESTSTART:
+                    return "퀘스트를 받았습니다.\n";
+                case ResponseCode.QUESTINPROGRESS:
+                    return "퀘스트 진행중입니다.\n";
+                case ResponseCode.QUESTUPDATE:
+                    return "퀘스트내용이 업데이트 되었습니다.\n";
+                case ResponseCode.QUESTDONE:
+                    return "퀘스트 완료했습니다.\n";
 
                 case ResponseCode.BADREQUEST:
                     return "잘못된 입력입니다.\n";
@@ -142,6 +176,23 @@ namespace textdungeon.Screen
             }
         }
 
+        public static string GetQuestStateKr(QuestState questState)
+        {
+            switch (questState)
+            {
+                case QuestState.NotStarted:
+                    return "미수락";
+                case QuestState.InProgress:
+                    return "진행중";
+                case QuestState.ObjectiveCompleted:
+                    return "목표 완료";
+                case QuestState.Completed:
+                    return "퀘스트 완료";
+                default:
+                    return "";
+            }
+        }
+
         public static EquipmentType GetEquipmentType(int itemId)
         {
             /*
@@ -179,7 +230,11 @@ namespace textdungeon.Screen
         }
     }
 
+    public static class Menu
+    {
+        public static string[] VillageMenu = { "", "상태보기", "인벤토리", "상점", "던전입장", "휴식하기", "퀘스트" };
 
+    }
 
 
     public static class Util
@@ -200,7 +255,7 @@ namespace textdungeon.Screen
         {
             int curLength = CalculateLength(text);
             int padding = padLength - curLength;
-            return text.PadRight(text.Length + padding);
+            return text.PadRight(Math.Max(0, text.Length + padding));
         }
         public static int CalculateLength(string text)
         {
