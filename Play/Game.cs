@@ -25,6 +25,7 @@ namespace textdungeon.Play
             dungeonGate = new DungeonGate();
         }
 
+        #region Start
         private Player MakeCharacter()
         {
             Console.Clear();
@@ -114,7 +115,7 @@ namespace textdungeon.Play
                 }
             }
         }
-
+        #endregion
 
         // 메인 게임 루프
         private void VillageMenu()
@@ -186,8 +187,8 @@ namespace textdungeon.Play
                 switch (select)
                 {
                     case 1:
-                        // 수락
-                        response = player.StartQuest(questId);
+                        // 수락 or 보상 수령
+                        response = player.UpdateQuest(questId);
                         CurrentState = GameState.Quest;
                         break;
                     case 0:
