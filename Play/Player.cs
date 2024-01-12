@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Reflection.Emit;
-using System.Text;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Text.Json.Serialization;
 using textdungeon.Screen;
 
 namespace textdungeon.Play
@@ -19,34 +14,51 @@ namespace textdungeon.Play
         public int Shield { get; set; }
     }
 
-    public class Player:ICharacter
+    public class Player : ICharacter
     {
         public string Name { get; set; }
+        public CharacterClass Job { get; set; }
         public int AttPow { get; set; }
         public int ItemAttPow { get; set; }
         public int DefPow { get; set; }
         public int ItemDefPow { get; set; }
+        public int MaxHealth { get; set; } // 차후 아이템 사용시 체크를 위해 Max 값을 넣음
         public int Health { get; set; }
+        public int MaxMana { get; set; }
+        public int Mana { get; set; }
         public int Gold { get; set; }
         public int Level { get; set; }
-        public int Exp { get; set; }
-        public int DisplayExp { get; set; }
+        public int Exp { get; set; } // 누적경험치 입니다.
+        public int DisplayExp { get; set; } // 화면상에 보여질 경험치
         public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
 
+        public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
 
-        int[] itemTableColWidth = { 25, 40, 55, 110 };
+        // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
+        //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
+        //        개발편의를 위해 지금처럼 진행하겠음.
+        //        퀘스트 레벨제한 미구현
+        public List<Quest> QuestList { get; set; } = new List<Quest>()
+        {
+            new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, new Item[]{ }, 0, 0),
+            new Quest(1, "마을을 위협하는 미니언 처치", "이봐! 마을 근처에 미니언들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!", 1, QuestState.NotStarted, QuestType.MonsterHunt, 0, 5, new Item[]{ new OldShield() }, 500, 5),
+            new Quest(2, "장비를 장착해보자", "전투에서 사용할 장비를 구매 후 장착해보자!", 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ new NoviceHelmet() }, 500, 1),
+            new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
+        };
+
+        int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
         int maxLevel = 10;
 
-        public Player(string name)
+        public Player() { }
+        public Player(string name, CharacterClass select)
         {
             Name = name;
-            AttPow = 10;
-            DefPow = 5;
-            Health = 100;
-            Gold = 1500;
+            Job = select;
+            SetStats(); // 집업별 스탯 세팅
+
             Level = 1;
             Exp = 0;
             DisplayExp = 0;
@@ -57,11 +69,58 @@ namespace textdungeon.Play
             Equipped = new Equipment();
         }
 
+        private void SetStats()
+        {
+            switch (Job)
+            {
+                case CharacterClass.Warrior:
+                    AttPow = 10; DefPow = 5;
+                    Health = 100; Mana = 20;
+                    MaxHealth = 100; MaxMana = 20;
+                    Gold = 1000;
+                    Skill.Add(new Skill("강격", 1.2f, 5, SkillType.Single));
+                    Skill.Add(new Skill("이중타격", 1.8f, 15, SkillType.Single));
+                    break;
+                case CharacterClass.Mage:
+                    AttPow = 5; DefPow = 3;
+                    Health = 80; Mana = 50;
+                    MaxHealth = 80; MaxMana = 50;
+                    Gold = 3000;
+                    Skill.Add(new Play.Skill("불화살", 1.3f, 5, SkillType.Single));
+                    Skill.Add(new Play.Skill("블리자드", 1.8f, 20, SkillType.Multiple));
+                    break;
+                case CharacterClass.Archer:
+                    AttPow = 8; DefPow = 4;
+                    Health = 90; Mana = 30;
+                    MaxHealth = 90; MaxMana = 30;
+                    Gold = 1500;
+                    Skill.Add(new Play.Skill("연사", 0.9f, 10, SkillType.Multiple));
+                    Skill.Add(new Play.Skill("저격", 2.2f, 20, SkillType.Single));
+                    break;
+                case CharacterClass.Thief:
+                    AttPow = 7; DefPow = 3;
+                    Health = 85; Mana = 25;
+                    MaxHealth = 85; MaxMana = 25;
+                    Gold = 2500;
+                    Skill.Add(new Play.Skill("기습", 1.5f, 10, SkillType.Single));
+                    Skill.Add(new Play.Skill("함정", 2.0f, 15, SkillType.Single));
+                    break;
+                case CharacterClass.Cleric:
+                    AttPow = 6; DefPow = 4;
+                    Health = 95; Mana = 40;
+                    MaxHealth = 95; MaxMana = 40;
+                    Gold = 3000;
+                    Skill.Add(new Play.Skill("신성타격", 1.5f, 10, SkillType.Single));
+                    Skill.Add(new Play.Skill("치료", 1.5f, 10, SkillType.Self));
+                    break;
+            }
+        }
+
         public Player GetPlayer()
         {
             return this;
         }
-
+        
         public int ItemCount()
         {
             return Items.Count;
@@ -72,26 +131,6 @@ namespace textdungeon.Play
             CalcItemStat();
 
             Console.Clear();
-            Printing.HighlightText("상태 보기", ConsoleColor.DarkYellow);
-            Console.WriteLine();
-            Console.WriteLine("캐릭터의 정보가 표시됩니다.");
-            Console.WriteLine();
-            Console.WriteLine($"Lv.: {Level} (Exp:{DisplayExp}/{Level})");
-            Printing.HighlightText($"{Name} (전사)\n", ConsoleColor.White);
-
-            Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
-            if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
-            Console.WriteLine();
-
-            Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
-            if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
-            Console.WriteLine();
-
-            Console.Write("체 력 : ");
-            Printing.HighlightText($"{Health,3}/100\n", ConsoleColor.Red);
-            Console.Write("Gold : ");
-            Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
-            Console.WriteLine();
 
             Console.SetCursorPosition(30, 3);
             Printing.HighlightText("착용장비", ConsoleColor.DarkYellow);
@@ -103,8 +142,53 @@ namespace textdungeon.Play
             Console.WriteLine($"무기 : {GetItemName(Equipped.Weapon)}");
             Console.SetCursorPosition(30, 7);
             Console.WriteLine($"방패 : {GetItemName(Equipped.Shield)}");
-            Console.SetCursorPosition(0, 9);
+            Console.SetCursorPosition(0, 0);
 
+            Printing.HighlightText("상태 보기", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+            Console.WriteLine("캐릭터의 정보가 표시됩니다.");
+            Console.WriteLine();
+            //필요경험치 = Level * Level , 추후 변경해야함
+            // Level ^ 2 + Level * 3
+            Console.WriteLine($"Lv.: {Level:D2} (Exp:{DisplayExp}/{Math.Pow(Level, 2) + Level * 3})");
+            Printing.HighlightText($"{Name} ({EnumHandler.GetjobKr(Job)})\n", ConsoleColor.White);
+
+            //
+            Console.Write("HP : ");
+            Printing.HighlightText($"{Health,3}/{MaxHealth}\n", ConsoleColor.Red);
+            Console.Write("MP : ");
+            Printing.HighlightText($"{Mana,3}/{MaxMana}\n", ConsoleColor.Blue);
+
+            //
+            Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
+            if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
+            Console.WriteLine();
+            Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
+            if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
+            Console.WriteLine();
+
+            //
+            Console.Write("Gold : ");
+            Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+            Printing.HighlightText("스킬\n", ConsoleColor.DarkYellow);
+            Printing.SkillInfoTableTitle();
+
+            for (int i = 1; i < Skill.Count; i++)
+            {
+                Console.Write($"[{i}] : {Util.PadRightMixedText(Skill[i].Name, 10)}");
+                Console.Write($"{Util.PadRightMixedText(EnumHandler.GetSkillTypeKr(Skill[i].SkillType), 10)}");
+                Printing.HighlightText($"{Skill[i].Mana}".PadRight(10), ConsoleColor.Blue);
+                Console.Write($"{Skill[i].DamagePercentage * 100:F0}%");
+                double skillDmg = (AttPow + ItemAttPow) * Skill[i].DamagePercentage;
+                Printing.HighlightText($" [{Math.Floor(skillDmg * 0.9):F0}-{Math.Ceiling(skillDmg * 1.1):F0}]", ConsoleColor.Red);
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
             Console.WriteLine();
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
@@ -155,9 +239,18 @@ namespace textdungeon.Play
 
             if (select > 0 && select < Items.Count)
             {
-                // 이미 장착한 아이템이면 해제
-                if (Items[select].IsEquipped == true)
+                // 소모품 사용. 소모품의 경우 다운캐스팅을 사용해 UseItem Method를 호출.
+                if (type == EquipmentType.Consumable)
                 {
+                    var item = (ConsumableItem)Items[select];
+                    if (item.UseItem(this))
+                        RemoveItem(item);
+
+                    return ResponseCode.CONSUME;
+                }
+                else if (Items[select].IsEquipped == true)
+                {
+                    // 이미 장착한 아이템이면 해제
                     Items[select].IsEquipped = false;
                     switch (type)
                     {
@@ -186,6 +279,8 @@ namespace textdungeon.Play
                             Equipped.Shield = Items[select].ItemId; break;
                     }
                     CalcItemStat();
+
+                    UpdateQuestProgress(QuestType.EquipItem, 0, 1);
                     // 메세지 만들어서 리턴
                     return ResponseCode.EQUIP;
                 }
@@ -318,20 +413,19 @@ namespace textdungeon.Play
 
         public void CalcLevel()
         {
-            int tmpExp = Exp;
-            int tmpLevel = 0;
-            // 경험치로 레벨set
-            for (int i = 0; i < maxLevel; i++)
-            {
-                if (tmpExp >= i)
-                {
-                    tmpExp -= i;
-                    tmpLevel++;
-                }
-            }
+            //레벨업
+            int maxExp = (int)Math.Pow(Level, 2) + Level * 3;
 
-            DisplayExp = tmpExp;
-            Level = tmpLevel;
+            while (maxExp <= Exp)
+            {
+                Level++;
+                Exp -= maxExp;
+                maxExp = (int)Math.Pow(Level, 2) + Level * 3;
+                Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다");
+                UpdateQuestProgress(QuestType.LevelUp, 0, 1);
+            }
+            DisplayExp = Exp;
+
             // 레벨 기준 공방 업데이트
             AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
             DefPow = 5 + (Level - 1);
@@ -345,28 +439,180 @@ namespace textdungeon.Play
 
         public void AddItem(Item item)
         {
-            Items.Add(item);
+            // 가지고 있는 아이템이면 수량 추가.
+            var existItem = Items.Find(x => x.ItemId == item.ItemId);
+            if (existItem != null)
+            {
+                existItem.Quantity += 1;
+            }
+            else
+            {
+                // 객체를 그대로 가져오면 상점과 공유하게 되니 ShallowCopy 통해 추가.
+                Items.Add((Item)item.ShallowCopy());
+            }
         }
+
+        // ItemDropTable이 list로 item들을 return하여 list로 아이템을 받는 Method추가.
+        public void AddItem(List<Item> list)
+        {
+            foreach (var item in list)
+            {
+                // 가지고 있는 아이템이면 수량 추가.
+                var existItem = Items.Find(x => x.ItemId == item.ItemId);
+                if (existItem != null)
+                {
+                    existItem.Quantity += 1;
+                }
+                else
+                {
+                    // 객체 공유를 피하기 위한 ShallowCopy.
+                    Items.Add((Item)item.ShallowCopy());
+                }
+            }
+        }
+
         public void RemoveItem(Item item)
         {
-            Items.Remove(item);
+            // 아이템의 수량이 여러개일 경우 판정.
+            if (item.Quantity > 1)
+            {
+                item.Quantity -= 1;
+            }
+            else
+            {
+                Items.Remove(item);
+            }
         }
+
 
         public void TakeDamage(int damage)
         {
-            // hp 0~100 사이 유지
-            Health = Math.Max(Math.Min((Health - damage), 100), 0);
+            // 임시
+            // 전투에 맞게 수정 바람
+            TakeDamage(SkillType.Normal, damage);
         }
+        public void TakeDamage(SkillType skillType, int damage)
+        {
+            // 회피 계산 일반공격이고 10%확률
+            if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
+            {
+                Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                return;
+            }
 
+            // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
+            damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
+
+            // 치명타 계산 15%확률
+            if (Util.GenRandomFloat() <= 0.15)
+            {
+                damage = (int)Math.Floor(damage * 1.6f);
+            }
+
+            // 방어력 차감
+
+            // 데미지 적용
+            // hp 0 ~ MaxHealth 사이 유지
+            Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
+
+            // 사망확인
+            if (IsDead)
+            {
+                // 사망 동작
+
+            }
+        }
 
         public string Serialize()
         {
-            return JsonSerializer.Serialize(this);
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new JsonStringEnumConverter() }
+            };
+            return JsonSerializer.Serialize(this, options);
         }
 
         public static Player Deserialize(string jsonData)
         {
-            return JsonSerializer.Deserialize<Player>(jsonData);
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new JsonStringEnumConverter() }
+            };
+            // TODO : 케릭터 데이터가 변하는 경우 호환성을 위한 체크를 해줘야함. 이번 과제에서는 다루지 않겠음.
+            return JsonSerializer.Deserialize<Player>(jsonData, options);
+        }
+
+
+
+
+        //////////////////////////////////////////////////////////////////
+        //// XXX : 퀘스트 받는곳을 따로 만드려 했으나 시간관계상 생략.
+        //// 이하 퀘스트 관련
+        //////////////////////////////////////////////////////////////////
+
+        public int GetAllQuestCount()
+        {
+            return QuestList.Count;
+        }
+
+        // 진행중이거나 목표 완수한 퀘스트 개수
+        public int GetShowableQuestCount()
+        {
+            return QuestList.Count(q => q.State != QuestState.Completed);
+        }
+
+
+        public void ShowAllQuestInfo()
+        {
+            Console.Clear();
+            Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+
+            //Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
+            for (int i = 1; i < QuestList.Count; i++)
+            {
+                QuestList[i].ShowQuestInfo(i);
+            }
+            Printing.SelectWriteLine(0, "나가기");
+            Console.WriteLine();
+        }
+
+        public void ShowQuestDetail(int select)
+        {
+            Console.Clear();
+            Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+            QuestList[select].ShowQuestDetail();
+        }
+
+        public ResponseCode UpdateQuest(int questId)
+        {
+            if (QuestList[questId].State == QuestState.NotStarted)
+            {
+                return QuestList[questId].QuestStart();
+            }
+            else if (QuestList[questId].State == QuestState.ObjectiveCompleted)
+            {
+                return QuestList[questId].QuestComplete(this);
+            }
+            return ResponseCode.BADREQUEST;
+        }
+
+        public QuestState GetQuestState(int questId)
+        {
+            return QuestList[questId].State;
+        }
+
+
+        public void UpdateQuestProgress(QuestType type, int goalId, int count)
+        {
+            foreach (Quest quest in QuestList)
+            {
+                if (quest.Type == type && quest.State == QuestState.InProgress)
+                {
+                    quest.QuestProgress(goalId, count);
+                }
+            }
         }
     }
 }
