@@ -254,7 +254,7 @@ namespace textdungeon.Play
                 }
             }
         }
-
+        
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
@@ -374,7 +374,7 @@ namespace textdungeon.Play
                         case GameState.BattlePlayerDead:
                             PlayerDeadBattle();
                             break;
-                    }
+                    } 
                 }
             }
         }
