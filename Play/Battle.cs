@@ -25,9 +25,10 @@ namespace textdungeon.Play
         /// <summary> 배틀입장시 플레이어 체력 </summary>
         public int PlayerPastHealth = 0;
 
-        public Battle()
+        public void NewBattle(int enemieNum)
         {
-            for (int i = 0;  i < 3; i++) 
+            Enemies.Clear();
+            for (int i = 0; i < enemieNum; i++)
             {
                 Monster monster = Monsters[new Random().Next(0, Monsters.Count)];
                 Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i));
