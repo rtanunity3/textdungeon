@@ -1,3 +1,5 @@
+using textdungeon.Screen;
+
 namespace textdungeon.Play
 {
     // 4주차 과제 응용
@@ -14,6 +16,6 @@ namespace textdungeon.Play
 
         bool IsDead { get; }
 
-        void TakeDamage(int damage);
+        void TakeDamage(SkillType skillType, int damage);
     }
 }
