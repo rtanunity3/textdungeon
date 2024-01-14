@@ -56,6 +56,7 @@ namespace textdungeon.Play
 
         public bool PlayerAttackSelect(Player player,int select)
         {
+            if (select > 0 && select <= Enemies.Count) return false;
             Monster monster = Enemies[select - 1];
             if (!monster.IsDead) // 공격가능한 대상 선택함
             {

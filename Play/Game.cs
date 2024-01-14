@@ -301,12 +301,9 @@ namespace textdungeon.Play
                 {
                     CurrentState = GameState.BattleGround;
                 }
-                else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
+                else if (battle.PlayerAttackSelect(player, select)) // 공격대상 선택
                 {
-                    if (battle.PlayerAttackSelect(player, select))
-                    {
-                        AttackBattleEnd();
-                    }
+                    AttackBattleEnd();
                 }
             }
         }
