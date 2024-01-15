@@ -84,6 +84,18 @@ namespace textdungeon.Play
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
+        
+        public void DisplayHealthWarning()
+        {
+            Console.Clear();
+            Printing.HighlightText("던전입장 불가", ConsoleColor.DarkYellow);
+            Console.WriteLine();
+            Console.WriteLine("체력이 부족하여 던전에 입장할 수 없습니다.");
+            Console.WriteLine("휴식을 취하여 체력을 회복해 주세요.");
+            Console.WriteLine();
+            Printing.SelectWriteLine(0, "뒤로가기");
+            Console.WriteLine();
+        }
 
         public void SetExploreDungeon(int dunNum)
         {
