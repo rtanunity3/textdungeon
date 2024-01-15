@@ -298,6 +298,7 @@ namespace textdungeon.Play
         /// </summary>
         public GameState EnemiesAttack(Player player)
         {
+            if (player.Health <= 0) return GameState.BattlePlayerDead;
             int len = BattleEnamiesAttackList.Count;
             if (len == 0) return GameState.BattleGround;
 
@@ -320,8 +321,7 @@ namespace textdungeon.Play
             msg += $"HP {hp} -> {player.Health}\r\n";
             BattleEnemiesAttackMessage = msg;
 
-            if (player.Health <= 0) return GameState.BattlePlayerDead;
-            else return GameState.BattleEnemiesAttack;
+            return GameState.BattleEnemiesAttack;
         }
 
         public void DisplayBattle(bool writeNum, GameState gameState, Player player, int skillNo = 0)
