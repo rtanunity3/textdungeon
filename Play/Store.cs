@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,17 +24,7 @@ namespace textdungeon.Play
         // 플레이어 직업이 추가되어 따로 구현한 상인 아이템 초기 생성 코드.
         public void ItemInit(CharacterClass playerClass)
         {
-            // 요구사항에 따라 아이템 항목을 유니크하도록 수정
-            // ItemCatalog에 있는 아이템들로 생성되게 변경.
-            // 플레이어의 직업에 맞춰서 아이템 생성.
-            switch (playerClass)
-            {
-                case CharacterClass.Warrior: ItemList.AddRange(new WarriorItems().List); break;
-                case CharacterClass.Mage: ItemList.AddRange(new MageItems().List); break;
-                case CharacterClass.Archer: ItemList.AddRange(new ArcherItems().List); break;
-                case CharacterClass.Thief: ItemList.AddRange(new ThiefItems().List); break;
-                case CharacterClass.Cleric: ItemList.AddRange(new ClericItems().List); break;
-            }
+            ItemList.AddRange(ItemManager.GetStoreInventory(playerClass));
         }
 
         public List<Item> GetItems()
