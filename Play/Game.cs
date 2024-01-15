@@ -438,11 +438,6 @@ namespace textdungeon.Play
 
                     if (battle.BattleEnamiesAttackList.Count != 0)
                     {
-                        CurrentState = battle.EnemiesAttack(player);
-                        if (CurrentState == GameState.BattlePlayerDead)
-                        {
-                            PlayerDeadBattle();
-                        }
                         AttackEnemiesBattle();
                     }
                     else
@@ -472,24 +467,29 @@ namespace textdungeon.Play
         // 전투중 적의 공격
         private void AttackEnemiesBattle()
         {
-            CurrentState = GameState.BattleEnemiesAttack;
-            while (CurrentState == GameState.BattleEnemiesAttack)
+            do
             {
-                int select = UserChoice(CurrentState);
-                if (select == 0) // 다음
+                CurrentState = battle.EnemiesAttack(player);
+                switch (CurrentState)
                 {
-                    CurrentState = battle.EnemiesAttack(player);
-                    switch (CurrentState)
+                    case GameState.BattleGround:
+                    case GameState.BattleEnemiesAttack:
+                        break;
+                    case GameState.BattlePlayerDead:
+                        PlayerDeadBattle();
+                        break;
+                }
+
+                while (CurrentState != GameState.BattleGround) // 0. 다음 선택문 반복
+                {
+                    int select = UserChoice(CurrentState);
+                    if (select == 0) // 다음
                     {
-                        case GameState.BattleGround:
-                        case GameState.BattleEnemiesAttack:
-                            break;
-                        case GameState.BattlePlayerDead:
-                            PlayerDeadBattle();
-                            break;
+                        break;
                     }
                 }
-            }
+            } while (CurrentState != GameState.BattleGround);
+            
         }
         // 전투에서 플레이어 패배
         private void PlayerDeadBattle()
@@ -679,8 +679,7 @@ namespace textdungeon.Play
                         inn.InnMenu(player);
                         inputCount = 2;
                         break;
-                    // 전투 흐름 구현 필요
-                    case GameState.BattleGround:
+                    case GameState.BattleGround: // 배틀 메뉴(공격, 스킬, 도망) 화면
                         battle.DisplayBattle(false, GameState.BattleGround, player);
                         inputCount = 3;
                         break;
