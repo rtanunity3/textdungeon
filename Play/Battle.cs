@@ -13,9 +13,9 @@ namespace textdungeon.Play
     {
         private List<Monster> Monsters = new List<Monster>()
         {
-            new Monster("미니언", 15, 10, 100, 2, 0, 0),
-            new Monster("대포미니언", 25, 15, 100, 5, 1, 0),
-            new Monster("공허충", 10, 7, 100, 3, 2, 0)
+            new Monster("미니언", 15, 3, 50, 2, 0, 0),
+            new Monster("대포미니언", 25, 5, 100, 5, 1, 0),
+            new Monster("공허충", 10, 2, 50, 3, 2, 0)
         };
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
@@ -41,7 +41,7 @@ namespace textdungeon.Play
             for (int i = 0; i < Enemies.Count; i++)
             {
                 Console.Write(writeNum ? $"[{i + 1}]" : "");
-                if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray); 
+                if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray);
                 else Console.Write(Enemies[i].ToStringEnemie);
                 Console.WriteLine();
             }
@@ -50,11 +50,11 @@ namespace textdungeon.Play
         public void PrintPlayer(Player player)
         {
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv.{player.Level} {player.Name} (전사)");
-            Console.WriteLine($"HP {player.Health}/100");
+            Console.WriteLine($"Lv.{player.Level} {player.Name} {EnumHandler.GetjobKr(player.Job)}");
+            Console.WriteLine($"HP {player.Health}/{player.MaxHealth}");
         }
 
-        public bool PlayerAttackSelect(Player player,int select)
+        public bool PlayerAttackSelect(Player player, int select)
         {
             Monster monster = Enemies[select - 1];
             if (!monster.IsDead) // 공격가능한 대상 선택함
@@ -73,6 +73,32 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                 BattleAttackEndMessage = msg;
                 return true;
             }
+            return false;
+        }
+
+        public bool PlayerSkillAttackSelect(Player player, int skillNo, int select = 0)
+        {
+            if (player.Skill[skillNo].SkillType == SkillType.Single) { 
+                Monster monster = Enemies[select - 1];
+                if (!monster.IsDead) // 공격가능한 대상 선택함
+                {
+                    int dmgRange = Convert.ToInt32(Math.Ceiling(player.AttPow + player.ItemAttPow * 0.1));
+                    int dmg = player.AttPow + player.ItemAttPow + new Random().Next(-dmgRange, dmgRange + 1);
+                    int hp = monster.Health;
+                    monster.Health -= dmg;
+
+                    string msg = @$"{player.Name} 의 공격!
+{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {dmg}]
+
+{monster.ToStringName}
+HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
+                    BattleAttackEndMessage = msg;
+                    return true;
+                }
+
+            }
+
+            
             return false;
         }
 
@@ -99,7 +125,7 @@ HP {hp} -> {player.Health}
             else return GameState.BattleEnemiesAttack;
         }
 
-        public void DisplayBattle(bool writeNum, GameState gameState, Player player)
+        public void DisplayBattle(bool writeNum, GameState gameState, Player player, int skillNo = 0)
         {
             Console.Clear();
             Printing.HighlightText("Battle!!", ConsoleColor.DarkYellow);
@@ -112,14 +138,16 @@ HP {hp} -> {player.Health}
                     Console.WriteLine();
                     PrintPlayer(player);
                     Console.WriteLine();
-                    Console.WriteLine("0. 공격");
+                    Printing.SelectWriteLine(1, "공격");
+                    Printing.SelectWriteLine(2, "스킬");
+                    Printing.SelectWriteLine(0, "도망");
                     break;
                 case GameState.BattleAttack:
                     PrintEnemies(writeNum);
                     Console.WriteLine();
                     PrintPlayer(player);
                     Console.WriteLine();
-                    Console.WriteLine("0. 공격취소");
+                    Printing.SelectWriteLine(0, "공격취소");
                     break;
                 case GameState.BattleAttackEnd:
                     Console.WriteLine(BattleAttackEndMessage);
@@ -150,10 +178,21 @@ HP {hp} -> {player.Health}
                     Console.WriteLine("0. 다음");
                     break;
                 case GameState.BattleSkillList:
-                    Console.WriteLine("스킬목록 구현필요");
+                    PrintEnemies(writeNum);
+                    Console.WriteLine();
+                    PrintPlayer(player);
+                    Console.WriteLine();
+                    player.ShowSkillList();
+                    Printing.SelectWriteLine(0, "취소");
                     break;
+
                 case GameState.BattleSkillAttack:
-                    Console.WriteLine("스킬공격 구현필요");
+                    PrintEnemies(writeNum);
+                    Console.WriteLine();
+                    PrintPlayer(player);
+                    Console.WriteLine();
+                    player.ShowSkillList(skillNo);
+                    Printing.SelectWriteLine(0, "취소");
                     break;
             }
         }

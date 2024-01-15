@@ -166,7 +166,7 @@ namespace textdungeon.Play
 
         private void QuestMenu()
         {
-            // 길드. 퀘스트 받는곳
+            // 퀘스트 받는곳
             CurrentState = GameState.Quest;
             while (CurrentState == GameState.Quest)
             {
@@ -187,7 +187,7 @@ namespace textdungeon.Play
 
         private void QuestDetail(int questId)
         {
-            // 길드. 퀘스트 받는곳
+            // 퀘스트 받는곳
             CurrentState = GameState.QuestDetail;
             while (CurrentState == GameState.QuestDetail)
             {
@@ -255,7 +255,7 @@ namespace textdungeon.Play
                 }
             }
         }
-        
+
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
@@ -280,13 +280,75 @@ namespace textdungeon.Play
                 int select = UserChoice(CurrentState);
                 switch (select)
                 {
-                    case 0:
+                    case 1:
                         CurrentState = GameState.BattleAttack;
                         AtteckBattle();
                         break;
-                        //case 1: // 스킬?
-                        //    break;
+                    case 2: // TODO : 스킬
+                        CurrentState = GameState.BattleSkillList;
+                        SkillListBattle();
+                        break;
+                    case 0:
+                        CurrentState = GameState.DungeonGate;
+                        break;
                 }
+            }
+        }
+
+        // 스킬 선택
+        private void SkillListBattle()
+        {
+            CurrentState = GameState.BattleSkillList;
+            while (CurrentState == GameState.BattleSkillList)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0: // back
+                        CurrentState = GameState.BattleGround;
+                        break;
+                    case 1: // TODO : 스킬선택 1
+                    case 2: // TODO : 스킬선택 2
+                        SkillAtteckBattle(select);
+                        break;
+                }
+            }
+        }
+
+        private void SkillAtteckBattle(int skillNo)
+        {
+            CurrentState = GameState.BattleSkillAttack;
+            while (CurrentState == GameState.BattleSkillAttack)
+            {
+                switch (player.GetSkillType(skillNo))
+                {
+                    case SkillType.Single:
+                        int select = UserChoice(CurrentState, new int[] { skillNo });
+                        if (select == 0) // 공격취소
+                        {
+                            CurrentState = GameState.BattleSkillList;
+                        }
+                        else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
+                        {
+                            if (battle.PlayerSkillAttackSelect(player, skillNo, select))
+                            {
+                                AttackBattleEnd();
+                            }
+                        }
+                        break;
+                    case SkillType.Multiple:
+                        // 전체공격 후 결과 화면 출력
+
+
+
+
+                        break;
+                    case SkillType.Self:
+                        // 본인에게 주문
+
+                        break;
+                }
+
             }
         }
 
@@ -336,7 +398,8 @@ namespace textdungeon.Play
                     }
                     else
                     {
-                        player.UpdateQuestProgress(QuestType.MonsterHunt, 0, 3);
+                        Debug.WriteLine(battle.Enemies.Count);
+                        player.UpdateQuestProgress(QuestType.MonsterHunt, 0, battle.Enemies.Count);
                         PlayerWinBattle();
                     }
                 }
@@ -375,7 +438,7 @@ namespace textdungeon.Play
                         case GameState.BattlePlayerDead:
                             PlayerDeadBattle();
                             break;
-                    } 
+                    }
                 }
             }
         }
@@ -570,7 +633,7 @@ namespace textdungeon.Play
                     // 전투 흐름 구현 필요
                     case GameState.BattleGround:
                         battle.DisplayBattle(false, GameState.BattleGround, player);
-                        inputCount = 1;
+                        inputCount = 2;
                         break;
                     case GameState.BattleAttack: // 공격 화면
                         battle.DisplayBattle(true, GameState.BattleAttack, player);
@@ -593,17 +656,15 @@ namespace textdungeon.Play
                         inputCount = 1;
                         break;
 
-                    // case GameState.BattleSkill:
-                    //     battle.DisplayBattle(false, BattleAttack.BattleSkillList, player);
-                    //     // inputCount = // 스킬개수
-                    //     break;
-                    // case GameState.BattleSkillAttack:
-                    //     battle.DisplayBattle(false, BattleAttack.BattleSkillAttack, player);
-                    //     // inputCount = // 스킬개수
-                    //     break;
+                    case GameState.BattleSkillList: //스킬 선택
+                        battle.DisplayBattle(false, GameState.BattleSkillList, player);
+                        inputCount = 3; // 스킬개수
+                        break;
+                    case GameState.BattleSkillAttack: // 스킬로 공격할 대상 선택
+                        battle.DisplayBattle(true, GameState.BattleSkillAttack, player, args[0]);
+                        inputCount = battle.Enemies.Count + 1; // 적 개수
+                        break;
 
-                    // case GameState.BattleSkillList: break;
-                    // case GameState.BattleSkillAttack: break;
                     case GameState.Quest:
                         player.ShowAllQuestInfo();
                         inputCount = player.GetAllQuestCount();

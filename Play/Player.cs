@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using textdungeon.Screen;
@@ -88,8 +89,6 @@ namespace textdungeon.Play
             Mana = jobObj.GetProperty("Mana").GetInt32();
             Gold = jobObj.GetProperty("Gold").GetInt32();
 
-            Debug.WriteLine(jobObj.GetProperty("Skill")[0]);
-            Debug.WriteLine(jobObj.GetProperty("Skill")[1]);
             for (int i = 0; i < jobObj.GetProperty("Skill").GetArrayLength(); i++)
             {
                 JsonElement skill = jobObj.GetProperty("Skill")[i];
@@ -512,6 +511,64 @@ namespace textdungeon.Play
             }
         }
 
+
+        public void ShowSkillList(int skillNo = 0)
+        {
+            if (skillNo > 0)
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append($"({Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n   공격력 * {Skill[skillNo].DamagePercentage} 로 ");
+                switch (Skill[skillNo].SkillType)
+                {
+                    case SkillType.Single:
+                        str.Append($"하나의 적을 공격합니다.");
+                        break;
+                    case SkillType.Multiple:
+                        str.Append($"적 전체를 공격합니다.");
+                        break;
+                    case SkillType.Self:
+                        str.Append($"자신에게 주문을 겁니다.");
+                        break;
+                }
+
+                Console.WriteLine("[선택된 스킬]");
+                Console.WriteLine(str.ToString());
+                return;
+            }
+
+            for (int i = 1; i < Skill.Count; i++)
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append($"({Skill[i].Name} - MP {Skill[i].Mana}\n   공격력 * {Skill[i].DamagePercentage} 로 ");
+                switch (Skill[i].SkillType)
+                {
+                    case SkillType.Single:
+                        str.Append($"하나의 적을 공격합니다.");
+                        break;
+                    case SkillType.Multiple:
+                        str.Append($"적 전체를 공격합니다.");
+                        break;
+                    case SkillType.Self:
+                        str.Append($"자신에게 주문을 겁니다.");
+                        break;
+                }
+
+                Printing.SelectWriteLine(i, str.ToString());
+            }
+        }
+
+        public SkillType GetSkillType(int select)
+        {
+            return Skill[select].SkillType;
+        }
+
+
+
+
+        /// <summary>
+        /// 저장/불러오기
+        /// </summary>
+        /// <returns></returns>
         public string Serialize()
         {
             var options = new JsonSerializerOptions
