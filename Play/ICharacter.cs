@@ -15,7 +15,5 @@ namespace textdungeon.Play
         public int Level { get; }
 
         bool IsDead { get; }
-
-        //void TakeDamage(SkillType skillType, int damage);
     }
 }
