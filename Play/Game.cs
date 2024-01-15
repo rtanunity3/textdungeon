@@ -280,7 +280,6 @@ namespace textdungeon.Play
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(6);
                         battle.NewBattle(monsternum);
-                        //battle.NewBattle(1, 0, 1, 3);
                         ExploreBattle();
                         break;
                     default:
@@ -324,7 +323,7 @@ namespace textdungeon.Play
             }
         }
 
-        // 전투공격화면(작 몬스터를 선택해서 공격)
+        // 전투공격화면(적 몬스터를 선택해서 공격)
         private void AtteckBattle()
         {
             CurrentState = GameState.BattleAttack;
@@ -335,9 +334,12 @@ namespace textdungeon.Play
                 {
                     CurrentState = GameState.BattleGround;
                 }
-                else if (battle.PlayerAttackSelect(player, select, player.NormalDamage)) // 공격대상 선택(기본공격)
+                else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
                 {
-                    AttackBattleEnd();
+                    if (battle.PlayerAttackSelect(player, select, player.NormalDamage))
+                    {
+                        AttackBattleEnd();
+                    }
                 }
             }
         }
@@ -362,7 +364,11 @@ namespace textdungeon.Play
 
                     if (battle.BattleEnamiesAttackList.Count != 0)
                     {
-                        battle.EnemiesAttack(player);
+                        CurrentState = battle.EnemiesAttack(player);
+                        if (CurrentState == GameState.BattlePlayerDead)
+                        {
+                            PlayerDeadBattle();
+                        }
                         AttackEnemiesBattle();
                     }
                     else
