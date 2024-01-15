@@ -38,13 +38,13 @@ namespace textdungeon.Play
                 for (int i = 0; i < enemieNum; i++)
                 {
                     List<Monster> Goblines = new List<Monster>()
-                    {
+                    { 
                         new Kobold(new Random().Next(1,4)),
                         new Goblin(new Random().Next(1,4)),
                         new Hobgoblin(new Random().Next(1,4)),
                     };
                     Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 2)
@@ -60,7 +60,7 @@ namespace textdungeon.Play
                         new Skeleton(new Random().Next(1,4))
                     };
                     Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 3)
@@ -75,7 +75,7 @@ namespace textdungeon.Play
                         new Gnome(new Random().Next(1,4))
                     };
                     Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 4)
@@ -87,7 +87,7 @@ namespace textdungeon.Play
                         new Unicon(1)
                     };
                     Monster monster = Unicon[new Random().Next(0, Unicon.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 5)
@@ -99,7 +99,7 @@ namespace textdungeon.Play
                         new Titan(1)
                     };
                     Monster monster = Titan[new Random().Next(0, Titan.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 6)
@@ -111,11 +111,11 @@ namespace textdungeon.Play
                         new Dragon(1)
                     };
                     Monster monster = Dragon[new Random().Next(0, Dragon.Count)];
-                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                    Enemies.Add(monster);
                 }
             }
         }
-
+        
         public void GetBattleReward(Player player)
         {
             var playerGiveExp = 0;
@@ -124,6 +124,8 @@ namespace textdungeon.Play
             {
                 playerGiveExp += Enemies[i].GiveExp;
                 playerGiveGold += Enemies[i].Gold;
+                Enemies[i].SetDropTable(player.Job);
+                player.AddItem(Enemies[i].GetItemReward());
             }
             player.Gold += playerGiveGold;
             player.AddExp(playerGiveExp);
@@ -189,6 +191,7 @@ namespace textdungeon.Play
                 msg += "\r\n";
                 msg += $"{monster.ToStringName}\r\n";
                 msg += $"HP {hp} -> {(monster.IsDead ? "Dead" : $"HP {monster.Health}")}\r\n";
+
                 BattleAttackEndMessage = msg;
                 return true;
             }

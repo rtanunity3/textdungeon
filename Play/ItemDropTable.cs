@@ -18,15 +18,20 @@ namespace textdungeon.Play
         // 아이템과 가중치를 저장하기 위한 테이블.
         public List<DropItem> ItemTable;
         // Drop하는 아이템 갯수.
-        public int Amount { get; }
+        public int Amount { get; private set; }
         // 총합 가중치.
         public int TotalWeight { get; private set; }
 
-        public ItemDropTable(int amount)
+        public ItemDropTable(int amount = 1)
         {
             ItemTable = new List<DropItem>();
             Amount = amount;
             TotalWeight = 0;
+        }
+
+        public void SetAmount(int amount)
+        {
+            Amount = amount;
         }
 
         public void AddItem(Item item, int weight)
@@ -57,7 +62,8 @@ namespace textdungeon.Play
             return null;
         }
 
-        //NOTE 사용방법 : new ItemDropTable()로 만들고 아이템을 AddItem(new OldSword(), 5)로 추가.
+        //NOTE 사용방법 : ItemManager에 직업에 맞춘 아이템 지급 코드 활용.
+        //NOTE 사용방법 : new ItemDropTable()로 만들고 아이템을 AddItem(new GetLowTierWeapon(CharacterClass.Type), 5)로 추가.
         //NOTE 사용방법 : 아이템 보상을 줄 땐, ItemDrop()으로 List를 받고 player.AddItem(ItemDrop())으로 추가.
         /// <summary>
         /// 아이템 드랍 테이블에 들어있는 아이템이 필요할 때 사용. 
