@@ -29,7 +29,7 @@ namespace textdungeon.Play
             dungeonnum = selectdungeon;
         }
 
-        public void NewBattle(int level, int minLevel, int maxLevel,int enemieNum)
+        public void NewBattle(int enemieNum)
         {
             Enemies.Clear();
             if (dungeonnum == 1)
