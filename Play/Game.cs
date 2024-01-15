@@ -369,6 +369,22 @@ namespace textdungeon.Play
                 }
             }
         }
+        
+        private void PlayerHealthWarning()
+        {
+            CurrentState = GameState.PlayerHealthWarning;
+            while (CurrentState == GameState.PlayerHealthWarning)
+            {
+                Debug.WriteLine("여기 확인");
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Village;
+                        break;
+                }
+            }
+        }
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
