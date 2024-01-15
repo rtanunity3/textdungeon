@@ -501,7 +501,7 @@ namespace textdungeon.Play
                         break;
                 }
 
-                while (CurrentState != GameState.BattleGround) // 0. 다음 선택문 반복
+                while (CurrentState == GameState.BattleEnemiesAttack || CurrentState == GameState.BattlePlayerDead) // 0. 다음 선택문 반복
                 {
                     int select = UserChoice(CurrentState);
                     if (select == 0) // 다음
@@ -509,7 +509,7 @@ namespace textdungeon.Play
                         break;
                     }
                 }
-            } while (CurrentState != GameState.BattleGround);
+            } while (CurrentState == GameState.BattleEnemiesAttack || CurrentState == GameState.BattlePlayerDead);
             
         }
         // 전투에서 플레이어 패배
