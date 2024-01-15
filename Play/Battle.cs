@@ -31,29 +31,6 @@ namespace textdungeon.Play
 
         public void NewBattle(int level, int minLevel, int maxLevel,int enemieNum)
         {
-            maxLevel++;
-            Monsters = new List<Monster>() {
-                new Kobold(level + new Random().Next(minLevel, maxLevel))
-                ,new Goblin(level + new Random().Next(minLevel, maxLevel))
-                ,new Hobgoblin(level + new Random().Next(minLevel, maxLevel))
-                ,new Zombie(level + new Random().Next(minLevel, maxLevel))
-                ,new Ghost(level + new Random().Next(minLevel, maxLevel))
-                ,new Ghoul(level + new Random().Next(minLevel, maxLevel))
-                ,new Banshee(level + new Random().Next(minLevel, maxLevel))
-                ,new Skeleton(level + new Random().Next(minLevel, maxLevel))
-                ,new Undine(level + new Random().Next(minLevel, maxLevel))
-                ,new sylph(level + new Random().Next(minLevel, maxLevel))
-                ,new salamandra(level + new Random().Next(minLevel, maxLevel))
-                ,new Gnome(level + new Random().Next(minLevel, maxLevel))
-                ,new Troll(level + new Random().Next(minLevel, maxLevel))
-                ,new Orc(level + new Random().Next(minLevel, maxLevel))
-                ,new Ogre(level + new Random().Next(minLevel, maxLevel))
-                ,new OgreMage(level + new Random().Next(minLevel, maxLevel))
-                ,new Unicon(level + new Random().Next(minLevel, maxLevel))
-                ,new Titan(level + new Random().Next(minLevel, maxLevel))
-                ,new Dragon(level + new Random().Next(minLevel, maxLevel))
-            };
-
             Enemies.Clear();
             if (dungeonnum == 1)
             {
