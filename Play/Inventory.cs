@@ -17,7 +17,7 @@ namespace textdungeon.Play
         public void DisplayInventory()
         {
             Console.WriteLine("Inventory:");
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 Console.WriteLine($"{item.Name}");
             }
