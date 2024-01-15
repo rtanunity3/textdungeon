@@ -350,7 +350,7 @@ namespace textdungeon.Play
                         }
                         else
                         {
-                            response = ResponseCode.BADREQUEST;
+                            response = ResponseCode.NOTENOUGHMANA;
                         }
                         break;
                 }
@@ -783,7 +783,8 @@ namespace textdungeon.Play
                             }
                             break;
                         case "test":
-                            if (player != null) {
+                            if (player != null)
+                            {
                                 Debug.WriteLine(player.ClassBaseInfo.ToString());
                             }
                             break;
@@ -795,7 +796,6 @@ namespace textdungeon.Play
                             break;
                     }
                 }
-
             }
             return 0;
         }
