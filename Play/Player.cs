@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using textdungeon.Screen;
@@ -49,6 +50,7 @@ namespace textdungeon.Play
             new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
         };
 
+        public JsonElement ClassBaseInfo;
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
 
@@ -69,50 +71,39 @@ namespace textdungeon.Play
             Equipped = new Equipment();
         }
 
+        public void LoadClassInfo()
+        {
+            string jsonFilePath = "data/Class.json";
+            string jsonContent = File.ReadAllText(jsonFilePath);
+            JsonDocument ClassObj = JsonDocument.Parse(jsonContent);
+
+            ClassBaseInfo = ClassObj.RootElement.GetProperty("CharacterClass").GetProperty(Job.ToString());
+        }
+
         private void SetStats()
         {
-            switch (Job)
+            LoadClassInfo();
+            //Debug.WriteLine(jobObj.ToString());
+            AttPow = ClassBaseInfo.GetProperty("AttPow").GetInt32();
+            DefPow = ClassBaseInfo.GetProperty("DefPow").GetInt32();
+            MaxHealth = ClassBaseInfo.GetProperty("MaxHealth").GetInt32();
+            Health = ClassBaseInfo.GetProperty("Health").GetInt32();
+            MaxMana = ClassBaseInfo.GetProperty("MaxMana").GetInt32();
+            Mana = ClassBaseInfo.GetProperty("Mana").GetInt32();
+            Gold = ClassBaseInfo.GetProperty("Gold").GetInt32();
+
+            for (int i = 0; i < ClassBaseInfo.GetProperty("Skill").GetArrayLength(); i++)
             {
-                case CharacterClass.Warrior:
-                    AttPow = 10; DefPow = 5;
-                    Health = 100; Mana = 20;
-                    MaxHealth = 100; MaxMana = 20;
-                    Gold = 1000;
-                    Skill.Add(new Skill("강격", 1.2f, 5, SkillType.Single));
-                    Skill.Add(new Skill("이중타격", 1.8f, 15, SkillType.Single));
-                    break;
-                case CharacterClass.Mage:
-                    AttPow = 5; DefPow = 3;
-                    Health = 80; Mana = 50;
-                    MaxHealth = 80; MaxMana = 50;
-                    Gold = 3000;
-                    Skill.Add(new Play.Skill("불화살", 1.3f, 5, SkillType.Single));
-                    Skill.Add(new Play.Skill("블리자드", 1.8f, 20, SkillType.Multiple));
-                    break;
-                case CharacterClass.Archer:
-                    AttPow = 8; DefPow = 4;
-                    Health = 90; Mana = 30;
-                    MaxHealth = 90; MaxMana = 30;
-                    Gold = 1500;
-                    Skill.Add(new Play.Skill("연사", 0.9f, 10, SkillType.Multiple));
-                    Skill.Add(new Play.Skill("저격", 2.2f, 20, SkillType.Single));
-                    break;
-                case CharacterClass.Thief:
-                    AttPow = 7; DefPow = 3;
-                    Health = 85; Mana = 25;
-                    MaxHealth = 85; MaxMana = 25;
-                    Gold = 2500;
-                    Skill.Add(new Play.Skill("기습", 1.5f, 10, SkillType.Single));
-                    Skill.Add(new Play.Skill("함정", 2.0f, 15, SkillType.Single));
-                    break;
-                case CharacterClass.Cleric:
-                    AttPow = 6; DefPow = 4;
-                    Health = 95; Mana = 40;
-                    MaxHealth = 95; MaxMana = 40;
-                    Gold = 3000;
-                    Skill.Add(new Play.Skill("신성타격", 1.5f, 10, SkillType.Single));
-                    Skill.Add(new Play.Skill("치료", 1.5f, 10, SkillType.Self));
-                    break;
+                JsonElement skill = ClassBaseInfo.GetProperty("Skill")[i];
+                if (Enum.TryParse<SkillType>(skill.GetProperty("SkillType").GetString(), out SkillType thisType))
+                {
+                    Skill.Add(new Skill(
+                        skill.GetProperty("Name").GetString(),
+                        skill.GetProperty("DamagePercentage").GetSingle(),
+                        skill.GetProperty("Mana").GetInt32(),
+                        thisType
+                    ));
+                }
             }
         }
 
@@ -426,9 +417,13 @@ namespace textdungeon.Play
             }
             DisplayExp = Exp;
 
-            // 레벨 기준 공방 업데이트
-            AttPow = 10 + (int)((Level - 1) * 0.5); // 소수점은 버림
-            DefPow = 5 + (Level - 1);
+            // TODO : 레벨 기준 공방 업데이트
+            AttPow = ClassBaseInfo.GetProperty("AttPow").GetInt32() + (int)((Level - 1) * 0.5); // 소수점은 버림
+            DefPow = ClassBaseInfo.GetProperty("DefPow").GetInt32() + (Level - 1);
+            MaxHealth = ClassBaseInfo.GetProperty("MaxHealth").GetInt32() + ((Level - 1) * 20);
+            Health = ClassBaseInfo.GetProperty("Health").GetInt32() + ((Level - 1) * 20);
+            MaxMana = ClassBaseInfo.GetProperty("MaxMana").GetInt32() + (Level - 1) * 10;
+            Mana = ClassBaseInfo.GetProperty("Mana").GetInt32() + (Level - 1) * 10;
         }
 
         public void AddExp(int exp)
@@ -485,44 +480,100 @@ namespace textdungeon.Play
         }
 
 
-        public void TakeDamage(int damage)
+        //public void TakeDamage(int damage)
+        //{
+        //    // 임시
+        //    // 전투에 맞게 수정 바람
+        //    TakeDamage(SkillType.Normal, damage);
+        //}
+        //public void TakeDamage(SkillType skillType, int damage)
+        //{
+        //    // 회피 계산 일반공격이고 10%확률
+        //    if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
+        //    {
+        //        Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+        //        return;
+        //    }
+
+        //    // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
+        //    damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
+
+        //    // 치명타 계산 15%확률
+        //    if (Util.GenRandomFloat() <= 0.15)
+        //    {
+        //        damage = (int)Math.Floor(damage * 1.6f);
+        //    }
+
+        //    // 방어력 차감
+
+        //    // 데미지 적용
+        //    // hp 0 ~ MaxHealth 사이 유지
+        //    Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
+
+        //    // 사망확인
+        //    if (IsDead)
+        //    {
+        //        // 사망 동작
+
+        //    }
+        //}
+
+
+        public void ShowSkillList(int skillNo = 0)
         {
-            // 임시
-            // 전투에 맞게 수정 바람
-            TakeDamage(SkillType.Normal, damage);
-        }
-        public void TakeDamage(SkillType skillType, int damage)
-        {
-            // 회피 계산 일반공격이고 10%확률
-            if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
+            if (skillNo > 0)
             {
-                Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+                StringBuilder str = new StringBuilder();
+                str.Append($"{Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n   공격력 * {Skill[skillNo].DamagePercentage} 로 ");
+                switch (Skill[skillNo].SkillType)
+                {
+                    case SkillType.Single:
+                        str.Append($"하나의 적을 공격합니다.");
+                        break;
+                    case SkillType.Multiple:
+                        str.Append($"적 전체를 공격합니다.");
+                        break;
+                    case SkillType.Self:
+                        str.Append($"자신에게 주문을 겁니다.");
+                        break;
+                }
+
+                Console.WriteLine("[선택된 스킬]");
+                Console.WriteLine(str.ToString());
                 return;
             }
 
-            // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
-            damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
-
-            // 치명타 계산 15%확률
-            if (Util.GenRandomFloat() <= 0.15)
+            for (int i = 1; i < Skill.Count; i++)
             {
-                damage = (int)Math.Floor(damage * 1.6f);
-            }
+                StringBuilder str = new StringBuilder();
+                str.Append($"{Skill[i].Name} - MP {Skill[i].Mana}\n   공격력 * {Skill[i].DamagePercentage} 로 ");
+                switch (Skill[i].SkillType)
+                {
+                    case SkillType.Single:
+                        str.Append($"하나의 적을 공격합니다.");
+                        break;
+                    case SkillType.Multiple:
+                        str.Append($"적 전체를 공격합니다.");
+                        break;
+                    case SkillType.Self:
+                        str.Append($"자신에게 주문을 겁니다.");
+                        break;
+                }
 
-            // 방어력 차감
-
-            // 데미지 적용
-            // hp 0 ~ MaxHealth 사이 유지
-            Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
-
-            // 사망확인
-            if (IsDead)
-            {
-                // 사망 동작
-
+                Printing.SelectWriteLine(i, str.ToString());
             }
         }
 
+        public SkillType GetSkillType(int select)
+        {
+            return Skill[select].SkillType;
+        }
+
+
+        /// <summary>
+        /// 저장/불러오기
+        /// </summary>
+        /// <returns></returns>
         public string Serialize()
         {
             var options = new JsonSerializerOptions

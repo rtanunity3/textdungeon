@@ -44,11 +44,6 @@ namespace textdungeon.Play
             DropTable = new ItemDropTable();
         }
 
-        public void TakeDamage(SkillType skillType, int damage)
-        {
-            Health = Math.Max(Math.Min((Health - damage), 100), 0);
-        }
-
         public void LevelScailing(int level) 
         {
             //레벨에따라 추가되는스탯
