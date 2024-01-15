@@ -15,6 +15,8 @@ namespace textdungeon.Play
     {
         //선택한 던전의 번호를 알아오는 변수
         int dungeonnum = 0;
+        //선택한 던전의 난이도를 알아오는 변수
+        int dungeonlevel = 0;
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
         public string BattleEnemiesAttackMessage = "";
@@ -29,6 +31,11 @@ namespace textdungeon.Play
             dungeonnum = selectdungeon;
         }
 
+        //유저가 선택한 던전레벨을 알아호는 void함수
+        public void SelectDungeonLevel(int selectdungeonlevel)
+        {
+            dungeonlevel = selectdungeonlevel;
+        }
         public void NewBattle(int enemieNum)
         {
             Enemies.Clear();
@@ -38,9 +45,9 @@ namespace textdungeon.Play
                 {
                     List<Monster> Goblines = new List<Monster>()
                     {
-                        new Kobold(new Random().Next(1,4)),
-                        new Goblin(new Random().Next(1,4)),
-                        new Hobgoblin(new Random().Next(1,4)),
+                        new Kobold(new Random().Next(1,dungeonlevel)),
+                        new Goblin(new Random().Next(1,dungeonlevel)),
+                        new Hobgoblin(new Random().Next(1,dungeonlevel)),
                     };
                     Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
                     Enemies.Add(monster);
@@ -52,11 +59,11 @@ namespace textdungeon.Play
                 {
                     List<Monster> Undeads = new List<Monster>()
                     {
-                        new Zombie(new Random().Next(1,4)),
-                        new Ghost(new Random().Next(1,4)),
-                        new Ghoul(new Random().Next(1,4)),
-                        new Banshee(new Random().Next(1,4)),
-                        new Skeleton(new Random().Next(1,4))
+                        new Zombie(new Random().Next(1,dungeonlevel)),
+                        new Ghost(new Random().Next(1,dungeonlevel)),
+                        new Ghoul(new Random().Next(1,dungeonlevel)),
+                        new Banshee(new Random().Next(1,dungeonlevel)),
+                        new Skeleton(new Random().Next(1,dungeonlevel))
                     };
                     Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
                     Enemies.Add(monster);
@@ -68,16 +75,31 @@ namespace textdungeon.Play
                 {
                     List<Monster> Spirit = new List<Monster>()
                     {
-                        new Undine(new Random().Next(1,4)),
-                        new Sylph(new Random().Next(1,4)),
-                        new Salamandra(new Random().Next(1,4)),
-                        new Gnome(new Random().Next(1,4))
+                        new Undine(new Random().Next(1,dungeonlevel)),
+                        new Sylph(new Random().Next(1,dungeonlevel)),
+                        new Salamandra(new Random().Next(1,dungeonlevel)),
+                        new Gnome(new Random().Next(1,dungeonlevel))
                     };
                     Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
                     Enemies.Add(monster);
                 }
             }
             else if (dungeonnum == 4)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Orcs = new List<Monster>()
+                    {
+                        new Troll(new Random().Next(1,dungeonlevel)),
+                        new Orc(new Random().Next(1,dungeonlevel)),
+                        new Ogre(new Random().Next(1,dungeonlevel)),
+                        new OgreMage(new Random().Next(1,dungeonlevel))
+                    };
+                    Monster monster = Orcs[new Random().Next(0, Orcs.Count)];
+                    Enemies.Add(monster);
+                }
+            }
+            else if (dungeonnum == 5)
             {
                 for (int i = 0; i < enemieNum; i++)
                 {
@@ -89,7 +111,7 @@ namespace textdungeon.Play
                     Enemies.Add(monster);
                 }
             }
-            else if (dungeonnum == 5)
+            else if (dungeonnum == 6)
             {
                 for (int i = 0; i < enemieNum; i++)
                 {
@@ -101,7 +123,7 @@ namespace textdungeon.Play
                     Enemies.Add(monster);
                 }
             }
-            else if (dungeonnum == 6)
+            else if (dungeonnum == 7)
             {
                 for (int i = 0; i < enemieNum; i++)
                 {
@@ -374,11 +396,11 @@ namespace textdungeon.Play
                     Console.WriteLine();
                     Console.WriteLine($"던전에서 몬스터 {Enemies.Count}마리를 잡았습니다.");
                     Console.WriteLine();
-                    Console.WriteLine($"Lv.{player.Level} {player.Name}");
                     GetBattleReward(player);
+                    Console.WriteLine($"Lv.{player.Level} {player.Name}");
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
-                    Printing.SelectWriteLine(0, "다음");
+                    Console.WriteLine("0. 다음");
                     break;
                 case GameState.BattlePlayerDead:
                     Console.WriteLine("You Lose");

@@ -31,10 +31,11 @@ namespace textdungeon.Play
                 new Dungeon("", 0, 0, 0, 0),
                 new Dungeon("고블린 소굴", 40, 1000, 5 , 1),
                 new Dungeon("저주받은 지하묘지", 40, 1700, 11, 3),
-                new Dungeon("분노한 정령의숲", 40, 2500, 17, 5),
-                new Dungeon("유니콘 둥지",40, 2500, 17, 5),
-                new Dungeon("타이탄의 연무장", 40, 2500, 17, 5),
-                new Dungeon("드래곤 레어",40, 2500, 17, 5)
+                new Dungeon("분노한 정령의숲", 40, 2500, 20, 5),
+                new Dungeon("냄새나는 오크의 동굴", 40, 2500, 25, 5),
+                new Dungeon("유니콘 둥지",40, 2500, 35, 5),
+                new Dungeon("타이탄의 연무장", 38, 2500, 17, 5),
+                new Dungeon("드래곤 레어",40, 2500, 40, 5)
             };
         }
 

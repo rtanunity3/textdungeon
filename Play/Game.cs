@@ -233,8 +233,6 @@ namespace textdungeon.Play
         #region Dungeon
         private void DungeonMenu()
         {
-            Random rand = new Random();
-            int monsternum = rand.Next(1, 4);
             CurrentState = GameState.DungeonGate;
             while (CurrentState == GameState.DungeonGate)
             {
@@ -245,49 +243,84 @@ namespace textdungeon.Play
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(1);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
                         break;
                     case 2:
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(2);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
                         break;
                     case 3:
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(3);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
                         break;
                     case 4:
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(4);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
                         break;
                     case 5:
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(5);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
                         break;
                     case 6:
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(6);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
+                        SelectDungeonLevel();
+                        break;
+                    case 7:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(7);
+                        SelectDungeonLevel();
                         break;
                     default:
                         CurrentState = GameState.Village;
                         break;
                 }
             }
+        }
+        public void SelectDungeonLevel()
+        {
+            Random rand = new Random();
+            int monsternum = rand.Next(1, 4);
+            Console.Clear();
+            Printing.HighlightText("입장하실 던전난이도를 정해주세요\n\n", ConsoleColor.DarkYellow);
+            for (int i = 1; i <= 3; i++)
+            {
+                Printing.SelectWrite(i, $"레벨 {i}까지의 몬스터가 출현합니다\n");
+            }
+            CurrentState = GameState.DungeonLevelSelect;
+            while (CurrentState == GameState.DungeonLevelSelect)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 1:
+                        battle.SelectDungeonLevel(2);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 2:
+                        battle.SelectDungeonLevel(3);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 3:
+                        battle.SelectDungeonLevel(4);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                }
+            }
+
         }
 
         private void ExploreDungeon()
@@ -721,6 +754,9 @@ namespace textdungeon.Play
                         player.ShowQuestDetail(args[0]);
                         QuestState state = player.GetQuestState(args[0]);
                         inputCount = (state == QuestState.NotStarted || state == QuestState.ObjectiveCompleted) ? 2 : 1;
+                        break;
+                    case GameState.DungeonLevelSelect:
+                        inputCount = 4;
                         break;
                 }
 

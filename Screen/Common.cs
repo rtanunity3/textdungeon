@@ -25,7 +25,7 @@ namespace textdungeon.Screen
         BattlePlayerDead,
         Quest,
         QuestDetail,
-
+        DungeonLevelSelect,
     }
 
     public enum CharacterClass
