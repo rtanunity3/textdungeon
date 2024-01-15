@@ -150,8 +150,10 @@ namespace textdungeon.Play
         {
             Console.WriteLine("[내정보]");
             Console.WriteLine($"Lv.{player.Level} {player.Name} ({EnumHandler.GetjobKr(player.Job)})");
-            Console.WriteLine($"HP {player.Health}/{player.MaxHealth}");
-            Console.WriteLine($"MP {player.Mana}/{player.MaxMana}");
+            Console.Write("HP : ");
+            Printing.HighlightText($"{player.Health,3}/{player.MaxHealth}\n", ConsoleColor.Red);
+            Console.Write("MP : ");
+            Printing.HighlightText($"{player.Mana,3}/{player.MaxMana}\n", ConsoleColor.Blue);
         }
 
         /// <summary>
