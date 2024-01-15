@@ -139,7 +139,7 @@ namespace textdungeon.Play
             switch (Type)
             {
                 case QuestType.MonsterHunt:
-                    Console.WriteLine($"- 몬스터 잡기 : //FIXME{GoalId} ({CurGoalCount}/{GoalCount})");
+                    Console.WriteLine($"- 몬스터 잡기 ({CurGoalCount}/{GoalCount})");
                     break;
                 case QuestType.EquipItem:
                     Console.WriteLine("- 장비 착용하기");

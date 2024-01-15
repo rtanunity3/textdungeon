@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection.Emit;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using textdungeon.Screen;
 
@@ -28,6 +29,7 @@ namespace textdungeon.Play
         {
             dungeonnum = selectdungeon;
         }
+
         public void NewBattle(int enemieNum)
         {
             Enemies.Clear();
@@ -138,7 +140,7 @@ namespace textdungeon.Play
             for (int i = 0; i < Enemies.Count; i++)
             {
                 Console.Write(writeNum ? $"[{i + 1}]" : "");
-                if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray); 
+                if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray);
                 else Console.Write(Enemies[i].ToStringEnemie);
                 Console.WriteLine();
             }
@@ -147,14 +149,15 @@ namespace textdungeon.Play
         public void PrintPlayer(Player player)
         {
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv.{player.Level} {player.Name} (전사)");
-            Console.WriteLine($"HP {player.Health}/100");
+            Console.WriteLine($"Lv.{player.Level} {player.Name} ({EnumHandler.GetjobKr(player.Job)})");
+            Console.WriteLine($"HP {player.Health}/{player.MaxHealth}");
+            Console.WriteLine($"MP {player.Mana}/{player.MaxMana}");
         }
 
         /// <summary>
         /// 플레이어가 선택한 몬스터에게 대미지를 준다.
         /// </summary>
-        public bool PlayerAttackSelect(Player player,int select, int dmg, bool isSkill = false)
+        public bool PlayerAttackSelect(Player player, int select, int dmg, bool isSkill = false)
         {
             if (!(select > 0 && select <= Enemies.Count)) return false;
             Monster monster = Enemies[select - 1];
@@ -187,8 +190,104 @@ namespace textdungeon.Play
                 msg += $"{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\r\n";
                 msg += "\r\n";
                 msg += $"{monster.ToStringName}\r\n";
-                msg += $"HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}\r\n";
+                msg += $"HP {hp} -> {(monster.IsDead ? "Dead" : $"HP {monster.Health}")}\r\n";
+
                 BattleAttackEndMessage = msg;
+                return true;
+            }
+            return false;
+        }
+
+        public bool PlayerSkillAttackSelect(Player player, int skillNo, int select = 0)
+        {
+            if (player.Skill[skillNo].SkillType == SkillType.Single)
+            {
+                Monster monster = Enemies[select - 1];
+                if (!monster.IsDead) // 공격가능한 대상 선택함
+                {
+                    string msg = "";
+                    msg += $"{player.Name} 의 {player.Skill[skillNo].Name}!\r\n";
+
+                    int skillDamage = (int)(player.NormalDamage * player.Skill[skillNo].DamagePercentage);
+
+                    // 치명타 확률 15%, 데미지 160% 로 구현하기
+                    bool IsCritical = false;
+                    if (new Random().Next(0, 101) < 15)
+                    {
+                        IsCritical = true;
+                        skillDamage = Convert.ToInt32(skillDamage * 1.6);
+                    }
+
+                    int dmgRange = Convert.ToInt32(Math.Ceiling(skillDamage * 0.1));
+                    int finalDmg = skillDamage + new Random().Next(-dmgRange, dmgRange + 1);
+
+                    int hp = monster.Health;
+                    monster.Health -= finalDmg;
+                    player.Mana -= player.Skill[skillNo].Mana;
+
+                    msg += $"{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\r\n";
+                    msg += "\r\n";
+                    msg += $"{monster.ToStringName}\r\n";
+                    msg += $"HP {hp} -> {(monster.IsDead ? "Dead" : $"HP {monster.Health}")}\r\n";
+                    BattleAttackEndMessage = msg;
+                    return true;
+                }
+
+            }
+            else if (player.Skill[skillNo].SkillType == SkillType.Multiple)
+            {
+                int skillDamage = (int)(player.NormalDamage * player.Skill[skillNo].DamagePercentage);
+
+                // 전체공격
+                StringBuilder msg = new StringBuilder();
+                msg.Append($"{player.Name} 의 {player.Skill[skillNo].Name} 전체공격!\n");
+
+                for (int i = 0; i < Enemies.Count; i++)
+                {
+                    if (Enemies[i].IsDead)
+                    {
+                        // 죽은몹
+                        continue;
+                    }
+
+                    // 치명타 확률 15%, 데미지 160% 로 구현하기
+                    bool IsCritical = false;
+                    if (new Random().Next(0, 101) < 15)
+                    {
+                        IsCritical = true;
+                        skillDamage = Convert.ToInt32(skillDamage * 1.6);
+                    }
+
+                    int dmgRange = Convert.ToInt32(Math.Ceiling(skillDamage * 0.1));
+                    int finalDmg = skillDamage + new Random().Next(-dmgRange, dmgRange + 1);
+
+                    int hp = Enemies[i].Health;
+                    Enemies[i].Health -= finalDmg;
+
+                    msg.Append($"{Enemies[i].ToStringName}  [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\n");
+                    msg.Append($"  HP {hp} -> {(Enemies[i].IsDead ? "Dead" : $"HP {Enemies[i].Health}")}\n");
+                }
+                BattleAttackEndMessage = msg.ToString();
+                player.Mana -= player.Skill[skillNo].Mana;
+                return true;
+
+            }
+            else if (player.Skill[skillNo].SkillType == SkillType.Self)
+            {
+                // 자힐
+                int skillDamage = (int)(player.NormalDamage * player.Skill[skillNo].DamagePercentage);
+
+                int dmgRange = Convert.ToInt32(Math.Ceiling(skillDamage * 0.1));
+                int finalDmg = skillDamage + new Random().Next(-dmgRange, dmgRange + 1);
+
+                int hp = player.Health;
+                player.Health = Math.Max(Math.Min((player.Health + finalDmg), player.MaxHealth), 0);
+                player.Mana -= player.Skill[skillNo].Mana;
+
+                StringBuilder msg = new StringBuilder();
+                msg.Append($"{player.Name} 의 {player.Skill[skillNo].Name} 사용!\n");
+                msg.Append($"[치료량 : {finalDmg}] HP {hp} -> {player.Health}\n");
+                BattleAttackEndMessage = msg.ToString();
                 return true;
             }
             return false;
@@ -225,7 +324,7 @@ namespace textdungeon.Play
             else return GameState.BattleEnemiesAttack;
         }
 
-        public void DisplayBattle(bool writeNum, GameState gameState, Player player)
+        public void DisplayBattle(bool writeNum, GameState gameState, Player player, int skillNo = 0)
         {
             Console.Clear();
             Printing.HighlightText("Battle!!", ConsoleColor.DarkYellow);
@@ -238,14 +337,16 @@ namespace textdungeon.Play
                     Console.WriteLine();
                     PrintPlayer(player);
                     Console.WriteLine();
-                    Console.WriteLine("0. 공격");
+                    Printing.SelectWriteLine(1, "공격");
+                    Printing.SelectWriteLine(2, "스킬");
+                    Printing.SelectWriteLine(0, "도망");
                     break;
                 case GameState.BattleAttack:
                     PrintEnemies(writeNum);
                     Console.WriteLine();
                     PrintPlayer(player);
                     Console.WriteLine();
-                    Console.WriteLine("0. 공격취소");
+                    Printing.SelectWriteLine(0, "공격취소");
                     break;
                 case GameState.BattleAttackEnd:
                     Console.WriteLine(BattleAttackEndMessage);
@@ -277,10 +378,21 @@ namespace textdungeon.Play
                     Console.WriteLine("0. 다음");
                     break;
                 case GameState.BattleSkillList:
-                    Console.WriteLine("스킬목록 구현필요");
+                    PrintEnemies(writeNum);
+                    Console.WriteLine();
+                    PrintPlayer(player);
+                    Console.WriteLine();
+                    player.ShowSkillList();
+                    Printing.SelectWriteLine(0, "취소");
                     break;
+
                 case GameState.BattleSkillAttack:
-                    Console.WriteLine("스킬공격 구현필요");
+                    PrintEnemies(writeNum);
+                    Console.WriteLine();
+                    PrintPlayer(player);
+                    Console.WriteLine();
+                    player.ShowSkillList(skillNo);
+                    Printing.SelectWriteLine(0, "취소");
                     break;
             }
         }
