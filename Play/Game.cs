@@ -363,7 +363,7 @@ namespace textdungeon.Play
                 {
                     CurrentState = GameState.BattleGround;
                 }
-                else if (battle.PlayerAttackSelect(player, select)) // 공격대상 선택
+                else if (battle.PlayerAttackSelect(player, select, player.NormalDamage)) // 공격대상 선택(기본공격)
                 {
                     AttackBattleEnd();
                 }

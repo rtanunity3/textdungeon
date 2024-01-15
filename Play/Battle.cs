@@ -54,23 +54,43 @@ namespace textdungeon.Play
             Console.WriteLine($"HP {player.Health}/{player.MaxHealth}");
         }
 
-        public bool PlayerAttackSelect(Player player, int select)
+        /// <summary>
+        /// 플레이어가 선택한 몬스터에게 대미지를 준다.
+        /// </summary>
+        public bool PlayerAttackSelect(Player player,int select, int dmg, bool isSkill = false)
         {
-            if (select > 0 && select <= Enemies.Count) return false;
+            if (!(select > 0 && select <= Enemies.Count)) return false;
             Monster monster = Enemies[select - 1];
             if (!monster.IsDead) // 공격가능한 대상 선택함
             {
-                // 데미지 오차범위 10%(오차 0.5 -> 1로 소수점 올림)
-                int dmgRange = Convert.ToInt32(Math.Ceiling(player.AttPow + player.ItemAttPow * 0.1));
-                int dmg = player.AttPow + player.ItemAttPow + new Random().Next(-dmgRange, dmgRange + 1);
+                string msg = "";
+                msg += $"{player.Name} 의 공격!\r\n";
+                // 적의 회피확률 10%(스킬 제외)
+                if (!isSkill && new Random().Next(0, 101) < 10)
+                {
+                    msg += $"{monster.ToStringName} 을(를) 공격했지만 아무일도 일어나지 않았습니다.";
+                    BattleAttackEndMessage = msg;
+                    return true;
+                }
+
+                // 치명타 확률 15%, 데미지 160% 로 구현하기
+                bool IsCritical = false;
+                if (new Random().Next(0, 101) < 15)
+                {
+                    IsCritical = true;
+                    dmg = Convert.ToInt32(dmg * 1.6);
+                }
+
+                // 데미지 오차범위 10%(소수점 올림)
+                int dmgRange = Convert.ToInt32(Math.Ceiling(dmg * 0.1));
+                int finalDmg = dmg + new Random().Next(-dmgRange, dmgRange + 1);
+
                 int hp = monster.Health;
-                monster.Health -= dmg;
-
-                string msg = @$"{player.Name} 의 공격!
-{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {dmg}]
-
-{monster.ToStringName}
-HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
+                monster.Health -= finalDmg;
+                msg += $"{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\r\n";
+                msg += "\r\n";
+                msg += $"{monster.ToStringName}\r\n";
+                msg += $"HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}\r\n";
                 BattleAttackEndMessage = msg;
                 return true;
             }
@@ -98,30 +118,37 @@ HP {hp} -> {(monster.IsDead ? "Daed" : $"HP {monster.Health}")}";
                 }
 
             }
-
-            
             return false;
         }
 
+        /// <summary>
+        /// 공격차례가 남은 몬스터가 플레이어에게 대미지를 준다.
+        /// </summary>
         public GameState EnemiesAttack(Player player)
         {
             int len = BattleEnamiesAttackList.Count;
             if (len == 0) return GameState.BattleGround;
+
             int uniqueID = BattleEnamiesAttackList[len - 1];
             BattleEnamiesAttackList.RemoveAt(len - 1);
+
             Monster monster = Enemies.Find(e => e.UniqueID == uniqueID);
+
             int dmg = monster.AttPow - player.DefPow + player.ItemDefPow;
             if (dmg < 0) dmg = 0;
+
             int hp = player.Health;
             player.Health -= dmg;
             if (player.Health < 0) player.Health = 0;
-            string msg = @$"{monster.ToStringName} 의 공격!
-{player.Name} 을(를) 맞췄습니다. [데미지: {dmg}]
 
-Lv.{player.Level} {player.Name}
-HP {hp} -> {player.Health}
-";
+            string msg = "";
+            msg += $"{monster.ToStringName} 의 공격!\r\n";
+            msg += $"{player.Name} 을(를) 맞췄습니다. [데미지: {dmg}]\r\n";
+            msg += "\r\n";
+            msg += $"Lv.{player.Level} {player.Name}\r\n";
+            msg += $"HP {hp} -> {player.Health}\r\n";
             BattleEnemiesAttackMessage = msg;
+
             if (player.Health <= 0) return GameState.BattlePlayerDead;
             else return GameState.BattleEnemiesAttack;
         }

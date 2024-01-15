@@ -32,6 +32,7 @@ namespace textdungeon.Play
         public int Exp { get; set; } // 누적경험치 입니다.
         public int DisplayExp { get; set; } // 화면상에 보여질 경험치
         public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
+        public int NormalDamage => AttPow + ItemAttPow; // 기본공격시 대미지
 
         public int BaseAttPow { get; set; }
         public int BaseDefPow { get; set; }
