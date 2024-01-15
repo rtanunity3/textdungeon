@@ -676,7 +676,7 @@ namespace textdungeon.Play
                     // 전투 흐름 구현 필요
                     case GameState.BattleGround:
                         battle.DisplayBattle(false, GameState.BattleGround, player);
-                        inputCount = 2;
+                        inputCount = 3;
                         break;
                     case GameState.BattleAttack: // 공격 화면
                         battle.DisplayBattle(true, GameState.BattleAttack, player);

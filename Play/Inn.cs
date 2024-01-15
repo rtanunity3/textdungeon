@@ -15,7 +15,7 @@ namespace textdungeon.Play
             Console.Write("보유 골드 : ");
             Printing.HighlightText($"{player.Gold} G\n", ConsoleColor.Yellow);
             Console.Write("현재 체력 : ");
-            Printing.HighlightText($"{player.Health,3}/100\n", ConsoleColor.Red);
+            Printing.HighlightText($"{player.Health,3}/{player.MaxHealth}\n", ConsoleColor.Red);
 
             Console.WriteLine();
             Printing.SelectWriteLine(1, "휴식하기");

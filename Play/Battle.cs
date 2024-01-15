@@ -147,8 +147,9 @@ namespace textdungeon.Play
         public void PrintPlayer(Player player)
         {
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv.{player.Level} {player.Name} {EnumHandler.GetjobKr(player.Job)}");
+            Console.WriteLine($"Lv.{player.Level} {player.Name} ({EnumHandler.GetjobKr(player.Job)})");
             Console.WriteLine($"HP {player.Health}/{player.MaxHealth}");
+            Console.WriteLine($"MP {player.Mana}/{player.MaxMana}");
         }
 
         /// <summary>
