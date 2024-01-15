@@ -44,7 +44,7 @@ namespace textdungeon.Play
             DropTable = new ItemDropTable();
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(SkillType skillType, int damage)
         {
             Health = Math.Max(Math.Min((Health - damage), 100), 0);
         }

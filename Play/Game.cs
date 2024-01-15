@@ -280,6 +280,7 @@ namespace textdungeon.Play
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(6);
                         battle.NewBattle(monsternum);
+                        //battle.NewBattle(1, 0, 1, 3);
                         ExploreBattle();
                         break;
                     default:
@@ -334,12 +335,9 @@ namespace textdungeon.Play
                 {
                     CurrentState = GameState.BattleGround;
                 }
-                else if (select > 0 && select <= battle.Enemies.Count) // 공격대상 선택
+                else if (battle.PlayerAttackSelect(player, select, player.NormalDamage)) // 공격대상 선택(기본공격)
                 {
-                    if (battle.PlayerAttackSelect(player, select))
-                    {
-                        AttackBattleEnd();
-                    }
+                    AttackBattleEnd();
                 }
             }
         }
