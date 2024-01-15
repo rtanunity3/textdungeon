@@ -14,10 +14,10 @@ namespace textdungeon.Play
 
     // 마법사, 도적, 궁수 헬멧
     public class NoviceHood : Item { public NoviceHood() 
-            : base(false, false, 1004, 0, 1, "수련자 후드", "수련에 도움을 주는 후드입니다.", 3500) { } }
+            : base(false, false, 1004, 0, 1, "수련자 후드", "수련에 도움을 주는 후드입니다.", 1000) { } }
 
     public class NikeHood : Item { public NikeHood() 
-            : base(false, false, 1005, 0, 2, "나이키 후드", "명장 나이키가 만든 후드입니다.", 3500) { } }
+            : base(false, false, 1005, 0, 2, "나이키 후드", "명장 나이키가 만든 후드입니다.", 2000) { } }
     
     public class WhiteHood : Item { public WhiteHood() 
             : base(false, false, 1006, 0, 4, "백색 후드", "왠지 모르겠지만 이걸 입으면 멋질 것 같습니다.", 3500) { } }
@@ -38,11 +38,12 @@ namespace textdungeon.Play
             : base(false, false, 2004, 0, 5, "수련자 로브", "수련에 도움을 주는 로브입니다.", 1000) { } }
 
     public class ManaRobe : Item { public ManaRobe() 
-            : base(false, false, 2005, 0, 9, "마력의 로브", "마력회복에 도움이 된다고 홍보하는 로브입니다.", 1000) { } }
+            : base(false, false, 2005, 0, 9, "마력의 로브", "마력회복에 도움이 된다고 홍보하는 로브입니다.", 2000) { } }
     
     public class WhiteRobe : Item { public WhiteRobe() 
-            : base(false, false, 2006, 0, 15, "백색 로브", "왠지 모르겠지만 이걸 입으면 자신감이 생깁니다.", 1000) { } }
+            : base(false, false, 2006, 0, 15, "백색 로브", "왠지 모르겠지만 이걸 입으면 자신감이 생깁니다.", 3500) { } }
 
+    // 무기류
     //NOTE 전사 무기
     public class OldSword : Item { public OldSword() 
             : base(false, false, 3001, 4, 0, "낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", 1000) { } }
@@ -53,7 +54,6 @@ namespace textdungeon.Play
     public class SpartanSpear : Item { public SpartanSpear() 
             : base(false, false, 3003, 16, 0, "스파르타의 창", "스파르타의 전사들이 사용했다는 전설의 창입니다.", 3500) { } }
 
-    // 무기류
     //NOTE 마법사 무기
     public class NoviceCane : Item { public NoviceCane() 
             : base(false, false, 3004, 4, 0, "초보자의 지팡이", "마법에 입문한 자들이 사용하는 지팡이입니다.", 1000) { } }
@@ -144,7 +144,7 @@ namespace textdungeon.Play
         public int ManaRecoveryAmount { get; set; }
 
         public ManaPotion(int quantity = 1, int manaRecoveryAmount = 15) 
-            : base(false, false, 5002, 0, 0, "마나 포션", $"마나를 {manaRecoveryAmount} 회복 시켜주는 물약입니다.", 500, quantity)
+            : base(false, false, 5002, 0, 0, "마나 포션", $"마나를 {manaRecoveryAmount} 회복 시켜주는 물약입니다.", 300, quantity)
         {
             ManaRecoveryAmount = manaRecoveryAmount;
         }
@@ -183,149 +183,6 @@ namespace textdungeon.Play
                 return true;
             else
                 return false;
-        }
-    }
-
-    // 직업 별 아이템
-    // 전사
-    public class WarriorItems
-    {
-        public List<Item> List { get; private set; }
-
-        public WarriorItems()
-        {
-            List = new List<Item>()
-            {
-                new Item(false, false, 0, 0, 0, "", "", 0),
-                new HealingPotion(),
-                new ManaPotion(),
-                new PowerPotion(),
-                new NoviceHelmet(),
-                new IronHelmet(),
-                new SpartanHelmet(),
-                new NoviceArmor(),
-                new IronArmor(),
-                new SpartanArmor(),
-                new OldSword(),
-                new BronzeAxe(),
-                new SpartanSpear(),
-                new OldShield(),
-                new BronzeShield(),
-                new SpartanShield()
-            };
-        }
-    }
-
-    // 마법사
-    public class MageItems
-    {
-        public List<Item> List { get; private set; }
-
-        public MageItems()
-        {
-            List = new List<Item>()
-            {
-                new Item(false, false, 0, 0, 0, "", "", 0),
-                new HealingPotion(),
-                new ManaPotion(),
-                new PowerPotion(),
-                new NoviceHood(),
-                new NikeHood(),
-                new WhiteHood(),
-                new NoviceRobe(),
-                new ManaRobe(),
-                new WhiteRobe(),
-                new NoviceCane(),
-                new WhiteCane(),
-                new PastoralOakCane(),
-                new OldShield(),
-                new BronzeShield(),
-                new SpartanShield()
-            };
-        }
-    }
-
-    // 궁수
-    public class ArcherItems
-    {
-        public List<Item> List { get; private set; }
-
-        public ArcherItems()
-        {
-            List = new List<Item>()
-            {
-                new Item(false, false, 0, 0, 0, "", "", 0),
-                new HealingPotion(),
-                new ManaPotion(),
-                new PowerPotion(),
-                new NoviceHood(),
-                new NikeHood(),
-                new WhiteHood(),
-                new NoviceRobe(),
-                new ManaRobe(),
-                new WhiteRobe(),
-                new OldBow(),
-                new CrossBow(),
-                new CompoundBow()
-            };
-        }
-    }
-
-    // 도적
-    public class ThiefItems
-    {
-        public List<Item> List { get; private set; }
-
-        public ThiefItems()
-        {
-            List = new List<Item>()
-            {
-                new Item(false, false, 0, 0, 0, "", "", 0),
-                new HealingPotion(),
-                new ManaPotion(),
-                new PowerPotion(),
-                new NoviceHood(),
-                new NikeHood(),
-                new WhiteHood(),
-                new NoviceRobe(),
-                new ManaRobe(),
-                new WhiteRobe(),
-                new OldDagger(),
-                new MagicDagger(),
-                new KrisDagger(),
-                new OldShield(),
-                new BronzeShield(),
-                new SpartanShield()
-            };
-        }
-    }
-
-    // 성직자
-    public class ClericItems
-    {
-        public List<Item> List { get; private set; }
-
-        public ClericItems()
-        {
-            List = new List<Item>()
-            {
-                new Item(false, false, 0, 0, 0, "", "", 0),
-                new HealingPotion(),
-                new ManaPotion(),
-                new PowerPotion(),
-                new NoviceHelmet(),
-                new IronHelmet(),
-                new SpartanHelmet(),
-                new NoviceArmor(),
-                new IronArmor(),
-                new SpartanArmor(),
-                new OldMace(),
-                new MorningStar(),
-                new WarHammer(),
-                new OldShield(),
-                new BronzeShield(),
-                new SpartanShield()
-            };
         }
     }
 }
