@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using textdungeon.Screen;
 
 namespace textdungeon.Play
 {
@@ -40,7 +41,7 @@ namespace textdungeon.Play
             PlusGold = 0;
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(SkillType skillType, int damage)
         {
             Health = Math.Max(Math.Min((Health - damage), 100), 0);
         }
