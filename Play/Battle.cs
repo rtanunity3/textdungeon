@@ -13,6 +13,8 @@ namespace textdungeon.Play
     internal class Battle
     {
         private List<Monster> Monsters;
+        //선택한 던전의 번호를 알아오는 변수
+        int dungeonnum = 0;
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
         public string BattleEnemiesAttackMessage = "";
@@ -21,6 +23,11 @@ namespace textdungeon.Play
         /// <summary> 배틀입장시 플레이어 체력 </summary>
         public int PlayerPastHealth = 0;
 
+        //유저가 선택한 던전번호를 알아오는 void함수
+        public void SelectDungeon(int selectdungeon)
+        {
+            dungeonnum = selectdungeon;
+        }
         public void NewBattle(int level, int minLevel, int maxLevel,int enemieNum)
         {
             maxLevel++;
@@ -47,11 +54,103 @@ namespace textdungeon.Play
             };
 
             Enemies.Clear();
-            for (int i = 0; i < enemieNum; i++)
+            if (dungeonnum == 1)
             {
-                Monster monster = Monsters[new Random().Next(0, Monsters.Count)];
-                Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i));
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Goblines = new List<Monster>()
+                    { 
+                        new Kobold(new Random().Next(1,4)),
+                        new Goblin(new Random().Next(1,4)),
+                        new Hobgoblin(new Random().Next(1,4)),
+                    };
+                    Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
             }
+            else if (dungeonnum == 2)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Undeads = new List<Monster>()
+                    {
+                        new Zombie(new Random().Next(1,4)),
+                        new Ghost(new Random().Next(1,4)),
+                        new Ghoul(new Random().Next(1,4)),
+                        new Banshee(new Random().Next(1,4)),
+                        new Skeleton(new Random().Next(1,4))
+                    };
+                    Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
+            }
+            else if (dungeonnum == 3)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Spirit = new List<Monster>()
+                    {
+                        new Undine(new Random().Next(1,4)),
+                        new Sylph(new Random().Next(1,4)),
+                        new Salamandra(new Random().Next(1,4)),
+                        new Gnome(new Random().Next(1,4))
+                    };
+                    Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
+            }
+            else if (dungeonnum == 4)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Unicon = new List<Monster>()
+                    {
+                        new Unicon(1)
+                    };
+                    Monster monster = Unicon[new Random().Next(0, Unicon.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
+            }
+            else if (dungeonnum == 5)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Titan = new List<Monster>()
+                    {
+                        new Titan(1)
+                    };
+                    Monster monster = Titan[new Random().Next(0, Titan.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
+            }
+            else if (dungeonnum == 6)
+            {
+                for (int i = 0; i < enemieNum; i++)
+                {
+                    List<Monster> Dragon = new List<Monster>()
+                    {
+                        new Dragon(1)
+                    };
+                    Monster monster = Dragon[new Random().Next(0, Dragon.Count)];
+                    Enemies.Add(new Monster(monster.Name, monster.Health, monster.AttPow, monster.Gold, monster.Level, monster.ID, i, monster.GiveExp));
+                }
+            }
+        }
+        
+        public void GetBattleReward(Player player)
+        {
+            var playerGiveExp = 0;
+            var playerGiveGold = 0;
+            for (int i = 0; i < Enemies.Count; i++)
+            {
+                playerGiveExp += Enemies[i].GiveExp;
+                playerGiveGold += Enemies[i].Gold;
+            }
+            player.Gold += playerGiveGold;
+            player.AddExp(playerGiveExp);
+
+            //몬스터를 처치한다음 획득한 경험치를 표시
+            Console.WriteLine($"획득경험치{playerGiveExp}");
         }
 
         // 적 목록 출력
@@ -128,8 +227,7 @@ namespace textdungeon.Play
             BattleEnamiesAttackList.RemoveAt(len - 1);
 
             Monster monster = Enemies.Find(e => e.UniqueID == uniqueID);
-
-            int dmg = monster.AttPow - player.DefPow + player.ItemDefPow;
+            int dmg = monster.AttPow - (player.DefPow + player.ItemDefPow);
             if (dmg < 0) dmg = 0;
 
             int hp = player.Health;
@@ -186,6 +284,7 @@ namespace textdungeon.Play
                     Console.WriteLine($"던전에서 몬스터 {Enemies.Count}마리를 잡았습니다.");
                     Console.WriteLine();
                     Console.WriteLine($"Lv.{player.Level} {player.Name}");
+                    GetBattleReward(player);
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
                     Console.WriteLine("0. 다음");
