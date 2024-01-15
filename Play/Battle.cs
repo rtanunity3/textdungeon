@@ -38,7 +38,7 @@ namespace textdungeon.Play
                 for (int i = 0; i < enemieNum; i++)
                 {
                     List<Monster> Goblines = new List<Monster>()
-                    { 
+                    {
                         new Kobold(new Random().Next(1,4)),
                         new Goblin(new Random().Next(1,4)),
                         new Hobgoblin(new Random().Next(1,4)),
@@ -115,7 +115,7 @@ namespace textdungeon.Play
                 }
             }
         }
-        
+
         public void GetBattleReward(Player player)
         {
             var playerGiveExp = 0;
@@ -139,7 +139,9 @@ namespace textdungeon.Play
         {
             for (int i = 0; i < Enemies.Count; i++)
             {
-                Console.Write(writeNum ? $"[{i + 1}]" : "");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(writeNum ? $"[{i + 1}] " : " ");
+                Console.ResetColor();
                 if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray);
                 else Console.Write(Enemies[i].ToStringEnemie);
                 Console.WriteLine();
