@@ -317,7 +317,7 @@ namespace textdungeon.Play
                 {
                     case 1:
                         CurrentState = GameState.BattleAttack;
-                        AtteckBattle();
+                        AttackBattle();
                         break;
                     case 2: // TODO : 스킬
                         CurrentState = GameState.BattleSkillList;
@@ -347,7 +347,7 @@ namespace textdungeon.Play
                             // 마나 확인
                         if (player.Mana >= player.Skill[select].Mana)
                         {
-                            SkillAtteckBattle(select);
+                            SkillAttackBattle(select);
                         }
                         else
                         {
@@ -358,7 +358,7 @@ namespace textdungeon.Play
             }
         }
 
-        private void SkillAtteckBattle(int skillNo)
+        private void SkillAttackBattle(int skillNo)
         {
             CurrentState = GameState.BattleSkillAttack;
             while (CurrentState == GameState.BattleSkillAttack)
@@ -399,7 +399,7 @@ namespace textdungeon.Play
         }
 
         // 전투공격화면(작 몬스터를 선택해서 공격)
-        private void AtteckBattle()
+        private void AttackBattle()
         {
             CurrentState = GameState.BattleAttack;
             while (CurrentState == GameState.BattleAttack)
