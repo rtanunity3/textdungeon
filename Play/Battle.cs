@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using textdungeon.Screen;
@@ -11,12 +12,7 @@ namespace textdungeon.Play
 {
     internal class Battle
     {
-        private List<Monster> Monsters = new List<Monster>()
-        {
-            new Monster("미니언", 15, 10, 100, 2, 0, 0),
-            new Monster("대포미니언", 25, 15, 100, 5, 1, 0),
-            new Monster("공허충", 10, 7, 100, 3, 2, 0)
-        };
+        private List<Monster> Monsters;
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
         public string BattleEnemiesAttackMessage = "";
@@ -25,8 +21,31 @@ namespace textdungeon.Play
         /// <summary> 배틀입장시 플레이어 체력 </summary>
         public int PlayerPastHealth = 0;
 
-        public void NewBattle(int enemieNum)
+        public void NewBattle(int level, int minLevel, int maxLevel,int enemieNum)
         {
+            maxLevel++;
+            Monsters = new List<Monster>() {
+                new Kobold(level + new Random().Next(minLevel, maxLevel))
+                ,new Goblin(level + new Random().Next(minLevel, maxLevel))
+                ,new Hobgoblin(level + new Random().Next(minLevel, maxLevel))
+                ,new Zombie(level + new Random().Next(minLevel, maxLevel))
+                ,new Ghost(level + new Random().Next(minLevel, maxLevel))
+                ,new Ghoul(level + new Random().Next(minLevel, maxLevel))
+                ,new Banshee(level + new Random().Next(minLevel, maxLevel))
+                ,new Skeleton(level + new Random().Next(minLevel, maxLevel))
+                ,new Undine(level + new Random().Next(minLevel, maxLevel))
+                ,new sylph(level + new Random().Next(minLevel, maxLevel))
+                ,new salamandra(level + new Random().Next(minLevel, maxLevel))
+                ,new Gnome(level + new Random().Next(minLevel, maxLevel))
+                ,new Troll(level + new Random().Next(minLevel, maxLevel))
+                ,new Orc(level + new Random().Next(minLevel, maxLevel))
+                ,new Ogre(level + new Random().Next(minLevel, maxLevel))
+                ,new OgreMage(level + new Random().Next(minLevel, maxLevel))
+                ,new Unicon(level + new Random().Next(minLevel, maxLevel))
+                ,new Titan(level + new Random().Next(minLevel, maxLevel))
+                ,new Dragon(level + new Random().Next(minLevel, maxLevel))
+            };
+
             Enemies.Clear();
             for (int i = 0; i < enemieNum; i++)
             {
