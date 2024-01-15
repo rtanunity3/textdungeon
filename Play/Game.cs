@@ -280,6 +280,7 @@ namespace textdungeon.Play
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(6);
                         battle.NewBattle(monsternum);
+                        //battle.NewBattle(1, 0, 1, 3);
                         ExploreBattle();
                         break;
                     default:

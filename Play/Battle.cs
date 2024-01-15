@@ -12,6 +12,7 @@ namespace textdungeon.Play
 {
     internal class Battle
     {
+        private List<Monster> Monsters;
         //선택한 던전의 번호를 알아오는 변수
         int dungeonnum = 0;
         public List<Monster> Enemies = new List<Monster>();
