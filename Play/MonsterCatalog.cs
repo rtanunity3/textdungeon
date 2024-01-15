@@ -126,7 +126,7 @@ namespace textdungeon.Play
             PlusGold = 50;
             LevelScailing(level);
         }
-
+        
         // 아이템 드랍 테이블 설정.
         //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
         public override void SetDropTable(CharacterClass playerClass)
@@ -195,7 +195,7 @@ namespace textdungeon.Play
             PlusGold = 50;
             LevelScailing(level);
         }
-
+        
         // 아이템 드랍 테이블 설정.
         //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
         public override void SetDropTable(CharacterClass playerClass)
@@ -207,7 +207,7 @@ namespace textdungeon.Play
             DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
         }
     }
-
+    
     public class Sylph : Monster
     {
         public Sylph(int level) : base("실프", 35, 10, 250, level, 9, 0, 6)
