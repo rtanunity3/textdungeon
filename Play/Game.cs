@@ -232,6 +232,8 @@ namespace textdungeon.Play
         #region Dungeon
         private void DungeonMenu()
         {
+            Random rand = new Random();
+            int monsternum = rand.Next(1, 4);
             CurrentState = GameState.DungeonGate;
             while (CurrentState == GameState.DungeonGate)
             {
@@ -239,14 +241,45 @@ namespace textdungeon.Play
                 switch (select)
                 {
                     case 1:
-                    case 2:
-                    case 3:
-                        dungeonGate.SetExploreDungeon(select);
-                        ExploreDungeon();
-                        break;
-                    case 4: // 배틀 시작
                         battle.PlayerPastHealth = player.Health;
-                        battle.NewBattle(1, 0, 1, 3);
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(1);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 2:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(2);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 3:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(3);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 4:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(4);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 5:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(5);
+                        battle.NewBattle(monsternum);
+                        ExploreBattle();
+                        break;
+                    case 6:
+                        battle.PlayerPastHealth = player.Health;
+                        //유저가 선택한 던전의 번호를 입력받음
+                        battle.SelectDungeon(6);
+                        battle.NewBattle(monsternum);
                         ExploreBattle();
                         break;
                     default:

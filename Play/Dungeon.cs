@@ -29,9 +29,12 @@ namespace textdungeon.Play
             ReservedDungeon = 0;
             DungeonList = new List<Dungeon> {
                 new Dungeon("", 0, 0, 0, 0),
-                new Dungeon("쉬운 던전", 40, 1000, 5 , 1),
-                new Dungeon("일반 던전", 40, 1700, 11, 3),
-                new Dungeon("어려운 던전", 40, 2500, 17, 5)
+                new Dungeon("고블린 소굴", 40, 1000, 5 , 1),
+                new Dungeon("저주받은 지하묘지", 40, 1700, 11, 3),
+                new Dungeon("분노한 정령의숲", 40, 2500, 17, 5),
+                new Dungeon("유니콘 둥지",40, 2500, 17, 5),
+                new Dungeon("타이탄의 연무장", 40, 2500, 17, 5),
+                new Dungeon("드래곤 레어",40, 2500, 17, 5)
             };
         }
 
@@ -54,7 +57,6 @@ namespace textdungeon.Play
                 Console.SetCursorPosition(20, 2 + i);
                 Console.WriteLine($"| 방어력 {DungeonList[i].RecomDef} 이상 권장");
             }
-            Console.WriteLine("4. 임시전투 테스트");
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
