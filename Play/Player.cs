@@ -444,7 +444,12 @@ namespace textdungeon.Play
             {
                 // 객체를 그대로 가져오면 상점과 공유하게 되니 ShallowCopy 통해 추가.
                 Items.Add((Item)item.ShallowCopy());
+
+                Items.Sort(new ItemIdComparer());
+                //Items.OrderByDescending(item => item.ItemId).ToList();
             }
+
+
         }
 
         // ItemDropTable이 list로 item들을 return하여 list로 아이템을 받는 Method추가.
