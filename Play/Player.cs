@@ -444,7 +444,6 @@ namespace textdungeon.Play
             {
                 // 객체를 그대로 가져오면 상점과 공유하게 되니 ShallowCopy 통해 추가.
                 Items.Add((Item)item.ShallowCopy());
-
                 Items.Sort(new ItemIdComparer());
                 //Items.OrderByDescending(item => item.ItemId).ToList();
             }
@@ -467,6 +466,7 @@ namespace textdungeon.Play
                 {
                     // 객체 공유를 피하기 위한 ShallowCopy.
                     Items.Add((Item)item.ShallowCopy());
+                    Items.Sort(new ItemIdComparer());
                 }
             }
         }
