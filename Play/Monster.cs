@@ -18,13 +18,14 @@ namespace textdungeon.Play
         public int UniqueID { get; }
         public bool IsDead => Health <= 0;
         public string ToStringName => $"Lv.{Level} {Name}";
+        public int GiveExp { get; set; }
         public string ToStringEnemie => $"{ToStringName} {(IsDead ? "Dead" : $"HP {Health}")}";
         
         public int PlusAttPow { get; set; }
         public int PlusHealth { get; set; }
         public int PlusGold { get; set; } // TODO 보상골드를 랜덤값으로 설정할수있도록 수정
 
-        public Monster(string name, int health, int attPow, int gold, int level, int id, int uniqueID)
+        public Monster(string name, int health, int attPow, int gold, int level, int id, int uniqueID, int giveexp)
         {
             Name = name;
             Health = health;
@@ -33,6 +34,7 @@ namespace textdungeon.Play
             Level = level;
             ID = id;
             UniqueID = uniqueID;
+            GiveExp = giveexp;
             PlusAttPow = 0;
             PlusHealth = 0;
             PlusGold = 0;
@@ -43,7 +45,13 @@ namespace textdungeon.Play
             Health = Math.Max(Math.Min((Health - damage), 100), 0);
         }
 
-        public virtual void LevelScailing(int level) { }
+        public void LevelScailing(int level) 
+        {
+            //레벨에따라 추가되는스탯
+            AttPow += (level - 1) * PlusAttPow;
+            Health += (level - 1) * PlusHealth;
+            Gold += (level - 1) * PlusGold;
+        }
         
     }
 }
