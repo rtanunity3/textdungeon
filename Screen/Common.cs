@@ -15,6 +15,7 @@ namespace textdungeon.Screen
         DungeonGate,
         DungeonResult,
         Inn,
+        PlayerHealthWarning,
         BattleGround,
         BattleAttack,
         BattleAttackEnd,
