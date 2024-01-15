@@ -3,6 +3,14 @@ using System.Text.Json.Serialization;
 
 namespace textdungeon.Play
 {
+    class ItemIdComparer : IComparer<Item>
+    {
+        public int Compare(Item x, Item y)
+        {
+            return x.ItemId.CompareTo(y.ItemId); // Compare in descending order
+        }
+    }
+
     // 직렬화와 역직렬화때, Item class로 업캐스팅된 소모품 아이템들의 type을 명시하기 위함
     //NOTE 첫쨋줄이 없을 경우, 게임 로드 후 ItemCatalog에 여러 장비들이 불러와지지 않음.
     //NOTE 둘쨋줄이 없을 경우, 게임 로드 후 HealingPotion이 불러와지지 않음.
