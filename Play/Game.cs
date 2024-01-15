@@ -669,7 +669,7 @@ namespace textdungeon.Play
                         break;
                     case GameState.DungeonGate:
                         dungeonGate.DisplayDungeonList();
-                        inputCount = dungeonGate.DunCount() + 1;
+                        inputCount = dungeonGate.DunCount();
                         break;
                     case GameState.DungeonResult:
                         dungeonGate.ExploreDungeonResult(player);
