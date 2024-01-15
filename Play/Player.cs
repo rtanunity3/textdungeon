@@ -50,7 +50,7 @@ namespace textdungeon.Play
             new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
         };
 
-        private JsonElement ClassBaseInfo;
+        public JsonElement ClassBaseInfo;
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
 

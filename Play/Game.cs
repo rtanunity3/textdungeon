@@ -783,6 +783,9 @@ namespace textdungeon.Play
                             }
                             break;
                         case "test":
+                            if (player != null) {
+                                Debug.WriteLine(player.ClassBaseInfo.ToString());
+                            }
                             break;
                         case "questtest":
 
