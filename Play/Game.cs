@@ -132,7 +132,6 @@ namespace textdungeon.Play
             CurrentState = GameState.Village;
             while (true)
             {
-                Debug.WriteLine("메인게임루프");
                 int select = UserChoice(GameState.Village);
                 switch (select)
                 {
@@ -301,7 +300,6 @@ namespace textdungeon.Play
             CurrentState = GameState.PlayerHealthWarning;
             while (CurrentState == GameState.PlayerHealthWarning)
             {
-                Debug.WriteLine("여기 확인");
                 int select = UserChoice(CurrentState);
                 switch (select)
                 {
@@ -463,7 +461,6 @@ namespace textdungeon.Play
                     }
                     else
                     {
-                        Debug.WriteLine(battle.Enemies.Count);
                         player.UpdateQuestProgress(QuestType.MonsterHunt, 0, battle.Enemies.Count);
                         PlayerWinBattle();
                     }
@@ -646,7 +643,6 @@ namespace textdungeon.Play
         
         private int UserChoice(GameState gameState, int[] args = null)
         {
-            Debug.WriteLine(CurrentState);
             menuActive = true;
             int inputCount = 0;
             while (menuActive)
