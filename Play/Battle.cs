@@ -344,6 +344,8 @@ namespace textdungeon.Play
                     Printing.SelectWriteLine(1, "공격");
                     Printing.SelectWriteLine(2, "스킬");
                     Printing.SelectWriteLine(0, "도망");
+                    Console.WriteLine();
+                    Printing.HighlightText("플레이어 턴", ConsoleColor.Green);
                     break;
                 case GameState.BattleAttack:
                     PrintEnemies(writeNum);
@@ -351,16 +353,22 @@ namespace textdungeon.Play
                     PrintPlayer(player);
                     Console.WriteLine();
                     Printing.SelectWriteLine(0, "공격취소");
+                    Console.WriteLine();
+                    Printing.HighlightText("플레이어 턴", ConsoleColor.Green);
                     break;
                 case GameState.BattleAttackEnd:
                     Console.WriteLine(BattleAttackEndMessage);
                     Console.WriteLine();
-                    Console.WriteLine("0. 다음");
+                    Printing.SelectWriteLine(0, "다음");
+                    Console.WriteLine();
+                    Printing.HighlightText("플레이어 턴", ConsoleColor.Green);
                     break;
                 case GameState.BattleEnemiesAttack:
                     Console.WriteLine(BattleEnemiesAttackMessage);
                     Console.WriteLine();
-                    Console.WriteLine("0. 다음");
+                    Printing.SelectWriteLine(0, "다음");
+                    Console.WriteLine();
+                    Printing.HighlightText("적 턴", ConsoleColor.Green);
                     break;
                 case GameState.BattlePlayerWin:
                     Console.WriteLine("Victory");
@@ -371,7 +379,7 @@ namespace textdungeon.Play
                     GetBattleReward(player);
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
-                    Console.WriteLine("0. 다음");
+                    Printing.SelectWriteLine(0, "다음");
                     break;
                 case GameState.BattlePlayerDead:
                     Console.WriteLine("You Lose");
@@ -379,7 +387,7 @@ namespace textdungeon.Play
                     Console.WriteLine($"Lv.{player.Level} {player.Name}");
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
-                    Console.WriteLine("0. 다음");
+                    Printing.SelectWriteLine(0, "다음");
                     break;
                 case GameState.BattleSkillList:
                     PrintEnemies(writeNum);
@@ -388,6 +396,8 @@ namespace textdungeon.Play
                     Console.WriteLine();
                     player.ShowSkillList();
                     Printing.SelectWriteLine(0, "취소");
+                    Console.WriteLine();
+                    Printing.HighlightText("플레이어 턴", ConsoleColor.Green);
                     break;
 
                 case GameState.BattleSkillAttack:
@@ -396,7 +406,10 @@ namespace textdungeon.Play
                     PrintPlayer(player);
                     Console.WriteLine();
                     player.ShowSkillList(skillNo);
+                    Console.WriteLine();
                     Printing.SelectWriteLine(0, "취소");
+                    Console.WriteLine();
+                    Printing.HighlightText("플레이어 턴", ConsoleColor.Green);
                     break;
             }
         }
