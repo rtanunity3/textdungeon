@@ -132,6 +132,7 @@ namespace textdungeon.Play
             CurrentState = GameState.Village;
             while (true)
             {
+                Debug.WriteLine("메인게임루프");
                 int select = UserChoice(GameState.Village);
                 switch (select)
                 {
@@ -233,6 +234,11 @@ namespace textdungeon.Play
         #region Dungeon
         private void DungeonMenu()
         {
+            if (player.Health <= 0)
+            {
+                PlayerHealthWarning();
+                return;
+            }
             Random rand = new Random();
             int monsternum = rand.Next(1, 4);
             CurrentState = GameState.DungeonGate;
@@ -289,7 +295,22 @@ namespace textdungeon.Play
                 }
             }
         }
-
+        
+        private void PlayerHealthWarning()
+        {
+            CurrentState = GameState.PlayerHealthWarning;
+            while (CurrentState == GameState.PlayerHealthWarning)
+            {
+                Debug.WriteLine("여기 확인");
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Village;
+                        break;
+                }
+            }
+        }
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
@@ -480,7 +501,7 @@ namespace textdungeon.Play
                         break;
                 }
 
-                while (CurrentState != GameState.BattleGround) // 0. 다음 선택문 반복
+                while (CurrentState == GameState.BattleEnemiesAttack || CurrentState == GameState.BattlePlayerDead) // 0. 다음 선택문 반복
                 {
                     int select = UserChoice(CurrentState);
                     if (select == 0) // 다음
@@ -488,7 +509,7 @@ namespace textdungeon.Play
                         break;
                     }
                 }
-            } while (CurrentState != GameState.BattleGround);
+            } while (CurrentState == GameState.BattleEnemiesAttack || CurrentState == GameState.BattlePlayerDead);
             
         }
         // 전투에서 플레이어 패배
@@ -622,9 +643,10 @@ namespace textdungeon.Play
             }
         }
         #endregion
-
+        
         private int UserChoice(GameState gameState, int[] args = null)
         {
+            Debug.WriteLine(CurrentState);
             menuActive = true;
             int inputCount = 0;
             while (menuActive)
@@ -678,6 +700,10 @@ namespace textdungeon.Play
                     case GameState.Inn:
                         inn.InnMenu(player);
                         inputCount = 2;
+                        break;
+                    case GameState.PlayerHealthWarning: // 체력이 0일시 던전입장 제한
+                        dungeonGate.DisplayHealthWarning();
+                        inputCount = 1;
                         break;
                     case GameState.BattleGround: // 배틀 메뉴(공격, 스킬, 도망) 화면
                         battle.DisplayBattle(false, GameState.BattleGround, player);
