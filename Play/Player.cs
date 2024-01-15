@@ -524,7 +524,7 @@ namespace textdungeon.Play
             if (skillNo > 0)
             {
                 StringBuilder str = new StringBuilder();
-                str.Append($"({Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n   공격력 * {Skill[skillNo].DamagePercentage} 로 ");
+                str.Append($"{Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n   공격력 * {Skill[skillNo].DamagePercentage} 로 ");
                 switch (Skill[skillNo].SkillType)
                 {
                     case SkillType.Single:
@@ -546,7 +546,7 @@ namespace textdungeon.Play
             for (int i = 1; i < Skill.Count; i++)
             {
                 StringBuilder str = new StringBuilder();
-                str.Append($"({Skill[i].Name} - MP {Skill[i].Mana}\n   공격력 * {Skill[i].DamagePercentage} 로 ");
+                str.Append($"{Skill[i].Name} - MP {Skill[i].Mana}\n   공격력 * {Skill[i].DamagePercentage} 로 ");
                 switch (Skill[i].SkillType)
                 {
                     case SkillType.Single:
@@ -568,8 +568,6 @@ namespace textdungeon.Play
         {
             return Skill[select].SkillType;
         }
-
-
 
 
         /// <summary>
