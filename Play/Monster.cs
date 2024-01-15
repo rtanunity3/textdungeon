@@ -41,10 +41,10 @@ namespace textdungeon.Play
             PlusGold = 0;
         }
 
-        public void TakeDamage(SkillType skillType, int damage)
-        {
-            Health = Math.Max(Math.Min((Health - damage), 100), 0);
-        }
+        //public void TakeDamage(SkillType skillType, int damage)
+        //{
+        //    Health = Math.Max(Math.Min((Health - damage), 100), 0);
+        //}
 
         public void LevelScailing(int level) 
         {

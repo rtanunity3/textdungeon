@@ -105,6 +105,7 @@ namespace textdungeon.Play
 
                     case 2:
                         player = LoadGame();
+                        player.LoadClassInfo();
                         player.EquipItemAll();
                         // 직업에 맞춰 아이템 생성을 위한 ItemInit
                         store.ItemInit(player.Job);
@@ -343,7 +344,15 @@ namespace textdungeon.Play
                         break;
                     case 1: // TODO : 스킬선택 1
                     case 2: // TODO : 스킬선택 2
-                        SkillAtteckBattle(select);
+                            // 마나 확인
+                        if (player.Mana >= player.Skill[select].Mana)
+                        {
+                            SkillAtteckBattle(select);
+                        }
+                        else
+                        {
+                            response = ResponseCode.BADREQUEST;
+                        }
                         break;
                 }
             }
@@ -372,14 +381,17 @@ namespace textdungeon.Play
                         break;
                     case SkillType.Multiple:
                         // 전체공격 후 결과 화면 출력
-
-
-
-
+                        if (battle.PlayerSkillAttackSelect(player, skillNo))
+                        {
+                            AttackBattleEnd();
+                        }
                         break;
                     case SkillType.Self:
                         // 본인에게 주문
-
+                        if (battle.PlayerSkillAttackSelect(player, skillNo))
+                        {
+                            AttackBattleEnd();
+                        }
                         break;
                 }
 

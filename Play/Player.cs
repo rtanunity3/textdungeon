@@ -34,8 +34,6 @@ namespace textdungeon.Play
         public bool IsDead => Health <= 0; // IsDead가 호출될때 작동
         public int NormalDamage => AttPow + ItemAttPow; // 기본공격시 대미지
 
-        public int BaseAttPow { get; set; }
-        public int BaseDefPow { get; set; }
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
@@ -52,6 +50,7 @@ namespace textdungeon.Play
             new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
         };
 
+        private JsonElement ClassBaseInfo;
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
         int itemInfoTableTop = 4;
 
@@ -72,27 +71,30 @@ namespace textdungeon.Play
             Equipped = new Equipment();
         }
 
-        private void SetStats()
+        public void LoadClassInfo()
         {
             string jsonFilePath = "data/Class.json";
             string jsonContent = File.ReadAllText(jsonFilePath);
             JsonDocument ClassObj = JsonDocument.Parse(jsonContent);
 
-            JsonElement jobObj = ClassObj.RootElement.GetProperty("CharacterClass").GetProperty(Job.ToString());
-            //Debug.WriteLine(jobObj.ToString());
-            AttPow = jobObj.GetProperty("AttPow").GetInt32();
-            BaseAttPow = AttPow;
-            DefPow = jobObj.GetProperty("DefPow").GetInt32();
-            BaseDefPow = DefPow;
-            MaxHealth = jobObj.GetProperty("MaxHealth").GetInt32();
-            Health = jobObj.GetProperty("Health").GetInt32();
-            MaxMana = jobObj.GetProperty("MaxMana").GetInt32();
-            Mana = jobObj.GetProperty("Mana").GetInt32();
-            Gold = jobObj.GetProperty("Gold").GetInt32();
+            ClassBaseInfo = ClassObj.RootElement.GetProperty("CharacterClass").GetProperty(Job.ToString());
+        }
 
-            for (int i = 0; i < jobObj.GetProperty("Skill").GetArrayLength(); i++)
+        private void SetStats()
+        {
+            LoadClassInfo();
+            //Debug.WriteLine(jobObj.ToString());
+            AttPow = ClassBaseInfo.GetProperty("AttPow").GetInt32();
+            DefPow = ClassBaseInfo.GetProperty("DefPow").GetInt32();
+            MaxHealth = ClassBaseInfo.GetProperty("MaxHealth").GetInt32();
+            Health = ClassBaseInfo.GetProperty("Health").GetInt32();
+            MaxMana = ClassBaseInfo.GetProperty("MaxMana").GetInt32();
+            Mana = ClassBaseInfo.GetProperty("Mana").GetInt32();
+            Gold = ClassBaseInfo.GetProperty("Gold").GetInt32();
+
+            for (int i = 0; i < ClassBaseInfo.GetProperty("Skill").GetArrayLength(); i++)
             {
-                JsonElement skill = jobObj.GetProperty("Skill")[i];
+                JsonElement skill = ClassBaseInfo.GetProperty("Skill")[i];
                 if (Enum.TryParse<SkillType>(skill.GetProperty("SkillType").GetString(), out SkillType thisType))
                 {
                     Skill.Add(new Skill(
@@ -415,9 +417,13 @@ namespace textdungeon.Play
             }
             DisplayExp = Exp;
 
-            // 레벨 기준 공방 업데이트
-            AttPow = BaseAttPow + (int)((Level - 1) * 0.5); // 소수점은 버림
-            DefPow = BaseDefPow + (Level - 1);
+            // TODO : 레벨 기준 공방 업데이트
+            AttPow = ClassBaseInfo.GetProperty("AttPow").GetInt32() + (int)((Level - 1) * 0.5); // 소수점은 버림
+            DefPow = ClassBaseInfo.GetProperty("DefPow").GetInt32() + (Level - 1);
+            MaxHealth = ClassBaseInfo.GetProperty("MaxHealth").GetInt32() + ((Level - 1) * 20);
+            Health = ClassBaseInfo.GetProperty("Health").GetInt32() + ((Level - 1) * 20);
+            MaxMana = ClassBaseInfo.GetProperty("MaxMana").GetInt32() + (Level - 1) * 10;
+            Mana = ClassBaseInfo.GetProperty("Mana").GetInt32() + (Level - 1) * 10;
         }
 
         public void AddExp(int exp)
@@ -474,43 +480,43 @@ namespace textdungeon.Play
         }
 
 
-        public void TakeDamage(int damage)
-        {
-            // 임시
-            // 전투에 맞게 수정 바람
-            TakeDamage(SkillType.Normal, damage);
-        }
-        public void TakeDamage(SkillType skillType, int damage)
-        {
-            // 회피 계산 일반공격이고 10%확률
-            if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
-            {
-                Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
-                return;
-            }
+        //public void TakeDamage(int damage)
+        //{
+        //    // 임시
+        //    // 전투에 맞게 수정 바람
+        //    TakeDamage(SkillType.Normal, damage);
+        //}
+        //public void TakeDamage(SkillType skillType, int damage)
+        //{
+        //    // 회피 계산 일반공격이고 10%확률
+        //    if (skillType == SkillType.Normal && Util.GenRandomFloat() <= 0.1)
+        //    {
+        //        Console.WriteLine($"{this.Name} 을(를) 공격했지만 아무일도 일어나지 않았습니다.");
+        //        return;
+        //    }
 
-            // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
-            damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
+        //    // 민/맥스 데미지(소수점 올림) 구해서 랜덤 데미지 구함
+        //    damage = Util.GenRandomNumber((int)Math.Floor(damage * 0.9), (int)Math.Ceiling(damage * 1.1));
 
-            // 치명타 계산 15%확률
-            if (Util.GenRandomFloat() <= 0.15)
-            {
-                damage = (int)Math.Floor(damage * 1.6f);
-            }
+        //    // 치명타 계산 15%확률
+        //    if (Util.GenRandomFloat() <= 0.15)
+        //    {
+        //        damage = (int)Math.Floor(damage * 1.6f);
+        //    }
 
-            // 방어력 차감
+        //    // 방어력 차감
 
-            // 데미지 적용
-            // hp 0 ~ MaxHealth 사이 유지
-            Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
+        //    // 데미지 적용
+        //    // hp 0 ~ MaxHealth 사이 유지
+        //    Health = Math.Max(Math.Min((Health - damage), MaxHealth), 0);
 
-            // 사망확인
-            if (IsDead)
-            {
-                // 사망 동작
+        //    // 사망확인
+        //    if (IsDead)
+        //    {
+        //        // 사망 동작
 
-            }
-        }
+        //    }
+        //}
 
 
         public void ShowSkillList(int skillNo = 0)

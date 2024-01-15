@@ -68,6 +68,7 @@ namespace textdungeon.Screen
         BADREQUEST = 200,
         ALREADYBOUGHT,
         NOTENOUGHGOLD,
+        NOTENOUGHMANA,
     }
 
     public enum EquipmentType
@@ -146,6 +147,9 @@ namespace textdungeon.Screen
                     return "이미 구매한 아이템입니다.\n";
                 case ResponseCode.NOTENOUGHGOLD:
                     return "골드가 부족합니다.\n";
+
+                case ResponseCode.NOTENOUGHMANA:
+                    return "마나가 부족합니다.\n";
                 default:
                     return responseCode.ToString();
             }
