@@ -114,7 +114,6 @@
 
 [![Video Label](http://img.youtube.com/vi/4Tx0n6-yWxM/0.jpg)](https://www.youtube.com/watch?v=4Tx0n6-yWxM)
 
-
 # 개발팀 소개
 
 ## 개발 인원
