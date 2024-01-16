@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,8 +41,8 @@ namespace textdungeon.Play
         public List<Quest> QuestList { get; set; }
 
         public JsonElement ClassBaseInfo;
-        int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
-        int itemInfoTableTop = 4;
+        int[] itemTableColWidth = { 27, 40, 53, 106, 116 };
+        int itemInfoTableTop = 8;
 
         public Player() { }
         public Player(string name, CharacterClass select)
@@ -131,54 +132,68 @@ namespace textdungeon.Play
             CalcItemStat();
 
             Console.Clear();
-
-            Console.SetCursorPosition(30, 3);
+            Printing.DrawFrame();
+            Console.SetCursorPosition(2, 5);
+            Printing.DrawShield();
+            Console.SetCursorPosition(100, 4);
+            Printing.DrawSword();
+            Console.SetCursorPosition(70, 7);
             Printing.HighlightText("착용장비", ConsoleColor.DarkYellow);
-            Console.SetCursorPosition(30, 4);
+            Console.SetCursorPosition(70, 9);
             Console.WriteLine($"투구 : {GetItemName(Equipped.Head)}");
-            Console.SetCursorPosition(30, 5);
+            Console.SetCursorPosition(70, 10);
             Console.WriteLine($"갑옷 : {GetItemName(Equipped.Body)}");
-            Console.SetCursorPosition(30, 6);
+            Console.SetCursorPosition(70, 11);
             Console.WriteLine($"무기 : {GetItemName(Equipped.Weapon)}");
-            Console.SetCursorPosition(30, 7);
+            Console.SetCursorPosition(70, 12);
             Console.WriteLine($"방패 : {GetItemName(Equipped.Shield)}");
-            Console.SetCursorPosition(0, 0);
 
+            Console.SetCursorPosition(25, 6);
             Printing.HighlightText("상태 보기", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             //필요경험치 = Level * Level , 추후 변경해야함
             // Level ^ 2 + Level * 3
             Console.WriteLine($"Lv.: {Level:D2} (Exp:{DisplayExp}/{Math.Pow(Level, 2) + Level * 3})");
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Printing.HighlightText($"{Name} ({EnumHandler.GetjobKr(Job)})\n", ConsoleColor.White);
 
             //
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.Write("HP : ");
             Printing.HighlightText($"{Health,3}/{MaxHealth}\n", ConsoleColor.Red);
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.Write("MP : ");
             Printing.HighlightText($"{Mana,3}/{MaxMana}\n", ConsoleColor.Blue);
 
             //
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.Write($"공격력 : {AttPow + ItemAttPow,2}");
             if (ItemAttPow > 0) { Printing.HighlightText($" (+{ItemAttPow,2})", ConsoleColor.Cyan); }
             Console.WriteLine();
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.Write($"방어력 : {DefPow + ItemDefPow,2}");
             if (ItemDefPow > 0) { Printing.HighlightText($" (+{ItemDefPow,2})", ConsoleColor.Cyan); }
             Console.WriteLine();
 
             //
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Console.Write("Gold : ");
             Printing.HighlightText($"{Gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
             Console.WriteLine();
 
 
+            Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
             Printing.HighlightText("스킬\n", ConsoleColor.DarkYellow);
             Printing.SkillInfoTableTitle();
 
             for (int i = 1; i < Skill.Count; i++)
             {
+                Console.SetCursorPosition(25, Console.GetCursorPosition().Top);
                 Console.Write($"[{i}] : {Util.PadRightMixedText(Skill[i].Name, 10)}");
                 Console.Write($"{Util.PadRightMixedText(EnumHandler.GetSkillTypeKr(Skill[i].SkillType), 10)}");
                 Printing.HighlightText($"{Skill[i].Mana}".PadRight(10), ConsoleColor.Blue);
@@ -188,8 +203,7 @@ namespace textdungeon.Play
                 Console.WriteLine();
             }
 
-            Console.WriteLine();
-            Console.WriteLine();
+            Console.SetCursorPosition(54, Console.GetCursorPosition().Top + 3);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
@@ -197,10 +211,14 @@ namespace textdungeon.Play
         public void DisplayInventory()
         {
             Console.Clear();
+            Printing.DrawFrame(true);
+            Console.SetCursorPosition(7, 3);
             Printing.HighlightText("인벤토리", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[아이템 목록]");
 
             Printing.ItemInfoTableTitle(itemTableColWidth, itemInfoTableTop);
@@ -209,7 +227,9 @@ namespace textdungeon.Play
                 Items[i].ItemInfoWrite(itemTableColWidth, itemInfoTableTop, i, false, false);
             }
             Console.WriteLine();
+            Console.SetCursorPosition(52, Console.GetCursorPosition().Top + 2);
             Printing.SelectWriteLine(1, "장착 관리");
+            Console.SetCursorPosition(52, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
@@ -217,10 +237,14 @@ namespace textdungeon.Play
         public void EquipmentManager()
         {
             Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(7, 3);
             Printing.HighlightText("인벤토리 - 장착관리", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[아이템 목록]");
 
             Printing.ItemInfoTableTitle(itemTableColWidth, itemInfoTableTop);
@@ -229,6 +253,7 @@ namespace textdungeon.Play
                 Items[i].ItemInfoWrite(itemTableColWidth, itemInfoTableTop, i, true, false);
             }
             Console.WriteLine();
+            Console.SetCursorPosition(52, Console.GetCursorPosition().Top + 2);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
@@ -421,7 +446,8 @@ namespace textdungeon.Play
                 Level++;
                 Exp -= maxExp;
                 maxExp = (int)Math.Pow(Level, 2) + Level * 3;
-                Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다");
+                Console.SetCursorPosition(Console.GetCursorPosition().Left - 15, Console.GetCursorPosition().Top);
+                Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다.");
                 UpdateQuestProgress(QuestType.LevelUp, 0, 1);
 
 
@@ -500,22 +526,27 @@ namespace textdungeon.Play
             if (skillNo > 0)
             {
                 StringBuilder str = new StringBuilder();
-                str.Append($"{Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n   공격력 * {Skill[skillNo].DamagePercentage} 로 ");
+                str.Append($"{Skill[skillNo].Name} - MP {Skill[skillNo].Mana}\n공격력 * {Skill[skillNo].DamagePercentage} 로 ");
                 switch (Skill[skillNo].SkillType)
                 {
                     case SkillType.Single:
-                        str.Append($"하나의 적을 공격합니다.");
+                        str.Append($"하나의 적을 공격합니다.\n");
                         break;
                     case SkillType.Multiple:
-                        str.Append($"적 전체를 공격합니다.");
+                        str.Append($"적 전체를 공격합니다.\n");
                         break;
                     case SkillType.Self:
-                        str.Append($"자신에게 주문을 겁니다.");
+                        str.Append($"자신에게 주문을 겁니다.\n");
                         break;
                 }
 
+                Console.SetCursorPosition(43, Console.GetCursorPosition().Top);
                 Console.WriteLine("[선택된 스킬]");
-                Console.WriteLine(str.ToString());
+                foreach (var s in str.ToString().Split("\n"))
+                {
+                    Console.SetCursorPosition(43, Console.GetCursorPosition().Top);
+                    Console.WriteLine(s);
+                }
                 return;
             }
 
@@ -536,7 +567,13 @@ namespace textdungeon.Play
                         break;
                 }
 
-                Printing.SelectWriteLine(i, str.ToString());
+                //Printing.SelectWriteLine(i, str.ToString());
+                string[] s = str.ToString().Split("\n");
+
+                Console.SetCursorPosition(40, Console.GetCursorPosition().Top);
+                Printing.SelectWriteLine(i, s[0]);
+                Console.SetCursorPosition(40, Console.GetCursorPosition().Top);
+                Console.WriteLine(s[1]);
             }
         }
 
@@ -592,6 +629,14 @@ namespace textdungeon.Play
         public void ShowAllQuestInfo()
         {
             Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(35, 3);
+            Printing.DrawSign();
+            Console.SetCursorPosition(2, 5);
+            Printing.DrawShield();
+            Console.SetCursorPosition(100, 4);
+            Printing.DrawSword();
+            Console.SetCursorPosition(57, 5);
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
             Console.WriteLine();
@@ -599,18 +644,29 @@ namespace textdungeon.Play
             //Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
             for (int i = 1; i < QuestList.Count; i++)
             {
+                Console.WriteLine();
+                Console.SetCursorPosition(43, Console.GetCursorPosition().Top);
                 QuestList[i].ShowQuestInfo(i);
             }
+            Console.SetCursorPosition(43, Console.GetCursorPosition().Top + 1);
             Printing.SelectWriteLine(0, "나가기");
-            Console.WriteLine();
+            Console.WriteLine("\n\n\n\n");
         }
 
         public void ShowQuestDetail(int select)
         {
             Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(25, 3);
+            Printing.DrawSign(true);
+            Console.SetCursorPosition(2, 5);
+            Printing.DrawShield();
+            Console.SetCursorPosition(100, 4);
+            Printing.DrawSword();
+            Console.SetCursorPosition(57, 5);
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
-            Console.WriteLine();
+            Console.SetCursorPosition(30, 6);
             QuestList[select].ShowQuestDetail();
         }
 

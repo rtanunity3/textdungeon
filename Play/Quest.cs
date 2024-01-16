@@ -1,3 +1,4 @@
+using System;
 using textdungeon.Screen;
 
 namespace textdungeon.Play
@@ -135,11 +136,19 @@ namespace textdungeon.Play
         // 세부 퀘스트 내용
         public void ShowQuestDetail()
         {
+            int left = Console.GetCursorPosition().Left;
             // 퀘스트 디테일한 내용 출력
             Console.WriteLine();
+            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
             Console.WriteLine(QuestName);
             Console.WriteLine();
-            Console.WriteLine(QuestDesc);
+            string[] str = QuestDesc.Split('\n');
+            foreach (var s in str)
+            {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                Console.WriteLine(s);
+            }
+            //Console.WriteLine(QuestDesc);
             Console.WriteLine();
 
             switch (Type)
@@ -148,58 +157,81 @@ namespace textdungeon.Play
                     // !HACK : 하드코딩
                     if (GoalId == 0)
                     {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                         Console.WriteLine($"- 몬스터 사냥 ({CurGoalCount}/{GoalCount})");
                     }
                     else if (GoalId == 2)
                     {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                         Console.WriteLine($"- 고블린 사냥 ({CurGoalCount}/{GoalCount})");
                     }
                     else if (GoalId == 23)
                     {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                         Console.WriteLine($"- 드래곤 사냥 ({CurGoalCount}/{GoalCount})");
                     }
                     break;
                 case QuestType.EquipItem:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Console.WriteLine("- 장비 착용하기");
                     break;
                 case QuestType.LevelUp:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Console.WriteLine("- 레벨업하기");
                     break;
             }
             Console.WriteLine();
+            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
             Console.WriteLine("- 보상");
 
             foreach (Item item in RewardItem)
             {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                 Console.WriteLine($"{item.Name} x {item.Quantity}");
             }
-            if (RewardGold > 0) Console.WriteLine($"{RewardGold} G");
-            if (RewardExp > 0) Console.WriteLine($"{RewardExp} Exp");
+            if (RewardGold > 0)
+            {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                Console.WriteLine($"{RewardGold} G");
+            }
+            if (RewardExp > 0)
+            {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                Console.WriteLine($"{RewardExp} Exp");
+            }
             Console.WriteLine();
 
 
             switch (State)
             {
                 case QuestState.NotStarted:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(1, "수락");
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "거절");
                     break;
                 case QuestState.InProgress:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.InProgress), ConsoleColor.Cyan);
                     Console.WriteLine();
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "나가기");
                     break;
                 case QuestState.ObjectiveCompleted:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(1, "보상받기");
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "나가기");
                     break;
                 case QuestState.Completed:
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.Completed), ConsoleColor.DarkCyan);
                     Console.WriteLine();
+                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "나가기");
                     break;
             }
-
+            Console.SetCursorPosition(left, 24);
         }
     }
 }

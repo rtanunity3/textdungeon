@@ -425,6 +425,7 @@ namespace textdungeon.Play
         {
             var playerGiveExp = 0;
             var playerGiveGold = 0;
+            int left = Console.GetCursorPosition().Left;
             for (int i = 0; i < Enemies.Count; i++)
             {
                 playerGiveExp += Enemies[i].GiveExp;
@@ -436,29 +437,43 @@ namespace textdungeon.Play
             player.AddExp(playerGiveExp);
 
             //몬스터를 처치한다음 획득한 경험치를 표시
-            Console.WriteLine($"획득경험치{playerGiveExp}");
+            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+            Console.WriteLine($"획득경험치 {playerGiveExp}");
         }
 
         // 적 목록 출력
         public void PrintEnemies(bool writeNum)
         {
+            int left = Console.GetCursorPosition().Left;
+            Console.WriteLine("[적정보]\n");
             for (int i = 0; i < Enemies.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetCursorPosition(left - 6, Console.GetCursorPosition().Top);
                 Console.Write(writeNum ? $"[{i + 1}] " : " ");
                 Console.ResetColor();
-                if (Enemies[i].IsDead) Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray);
-                else Console.Write(Enemies[i].ToStringEnemie);
+                if (Enemies[i].IsDead)
+                {
+                    Printing.HighlightText(Enemies[i].ToStringEnemie, ConsoleColor.DarkGray);
+                }
+                else
+                {
+                    Console.Write(Enemies[i].ToStringEnemie);
+                }
                 Console.WriteLine();
             }
         }
 
         public void PrintPlayer(Player player)
         {
-            Console.WriteLine("[내정보]");
+            int left = Console.GetCursorPosition().Left;
+            Console.WriteLine("[내정보]\n");
+            Console.SetCursorPosition(left - 3, Console.GetCursorPosition().Top);
             Console.WriteLine($"Lv.{player.Level} {player.Name} ({EnumHandler.GetjobKr(player.Job)})");
+            Console.SetCursorPosition(left - 2, Console.GetCursorPosition().Top);
             Console.Write("HP : ");
             Printing.HighlightText($"{player.Health,3}/{player.MaxHealth}\n", ConsoleColor.Red);
+            Console.SetCursorPosition(left - 2, Console.GetCursorPosition().Top);
             Console.Write("MP : ");
             Printing.HighlightText($"{player.Mana,3}/{player.MaxMana}\n", ConsoleColor.Blue);
         }
@@ -496,10 +511,9 @@ namespace textdungeon.Play
 
                 int hp = monster.Health;
                 monster.Health -= finalDmg;
-                msg += $"{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\r\n";
-                msg += "\r\n";
-                msg += $"{monster.ToStringName}\r\n";
-                msg += $"HP {hp} -> {(monster.IsDead ? "Dead" : $"HP {monster.Health}")}\r\n";
+                msg += $"{monster.ToStringName} 을(를) 맞췄습니다. [데미지 : {finalDmg}]{(IsCritical ? " - 치명타 공격!!" : "")}\n";
+                msg += $"{monster.ToStringName}\n";
+                msg += $"HP {hp} -> {(monster.IsDead ? "Dead" : $"HP {monster.Health}")}\n";
 
                 BattleAttackEndMessage = msg;
                 return true;
@@ -636,84 +650,126 @@ namespace textdungeon.Play
         public void DisplayBattle(bool writeNum, GameState gameState, Player player, int skillNo = 0)
         {
             Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(56, 3);
             Printing.HighlightText("Battle!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
             Console.WriteLine();
             switch (gameState)
             {
                 case GameState.BattleGround:
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     PrintEnemies(writeNum);
-                    Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top + 3);
                     PrintPlayer(player);
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(1, "공격");
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(2, "스킬");
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "도망");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
                 case GameState.BattleAttack:
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     PrintEnemies(writeNum);
-                    Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top + 3);
                     PrintPlayer(player);
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "공격취소");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
                 case GameState.BattleAttackEnd:
-                    Console.WriteLine(BattleAttackEndMessage);
+                    Console.SetCursorPosition(53, Console.GetCursorPosition().Top);
+                    foreach (string s in BattleAttackEndMessage.Split("\n"))
+                    {
+                        Console.WriteLine();
+                        Console.SetCursorPosition(40, Console.GetCursorPosition().Top);
+                        Console.WriteLine(s);
+                    }
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "다음");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
                 case GameState.BattleEnemiesAttack:
-                    Console.WriteLine(BattleEnemiesAttackMessage);
+                    foreach (string s in BattleEnemiesAttackMessage.Split("\n"))
+                    {
+                        Console.WriteLine();
+                        Console.SetCursorPosition(40, Console.GetCursorPosition().Top);
+                        Console.WriteLine(s);
+                    }
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "다음");
                     Console.WriteLine();
+                    Console.SetCursorPosition(57, Console.GetCursorPosition().Top);
                     Printing.HighlightText("적 턴\n", ConsoleColor.Green);
                     break;
                 case GameState.BattlePlayerWin:
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.HighlightText("Victory\n", ConsoleColor.DarkGreen);
                     Console.WriteLine();
+                    Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                     Console.WriteLine($"던전에서 몬스터 {Enemies.Count}마리를 잡았습니다.");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     GetBattleReward(player);
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Console.WriteLine($"Lv.{player.Level} {player.Name}");
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Console.WriteLine("0. 다음");
                     break;
                 case GameState.BattlePlayerDead:
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.HighlightText("You Lose\n", ConsoleColor.DarkRed);
                     Console.WriteLine();
+                    Console.SetCursorPosition(55, Console.GetCursorPosition().Top);
                     Console.WriteLine($"Lv.{player.Level} {player.Name}");
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "다음");
                     break;
                 case GameState.BattleSkillList:
-                    PrintEnemies(writeNum);
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top + 3);
                     PrintPlayer(player);
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top + 3);
                     player.ShowSkillList();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "취소");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
 
                 case GameState.BattleSkillAttack:
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     PrintEnemies(writeNum);
-                    Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top + 3);
                     PrintPlayer(player);
                     Console.WriteLine();
                     player.ShowSkillList(skillNo);
                     Console.WriteLine();
+                    Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "취소");
                     Console.WriteLine();
+                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
             }

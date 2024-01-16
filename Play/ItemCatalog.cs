@@ -169,7 +169,7 @@ namespace textdungeon.Play
         public int IncreaseAmount;
 
         public PowerPotion(int quantity = 1, int increaseAmount = 5) 
-            : base(false, false, 5002, 0, 0, "파워 포션", $"공격력을 영구적으로 {increaseAmount} 올려주는 물약입니다.", 20000, quantity)
+            : base(false, false, 5003, 0, 0, "파워 포션", $"공격력을 영구적으로 {increaseAmount} 올려주는 물약입니다.", 20000, quantity)
         {
             IncreaseAmount = increaseAmount;
         }
