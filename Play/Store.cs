@@ -14,7 +14,7 @@ namespace textdungeon.Play
 
         // 수량 부분 출력을 위해 추가.
         int[] itemTableColWidth = { 24, 37, 50, 103, 113 };
-        int itemInfoTableTop = 7;
+        int itemInfoTableTop = 10;
 
         public Store()
         {
@@ -61,13 +61,19 @@ namespace textdungeon.Play
         public void DisplayItems(int gold)
         {
             Console.Clear();
+            Printing.DrawFrame(false);
+            Console.SetCursorPosition(7, 3);
             Printing.HighlightText("상점", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[보유 골드]");
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Printing.HighlightText($"{gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[아이템 목록]");
 
             Printing.StoreItemInfoTableTitle(itemTableColWidth, itemInfoTableTop);
@@ -78,8 +84,11 @@ namespace textdungeon.Play
             }
 
             Console.WriteLine();
+            Console.SetCursorPosition(50, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(1, "아이템 구매");
+            Console.SetCursorPosition(50, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(2, "아이템 판매");
+            Console.SetCursorPosition(50, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
@@ -87,13 +96,19 @@ namespace textdungeon.Play
         public void ItemSaleList(int gold)
         {
             Console.Clear();
+            Printing.DrawFrame(false);
+            Console.SetCursorPosition(7, 3);
             Printing.HighlightText("상점 - 아이템 구매", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[보유 골드]");
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Printing.HighlightText($"{gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[아이템 목록]");
 
             Printing.StoreItemInfoTableTitle(itemTableColWidth, itemInfoTableTop);
@@ -104,6 +119,7 @@ namespace textdungeon.Play
             }
 
             Console.WriteLine();
+            Console.SetCursorPosition(50, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }
@@ -111,13 +127,19 @@ namespace textdungeon.Play
         public void ItemSellList(Player player)
         {
             Console.Clear();
+            Printing.DrawFrame(false);
+            Console.SetCursorPosition(7, 3);
             Printing.HighlightText("상점 - 아이템 판매", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[보유 골드]");
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Printing.HighlightText($"{player.Gold} G\n", ConsoleColor.Yellow);
             Console.WriteLine();
+            Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
             Console.WriteLine("[아이템 목록]");
 
             Printing.StoreItemInfoTableTitle(itemTableColWidth, itemInfoTableTop);
@@ -128,6 +150,7 @@ namespace textdungeon.Play
             }
 
             Console.WriteLine();
+            Console.SetCursorPosition(50, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(0, "나가기");
             Console.WriteLine();
         }

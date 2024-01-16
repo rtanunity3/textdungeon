@@ -37,16 +37,23 @@ namespace textdungeon.Play
         private Player MakeCharacter()
         {
             Console.Clear();
-            Console.WriteLine("\n=== 신규 케릭터 생성");
+            Printing.DrawFrame();
+            Console.SetCursorPosition(47, 2);
+            Console.WriteLine("=== 신규 캐릭터 생성 ===");
             if (File.Exists("save.json"))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("새로운 게임이 시작되면 기존에 저장된 케릭터는 삭제 됩니다.");
+                Console.SetCursorPosition(32, 4);
+                Console.WriteLine("새로운 게임이 시작되면 기존에 저장된 캐릭터는 삭제 됩니다.");
                 Console.ResetColor();
             }
 
-            string name = GetInputName("케릭터 이름을 입력하세요 (한글,영어,숫자 2~8자):");
-
+            Console.SetCursorPosition(12, 14);
+            Printing.DrawKnight();
+            Console.SetCursorPosition(70, 10);
+            Printing.DrawSkeleton();
+            Console.SetCursorPosition(37, 10);
+            string name = GetInputName("캐릭터 이름을 입력하세요 (한글,영어,숫자 2~8자)");
             // 직업 선택. 직업별 기본 스탯과 스킬은 다를 수 있다.
             CurrentState = GameState.ClassSelect;
             while (CurrentState == GameState.ClassSelect)
@@ -817,10 +824,12 @@ namespace textdungeon.Play
                 {
                     if ((int)response < 200)
                     {
+                        Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                         Printing.HighlightText(EnumHandler.GetMessage(response), ConsoleColor.Blue);
                     }
                     else
                     {
+                        Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                         Printing.HighlightText(EnumHandler.GetMessage(response), ConsoleColor.Red);
                     }
                 }
@@ -829,14 +838,18 @@ namespace textdungeon.Play
                     Console.WriteLine();
                 }
 
+                //Console.WriteLine();
+                Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 if (inputCount > 1)
                 {
+                    Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                     Printing.HighlightText($"[0 - {inputCount - 1}]", ConsoleColor.Green);
                     Console.Write(" >> ");
                 }
                 else
                 {
+                    Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                     Printing.HighlightText("[0]", ConsoleColor.Green);
                     Console.Write(" >> ");
                 }
@@ -892,16 +905,23 @@ namespace textdungeon.Play
         private static string GetInputName(string text)
         {
             string pattern = @"^[a-zA-Z0-9가-힣]{2,8}$";
+            var top = Console.GetCursorPosition().Top;
+            Console.WriteLine(text);
             while (true)
             {
-                Console.Write(text);
+                Console.SetCursorPosition(52, top + 4);
+                Console.WriteLine("＾＾＾＾＾＾＾＾");
+                Console.SetCursorPosition(52, top + 3);
                 string input = Console.ReadLine() ?? "";
 
                 if (Regex.IsMatch(input, pattern))
                 {
                     return input;
                 }
+                Console.SetCursorPosition(35, top - 1);
                 Printing.HighlightText("잘못된 입력입니다. 한글,영어,숫자만 2~8자 가능합니다.\n", ConsoleColor.Red);
+                Console.SetCursorPosition(50, top + 3);
+                Console.Write("                                 ");
             }
         }
 

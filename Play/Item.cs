@@ -81,6 +81,7 @@ namespace textdungeon.Play
                 boughtColor = ConsoleColor.Gray;
             }
 
+            Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
             Printing.HighlightText("-", IsBought ? boughtColor : ConsoleColor.Gray);
             if (writeNum)
             {
