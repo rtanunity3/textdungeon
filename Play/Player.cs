@@ -37,11 +37,6 @@ namespace textdungeon.Play
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
-
-        // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
-        //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
-        //        개발편의를 위해 지금처럼 진행하겠음.
-        //        퀘스트 레벨제한 미구현
         public List<Quest> QuestList { get; set; }
 
         public JsonElement ClassBaseInfo;
@@ -100,6 +95,11 @@ namespace textdungeon.Play
                 }
             }
 
+
+            // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
+            //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
+            //        개발편의를 위해 지금처럼 진행하겠음.
+            //        퀘스트 레벨제한 미구현
             QuestList = new List<Quest>()
             {
                 new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, Array.Empty<Item>(), 0, 0),
@@ -109,6 +109,10 @@ namespace textdungeon.Play
                     , 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ ItemManager.GetLowTierHelmet(Job) }, 500, 1),
                 new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!"
                     , 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ ItemManager.GetLowTierArmor(Job), new HealingPotion(1), new ManaPotion(1) }, 1500, 0),
+                new Quest(4, "고블린슬레이어", "고블린 100마리의 목을 쳐라!"
+                    , 1, QuestState.NotStarted, QuestType.MonsterHunt, 2, 100, new Item[]{ ItemManager.GetMediumTierArmor(Job), new HealingPotion(5) }, 2000, 0),
+                new Quest(5, "드래곤슬레이어", "드래곤을 잡고 이세계의 신이 됩니다."
+                    , 1, QuestState.NotStarted, QuestType.MonsterHunt, 23, 1, new Item[]{ ItemManager.GetHighTierArmor(Job), new HealingPotion(5) }, 2000, 0),
             };
         }
 
@@ -588,6 +592,7 @@ namespace textdungeon.Play
             Console.Clear();
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.WriteLine();
 
             //Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
             for (int i = 1; i < QuestList.Count; i++)
@@ -602,6 +607,7 @@ namespace textdungeon.Play
         {
             Console.Clear();
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
             Console.WriteLine();
             QuestList[select].ShowQuestDetail();
         }
