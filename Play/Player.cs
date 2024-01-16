@@ -440,16 +440,18 @@ namespace textdungeon.Play
                 Console.SetCursorPosition(Console.GetCursorPosition().Left - 15, Console.GetCursorPosition().Top);
                 Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다.");
                 UpdateQuestProgress(QuestType.LevelUp, 0, 1);
+
+
+                // TODO : 레벨 기준 공방 업데이트
+                AttPow += (int)((Level - 1) * 0.5); // 소수점은 버림
+                DefPow += (Level - 1);
+                MaxHealth += (Level - 1) * 20;
+                MaxMana += (Level - 1) * 10;
+                Health = MaxHealth; //Math.Min(Health + ((Level - 1) * 20), MaxHealth);
+                Mana = MaxMana; //Math.Min(Mana + (Level - 1) * 10, MaxMana);
             }
             DisplayExp = Exp;
 
-            // TODO : 레벨 기준 공방 업데이트
-            AttPow = ClassBaseInfo.GetProperty("AttPow").GetInt32() + (int)((Level - 1) * 0.5); // 소수점은 버림
-            DefPow = ClassBaseInfo.GetProperty("DefPow").GetInt32() + (Level - 1);
-            MaxHealth = ClassBaseInfo.GetProperty("MaxHealth").GetInt32() + ((Level - 1) * 20);
-            Health = ClassBaseInfo.GetProperty("Health").GetInt32() + ((Level - 1) * 20);
-            MaxMana = ClassBaseInfo.GetProperty("MaxMana").GetInt32() + (Level - 1) * 10;
-            Mana = ClassBaseInfo.GetProperty("Mana").GetInt32() + (Level - 1) * 10;
         }
 
         public void AddExp(int exp)
