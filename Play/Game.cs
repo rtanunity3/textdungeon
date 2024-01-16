@@ -122,7 +122,9 @@ namespace textdungeon.Play
                         break;
 
                     default:
-                        Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
+                        Console.WriteLine();
+                        Console.SetCursorPosition(Console.GetCursorPosition().Left + 5, Console.GetCursorPosition().Top);
+                        Console.Write("아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
                         while (Console.ReadKey().Key != ConsoleKey.C)
                         {
                             Environment.Exit(0);
@@ -161,7 +163,9 @@ namespace textdungeon.Play
                         QuestMenu();
                         break;
                     default: // 저장 후 게임 종료
-                        Console.Write("\n아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
+                        Console.WriteLine();
+                        Console.SetCursorPosition(Console.GetCursorPosition().Left + 5, Console.GetCursorPosition().Top);
+                        Console.Write("아무키나 누르면 프로그램이 종료됩니다(취소: C)...");
                         while (Console.ReadKey().Key != ConsoleKey.C)
                         {
                             SaveGame();
