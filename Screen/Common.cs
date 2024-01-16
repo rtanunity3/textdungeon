@@ -26,6 +26,7 @@ namespace textdungeon.Screen
         Quest,
         QuestDetail,
         DungeonLevelSelect,
+        DungeonTypeSelect,
     }
 
     public enum CharacterClass

@@ -272,10 +272,94 @@ namespace textdungeon.Play
             DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
         }
     }
+    public class Ifrit : Monster
+    {
+        public Ifrit(int level) : base("이프리트", 35, 25, 250, level, 13, 0, 6)
+        {
+            PlusAttPow = 3;
+            PlusHealth = 5;
+            PlusGold = 50;
+            LevelScailing(level);
+        }
+
+        // 아이템 드랍 테이블 설정.
+        //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
+        public override void SetDropTable(CharacterClass playerClass)
+        {
+            DropTable.SetAmount(2);
+            DropTable.AddItem(new HealingPotion(), 6);
+            DropTable.AddItem(new ManaPotion(), 4);
+            DropTable.AddItem(ItemManager.GetLowTierArmor(playerClass), 2);
+            DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
+        }
+    }
+    public class Elquiness : Monster
+    {
+        public Elquiness(int level) : base("엘퀴네스", 35, 25, 250, level, 14, 0, 6)
+        {
+            PlusAttPow = 3;
+            PlusHealth = 5;
+            PlusGold = 50;
+            LevelScailing(level);
+        }
+
+        // 아이템 드랍 테이블 설정.
+        //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
+        public override void SetDropTable(CharacterClass playerClass)
+        {
+            DropTable.SetAmount(2);
+            DropTable.AddItem(new HealingPotion(), 6);
+            DropTable.AddItem(new ManaPotion(), 4);
+            DropTable.AddItem(ItemManager.GetLowTierArmor(playerClass), 2);
+            DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
+        }
+    }
+    public class Gnoass : Monster
+    {
+        public Gnoass(int level) : base("노아스", 35, 25, 250, level, 15, 0, 6)
+        {
+            PlusAttPow = 3;
+            PlusHealth = 5;
+            PlusGold = 50;
+            LevelScailing(level);
+        }
+
+        // 아이템 드랍 테이블 설정.
+        //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
+        public override void SetDropTable(CharacterClass playerClass)
+        {
+            DropTable.SetAmount(2);
+            DropTable.AddItem(new HealingPotion(), 6);
+            DropTable.AddItem(new ManaPotion(), 4);
+            DropTable.AddItem(ItemManager.GetLowTierArmor(playerClass), 2);
+            DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
+        }
+    }
+    public class Sylphid : Monster
+    {
+        public Sylphid(int level) : base("실피드", 35, 25, 250, level, 16, 0, 6)
+        {
+            PlusAttPow = 3;
+            PlusHealth = 5;
+            PlusGold = 50;
+            LevelScailing(level);
+        }
+
+        // 아이템 드랍 테이블 설정.
+        //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
+        public override void SetDropTable(CharacterClass playerClass)
+        {
+            DropTable.SetAmount(2);
+            DropTable.AddItem(new HealingPotion(), 6);
+            DropTable.AddItem(new ManaPotion(), 4);
+            DropTable.AddItem(ItemManager.GetLowTierArmor(playerClass), 2);
+            DropTable.AddItem(ItemManager.GetLowTierWeapon(playerClass), 2);
+        }
+    }
 
     public class Troll : Monster
     {
-        public Troll(int level) : base("트롤", 100, 35, 350, level, 13, 0, 15)
+        public Troll(int level) : base("트롤", 100, 35, 350, level, 17, 0, 15)
         {
             PlusAttPow = 3;
             PlusHealth = 5;
@@ -299,7 +383,7 @@ namespace textdungeon.Play
 
     public class Orc : Monster
     {
-        public Orc(int level) : base("오크", 100, 35, 350, level, 14, 0, 15)
+        public Orc(int level) : base("오크", 100, 35, 350, level, 18, 0, 15)
         {
             PlusAttPow = 3;
             PlusHealth = 5;
@@ -323,7 +407,7 @@ namespace textdungeon.Play
 
     public class Ogre : Monster
     {
-        public Ogre(int level) : base("오우거", 100, 35, 350, level, 15, 0, 15)
+        public Ogre(int level) : base("오우거", 100, 35, 350, level, 19, 0, 15)
         {
             PlusAttPow = 3;
             PlusHealth = 5;
@@ -347,7 +431,7 @@ namespace textdungeon.Play
 
     public class OgreMage : Monster
     {
-        public OgreMage(int level) : base("오우거메이지", 70, 40, 350, level, 16, 0, 17)
+        public OgreMage(int level) : base("오우거메이지", 70, 40, 350, level, 20, 0, 17)
         {
             PlusAttPow = 3;
             PlusHealth = 5;
@@ -371,7 +455,7 @@ namespace textdungeon.Play
 
     public class Unicon : Monster
     {
-        public Unicon(int level) : base("유니콘", 150, 42, 500, level, 17, 0, 30)
+        public Unicon(int level) : base("유니콘", 150, 42, 500, level, 21, 0, 30)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -397,7 +481,7 @@ namespace textdungeon.Play
 
     public class Titan : Monster
     {
-        public Titan(int level) : base("타이탄", 250, 45, 600, level, 18, 0, 45)
+        public Titan(int level) : base("타이탄", 250, 45, 600, level, 22, 0, 45)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
@@ -423,7 +507,7 @@ namespace textdungeon.Play
 
     public class Dragon : Monster
     {
-        public Dragon(int level) : base("드래곤", 300, 50, 800, level, 19, 0, 60)
+        public Dragon(int level) : base("드래곤", 300, 50, 800, level, 23, 0, 60)
         {
             PlusAttPow = 5;
             PlusHealth = 10;
