@@ -233,7 +233,7 @@ namespace textdungeon.Screen
         public static void DrawSign(bool isExtend = false)
         {
             int left = Console.GetCursorPosition().Left;
-            int height = 12;
+            int height = 16;
             int pad = 50;
             Console.ForegroundColor = ConsoleColor.Gray;
             string s = "████████████████████████████████████████████████████";
