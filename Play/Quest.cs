@@ -1,3 +1,4 @@
+using System;
 using textdungeon.Screen;
 
 namespace textdungeon.Play
@@ -122,7 +123,13 @@ namespace textdungeon.Play
             // 퀘스트 출력
             Printing.SelectWrite(i, QuestName);
             Console.Write(" - ");
-            Printing.HighlightText(EnumHandler.GetQuestStateKr(State), ConsoleColor.Cyan);
+            Printing.HighlightText(EnumHandler.GetQuestStateKr(State)
+                , State == QuestState.Completed ?
+                    ConsoleColor.DarkCyan :
+                    State == QuestState.ObjectiveCompleted ?
+                        ConsoleColor.Cyan :
+                        ConsoleColor.White
+                );
             Console.WriteLine();
         }
 
@@ -147,8 +154,22 @@ namespace textdungeon.Play
             switch (Type)
             {
                 case QuestType.MonsterHunt:
-                    Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
-                    Console.WriteLine($"- 몬스터 잡기 ({CurGoalCount}/{GoalCount})");
+                    // !HACK : 하드코딩
+                    if (GoalId == 0)
+                    {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                        Console.WriteLine($"- 몬스터 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
+                    else if (GoalId == 2)
+                    {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                        Console.WriteLine($"- 고블린 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
+                    else if (GoalId == 23)
+                    {
+                        Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                        Console.WriteLine($"- 드래곤 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
                     break;
                 case QuestType.EquipItem:
                     Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
@@ -168,10 +189,16 @@ namespace textdungeon.Play
                 Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                 Console.WriteLine($"{item.Name} x {item.Quantity}");
             }
-            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
-            Console.WriteLine($"{RewardGold} G");
-            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
-            Console.WriteLine($"{RewardExp} Exp");
+            if (RewardGold > 0)
+            {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                Console.WriteLine($"{RewardGold} G");
+            }
+            if (RewardExp > 0)
+            {
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+                Console.WriteLine($"{RewardExp} Exp");
+            }
             Console.WriteLine();
 
 
@@ -198,7 +225,7 @@ namespace textdungeon.Play
                     break;
                 case QuestState.Completed:
                     Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
-                    Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.Completed), ConsoleColor.Cyan);
+                    Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.Completed), ConsoleColor.DarkCyan);
                     Console.WriteLine();
                     Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                     Printing.SelectWriteLine(0, "나가기");

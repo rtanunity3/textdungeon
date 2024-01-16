@@ -324,14 +324,15 @@ namespace textdungeon.Play
                         ExploreBattle();
                         break;
                     default:
-                        
+
                         break;
                 }
             }
         }
-        public void SelectSpiritType() {
+        public void SelectSpiritType()
+        {
             CurrentState = GameState.DungeonTypeSelect;
-            while(CurrentState == GameState.DungeonTypeSelect)
+            while (CurrentState == GameState.DungeonTypeSelect)
             {
                 int select = UserChoice(CurrentState);
                 switch (select)
@@ -356,10 +357,10 @@ namespace textdungeon.Play
                         SelectDungeonLevel();
                         break;
                 }
-                
+
             }
         }
-        
+
         private void PlayerHealthWarning()
         {
             CurrentState = GameState.PlayerHealthWarning;
@@ -528,6 +529,10 @@ namespace textdungeon.Play
                     else
                     {
                         player.UpdateQuestProgress(QuestType.MonsterHunt, 0, battle.Enemies.Count);
+                        foreach (Monster mon in battle.Enemies)
+                        {
+                            player.UpdateQuestProgress(QuestType.MonsterHunt, mon.ID, 1);
+                        }
                         PlayerWinBattle();
                     }
                 }
@@ -573,7 +578,7 @@ namespace textdungeon.Play
                     }
                 }
             } while (CurrentState == GameState.BattleEnemiesAttack || CurrentState == GameState.BattlePlayerDead);
-            
+
         }
         // 전투에서 플레이어 패배
         private void PlayerDeadBattle()
@@ -706,7 +711,7 @@ namespace textdungeon.Play
             }
         }
         #endregion
-        
+
         private int UserChoice(GameState gameState, int[] args = null)
         {
             menuActive = true;

@@ -38,18 +38,7 @@ namespace textdungeon.Play
         public List<Skill> Skill { get; set; } = new List<Skill>() { new Skill("", 1f, 0, SkillType.Self) };
         public Equipment Equipped { get; set; }
         public List<Item> Items { get; set; } = new List<Item>() { new Item(false, false, 0, 0, 0, "", "", 0) };
-
-        // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
-        //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
-        //        개발편의를 위해 지금처럼 진행하겠음.
-        //        퀘스트 레벨제한 미구현
-        public List<Quest> QuestList { get; set; } = new List<Quest>()
-        {
-            new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, Array.Empty<Item>(), 0, 0),
-            new Quest(1, "마을을 위협하는 적 처치", "이봐! 마을 근처에 적들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!", 1, QuestState.NotStarted, QuestType.MonsterHunt, 0, 3, new Item[]{ new OldShield() }, 500, 5),
-            new Quest(2, "장비를 장착해보자", "전투에서 사용할 장비를 구매 후 장착해보자!", 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ new NoviceHelmet() }, 500, 1),
-            new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!", 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ new NoviceArmor() }, 1500, 0)
-        };
+        public List<Quest> QuestList { get; set; }
 
         public JsonElement ClassBaseInfo;
         int[] itemTableColWidth = { 27, 40, 53, 106, 116 };
@@ -106,6 +95,26 @@ namespace textdungeon.Play
                     ));
                 }
             }
+
+
+            // !HACK : 아이템을 생성하는게 아닌 아이템 ID만 넣어 놓고
+            //        보상 받을때 ItemID를 통해서 해당아이템을 새로 생성해서 넣어줘야함.
+            //        개발편의를 위해 지금처럼 진행하겠음.
+            //        퀘스트 레벨제한 미구현
+            QuestList = new List<Quest>()
+            {
+                new Quest(0, "", "", 9999, QuestState.Completed, QuestType.None, 0, 0, Array.Empty<Item>(), 0, 0),
+                new Quest(1, "마을을 위협하는 적 처치", "이봐! 마을 근처에 적들이 너무 많아졌다고 생각하지 않나?\n마을주민들의 안전을 위해서라도 저것들 수를 좀 줄여야 한다고!\n모험가인 자네가 좀 처치해주게!"
+                    , 1, QuestState.NotStarted, QuestType.MonsterHunt, 0, 5, new Item[]{ ItemManager.GetLowTierShield(), new HealingPotion(1) }, 500, 5),
+                new Quest(2, "장비를 장착해보자", "전투에서 사용할 장비를 구매 후 장착해보자!"
+                    , 1, QuestState.NotStarted, QuestType.EquipItem, 0, 1, new Item[]{ ItemManager.GetLowTierHelmet(Job) }, 500, 1),
+                new Quest(3, "더욱 더 강해지기!", "레벨업을 하면 더욱 강해집니다!"
+                    , 1, QuestState.NotStarted, QuestType.LevelUp, 0, 1, new Item[]{ ItemManager.GetLowTierArmor(Job), new HealingPotion(1), new ManaPotion(1) }, 1500, 0),
+                new Quest(4, "고블린슬레이어", "고블린 100마리의 목을 쳐라!"
+                    , 1, QuestState.NotStarted, QuestType.MonsterHunt, 2, 100, new Item[]{ ItemManager.GetMediumTierArmor(Job), new HealingPotion(5) }, 2000, 0),
+                new Quest(5, "드래곤슬레이어", "드래곤을 잡고 이세계의 신이 됩니다."
+                    , 1, QuestState.NotStarted, QuestType.MonsterHunt, 23, 1, new Item[]{ ItemManager.GetHighTierArmor(Job), new HealingPotion(5) }, 2000, 0),
+            };
         }
 
         public Player GetPlayer()
@@ -629,6 +638,7 @@ namespace textdungeon.Play
             Printing.DrawSword();
             Console.SetCursorPosition(57, 5);
             Printing.HighlightText("Quest!!", ConsoleColor.DarkYellow);
+            Console.WriteLine();
             Console.WriteLine();
 
             //Debug.WriteLine($"QuestList.Count : {QuestList.Count}");
