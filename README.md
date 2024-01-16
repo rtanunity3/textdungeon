@@ -1,10 +1,18 @@
+1. [게임소개 영상](#게임소개-영상)  
+2. [게임 소개](#게임-소개)  
+3. [개발팀 소개](#개발팀-소개)
+
 # C# 콘솔 스파르타 던전 배틀 (Text 게임) 만들기
 
 5개의 직업! 총 10개의 스킬과 33개의 아이템! 19종의 몬스터와 6단계의 던전까지!
 
 ![image](https://github.com/rtanunity3/textdungeon/assets/88172590/22f0a9b5-5185-4210-aafd-ca4b73b8b1b4)
 
+# 게임소개 영상
+▼ 누르면 유튜브로 페이지 이동
+[![Video Label](http://img.youtube.com/vi/4Tx0n6-yWxM/0.jpg)](https://www.youtube.com/watch?v=4Tx0n6-yWxM)
 
+# 게임 소개
 ## 캐릭터 클래스
 ![image](https://github.com/rtanunity3/textdungeon/assets/88172590/e3511b71-c778-4a11-8776-6f49c99fadbb)
 
@@ -109,10 +117,6 @@
 
 6. 드래곤 레어
    - 드래곤
-
-## 영상
-
-[![Video Label](http://img.youtube.com/vi/4Tx0n6-yWxM/0.jpg)](https://www.youtube.com/watch?v=4Tx0n6-yWxM)
 
 # 개발팀 소개
 
