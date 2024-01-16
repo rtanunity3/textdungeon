@@ -2,9 +2,11 @@
 
 5개의 직업! 총 10개의 스킬과 33개의 아이템! 19종의 몬스터와 6단계의 던전까지!
 
-[메인 스크린샷 넣기]
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/22f0a9b5-5185-4210-aafd-ca4b73b8b1b4)
+
 
 ## 캐릭터 클래스
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/e3511b71-c778-4a11-8776-6f49c99fadbb)
 
 ### 전사
 
@@ -44,13 +46,19 @@
   - 치료 : (단일타겟) 마나 10을 사용하여 공격력의 150%만큼 자신의 체력을 회복한다.
 
 ## 마을
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/e8e57159-50e8-4754-970d-9bc0641fc567)
 
 1. 상태보기 : 현재 레벨 및 능력치 상태 등을 확인 가능하다.
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/1a5443dd-b37e-4514-9d16-a728cf5fca51)
+
 2. 인벤토리 : 소지하고 있는 장비를 확인 가능하며, 소모품은 여기에서 사용이 가능하다.
 3. 상점 : 장비 및 소모품을 골드를 지불하여 수급할 수 있으며, 필요없는 장비는 적당한 가격에 팔 수 있다.
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/f633bfed-9107-4bee-8ea0-15164dd574b1)
+
 4. 던전입장 : 적을 물리치는 모험을 떠난다.
 5. 휴식하기 : 500G를 사용하여 휴식을 취하고 체력과 마나를 회복한다.
 6. 퀘스트 : 퀘스트를 받아 수행하고 진행 상황을 파악할 수 있으며, 완료 시 보상을 받을 수 있다.
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/c244bf24-1ebe-4c8a-b38d-f615cd787af4)
 
 ## 장비
 
@@ -63,6 +71,8 @@
 ## 던전 & 등장 몬스터 목록
 
 던전에 진입 시 최대 3마리까지 적이 등장하며, 전투 도중 도망이 가능합니다.
+
+![image](https://github.com/rtanunity3/textdungeon/assets/88172590/4c3d7df9-7d79-45da-92b6-6e54da4cf3ae)
 
 1. 고블린 소굴
 
@@ -100,7 +110,7 @@
 6. 드래곤 레어
    - 드래곤
 
-## 영상 & 스크린샷
+## 영상
 
 [스크린샷이나 영상 넣기]
 
@@ -108,10 +118,10 @@
 
 ## 개발 인원
 
-권순성 : [깃주소? ]  
-문정현 :  
-박희태 :  
-정지엽 :
+권순성  
+문정현  
+박희태  
+정지엽  
 
 ## 개발 기간
 
@@ -124,4 +134,4 @@ Visual Studio 2022 community
 
 ## 치트키
 
-게임중 gold 입력시 +5000골드
+게임 중 gold 입력시 +5000골드
