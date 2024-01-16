@@ -511,7 +511,7 @@ namespace textdungeon.Play
                     {
                         if (!battle.Enemies[i].IsDead)
                         {
-                            battle.BattleEnamiesAttackList.Add(battle.Enemies[i].UniqueID);
+                            battle.BattleEnamiesAttackList.Add(i);
                         }
                     }
 

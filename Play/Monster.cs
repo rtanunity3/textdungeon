@@ -51,11 +51,13 @@ namespace textdungeon.Play
             Health += (level - 1) * PlusHealth;
             Gold += (level - 1) * PlusGold;
         }
-        
         // 아이템 드랍 테이블 설정. MonsterCatalog에서 몬스터에 아이템 할당해줌.
         //NOTE new Moster()로 몬스터를 만들어 준 뒤, 설정을 위해 불러줘야함.
         public virtual void SetDropTable(CharacterClass playerClass) { }
-
+        public object ShallowCopy()
+        {
+            return MemberwiseClone();
+        }
         /// <summary>
         /// ItemDropTable에서 Item을 가져오는 Method.
         /// </summary>
