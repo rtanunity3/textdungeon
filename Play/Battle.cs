@@ -63,7 +63,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else if (dunlev >= 4 && dunlev < 8)
@@ -76,7 +76,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else
@@ -103,7 +103,7 @@ namespace textdungeon.Play
                             }
                         }
                         Monster monster = Goblines[check];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else if (dunlev >= 4 && dunlev < 8)
@@ -134,7 +134,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else
@@ -163,7 +163,7 @@ namespace textdungeon.Play
                             }
                         }
                         Monster monster = Undeads[check];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
             }
@@ -180,7 +180,7 @@ namespace textdungeon.Play
                         for (int i = 0; i < enemieNum; i++)
                         {
                             Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                     else
@@ -206,7 +206,7 @@ namespace textdungeon.Play
                                 }
                             }
                             Monster monster = Spirit[check];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                 }
@@ -221,7 +221,7 @@ namespace textdungeon.Play
                         for (int i = 0; i < enemieNum; i++)
                         {
                             Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                     else
@@ -247,7 +247,7 @@ namespace textdungeon.Play
                                 }
                             }
                             Monster monster = Spirit[check];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                 }
@@ -262,7 +262,7 @@ namespace textdungeon.Play
                         for (int i = 0; i < enemieNum; i++)
                         {
                             Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                     else
@@ -288,7 +288,7 @@ namespace textdungeon.Play
                                 }
                             }
                             Monster monster = Spirit[check];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                 }
@@ -303,7 +303,7 @@ namespace textdungeon.Play
                         for (int i = 0; i < enemieNum; i++)
                         {
                             Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                     else
@@ -329,7 +329,7 @@ namespace textdungeon.Play
                                 }
                             }
                             Monster monster = Spirit[check];
-                            Enemies.Add(monster);
+                            Enemies.Add((Monster)monster.ShallowCopy());
                         }
                     }
                 }
@@ -346,7 +346,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Orcs[new Random().Next(0, Orcs.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else if (dunlev >= 4 && dunlev < 8)
@@ -360,7 +360,7 @@ namespace textdungeon.Play
                     for (int i = 0; i < enemieNum; i++)
                     {
                         Monster monster = Orcs[new Random().Next(0, Orcs.Count)];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
                 else
@@ -388,7 +388,7 @@ namespace textdungeon.Play
                             }
                         }
                         Monster monster = Orcs[check];
-                        Enemies.Add(monster);
+                        Enemies.Add((Monster)monster.ShallowCopy());
                     }
                 }
             }
@@ -399,7 +399,7 @@ namespace textdungeon.Play
                         new Unicon(new Random().Next(1, dungeonlevel))
                     };
                 Monster monster = Unicon[new Random().Next(0, Unicon.Count)];
-                Enemies.Add(monster);
+                Enemies.Add((Monster)monster.ShallowCopy());
             }
             else if (dungeonnum == 6)
             {
@@ -408,7 +408,7 @@ namespace textdungeon.Play
                         new Titan(new Random().Next(1, dungeonlevel))
                     };
                 Monster monster = Titan[new Random().Next(0, Titan.Count)];
-                Enemies.Add(monster);
+                Enemies.Add((Monster)monster.ShallowCopy());
             }
             else if (dungeonnum == 7)
             {
@@ -417,7 +417,7 @@ namespace textdungeon.Play
                         new Dragon(new Random().Next(1, dungeonlevel))
                     };
                 Monster monster = Dragon[new Random().Next(0, Dragon.Count)];
-                Enemies.Add(monster);
+                Enemies.Add((Monster)monster.ShallowCopy());
             }
         }
 
@@ -625,10 +625,10 @@ namespace textdungeon.Play
             int len = BattleEnamiesAttackList.Count;
             if (len == 0) return GameState.BattleGround;
 
-            int uniqueID = BattleEnamiesAttackList[len - 1];
+            int uniqueIndex = BattleEnamiesAttackList[len - 1];
             BattleEnamiesAttackList.RemoveAt(len - 1);
 
-            Monster monster = Enemies.Find(e => e.UniqueID == uniqueID);
+            Monster monster = Enemies[uniqueIndex];
             int dmg = monster.AttPow - (player.DefPow + player.ItemDefPow);
             if (dmg < 0) dmg = 0;
 
