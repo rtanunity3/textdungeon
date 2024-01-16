@@ -22,6 +22,7 @@ namespace textdungeon.Play
             Console.Write("현재 체력 : ");
             Printing.HighlightText($"{player.Health,3}/{player.MaxHealth}\n", ConsoleColor.Red);
             Console.SetCursorPosition(7, Console.GetCursorPosition().Top);
+
             Console.Write("현재 마나 : ");
             Printing.HighlightText($"{player.Mana,3}/{player.MaxMana}\n", ConsoleColor.Blue);
 

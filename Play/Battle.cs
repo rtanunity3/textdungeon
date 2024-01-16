@@ -757,6 +757,7 @@ namespace textdungeon.Play
                     Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
                     Printing.HighlightText("플레이어 턴\n", ConsoleColor.Green);
                     break;
+
                 case GameState.BattleSkillAttack:
                     Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     PrintEnemies(writeNum);
