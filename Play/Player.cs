@@ -440,13 +440,14 @@ namespace textdungeon.Play
         {
             //레벨업
             int maxExp = (int)Math.Pow(Level, 2) + Level * 3;
+            int left = Console.GetCursorPosition().Left;
 
             while (maxExp <= Exp)
             {
                 Level++;
                 Exp -= maxExp;
                 maxExp = (int)Math.Pow(Level, 2) + Level * 3;
-                Console.SetCursorPosition(Console.GetCursorPosition().Left - 15, Console.GetCursorPosition().Top);
+                Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
                 Console.WriteLine($"축하합니다. {Name}의 레벨이 {Level - 1}에서 {Level}로 상승했습니다.");
                 UpdateQuestProgress(QuestType.LevelUp, 0, 1);
 

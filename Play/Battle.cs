@@ -437,7 +437,7 @@ namespace textdungeon.Play
             player.AddExp(playerGiveExp);
 
             //몬스터를 처치한다음 획득한 경험치를 표시
-            Console.SetCursorPosition(left, Console.GetCursorPosition().Top);
+            Console.SetCursorPosition(left + 15, Console.GetCursorPosition().Top);
             Console.WriteLine($"획득경험치 {playerGiveExp}");
         }
 
@@ -721,7 +721,7 @@ namespace textdungeon.Play
                     Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
                     Console.WriteLine($"던전에서 몬스터 {Enemies.Count}마리를 잡았습니다.");
                     Console.WriteLine();
-                    Console.SetCursorPosition(54, Console.GetCursorPosition().Top);
+                    Console.SetCursorPosition(39, Console.GetCursorPosition().Top);
                     GetBattleReward(player);
                     Console.SetCursorPosition(56, Console.GetCursorPosition().Top);
                     Console.WriteLine($"Lv.{player.Level} {player.Name}");
