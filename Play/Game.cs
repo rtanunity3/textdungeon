@@ -250,45 +250,119 @@ namespace textdungeon.Play
                         battle.PlayerPastHealth = player.Health;
                         //유저가 선택한 던전의 번호를 입력받음
                         battle.SelectDungeon(1);
+                        SelectDungeonLevel();
+                        break;
+                    case 2:
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(2);
+                        SelectDungeonLevel();
+                        break;
+                    case 3: //정령숲
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(3);
+                        SelectSpiritType();
+                        break;
+                    case 4:
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(4);
+                        SelectDungeonLevel();
+                        break;
+                    case 5:
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(5);
+                        SelectDungeonLevel();
+                        break;
+                    case 6:
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(6);
+                        SelectDungeonLevel();
+                        break;
+                    case 7:
+                        battle.PlayerPastHealth = player.Health;
+                        battle.SelectDungeon(7);
+                        SelectDungeonLevel();
+                        break;
+                    default:
+                        CurrentState = GameState.Village;
+                        break;
+                }
+            }
+        }
+        public void SelectDungeonLevel()
+        {
+            Random rand = new Random();
+            int monsternum = rand.Next(1, 4);
+            CurrentState = GameState.DungeonLevelSelect;
+            while (CurrentState == GameState.DungeonLevelSelect)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        CurrentState = GameState.Village;
+                        break;
+                    case 1:
+                        battle.SelectDungeonLevel(2);
                         battle.NewBattle(monsternum);
                         ExploreBattle();
                         break;
                     case 2:
-                        battle.PlayerPastHealth = player.Health;
-                        //유저가 선택한 던전의 번호를 입력받음
-                        battle.SelectDungeon(2);
+                        battle.SelectDungeonLevel(3);
                         battle.NewBattle(monsternum);
                         ExploreBattle();
                         break;
                     case 3:
-                        battle.PlayerPastHealth = player.Health;
-                        //유저가 선택한 던전의 번호를 입력받음
-                        battle.SelectDungeon(3);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
-                        break;
-                    case 4:
-                        battle.PlayerPastHealth = player.Health;
-                        //유저가 선택한 던전의 번호를 입력받음
-                        battle.SelectDungeon(4);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
-                        break;
-                    case 5:
-                        battle.PlayerPastHealth = player.Health;
-                        //유저가 선택한 던전의 번호를 입력받음
-                        battle.SelectDungeon(5);
-                        battle.NewBattle(monsternum);
-                        ExploreBattle();
-                        break;
-                    case 6:
-                        battle.PlayerPastHealth = player.Health;
-                        //유저가 선택한 던전의 번호를 입력받음
-                        battle.SelectDungeon(6);
+                        battle.SelectDungeonLevel(4);
                         battle.NewBattle(monsternum);
                         ExploreBattle();
                         break;
                     default:
+                        
+                        break;
+                }
+            }
+        }
+        public void SelectSpiritType() {
+            CurrentState = GameState.DungeonTypeSelect;
+            while(CurrentState == GameState.DungeonTypeSelect)
+            {
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
+                        DungeonMenu();
+                        break;
+                    case 1:
+                        battle.SelectDungeonType(1);
+                        SelectDungeonLevel();
+                        break;
+                    case 2:
+                        battle.SelectDungeonType(2);
+                        SelectDungeonLevel();
+                        break;
+                    case 3:
+                        battle.SelectDungeonType(3);
+                        SelectDungeonLevel();
+                        break;
+                    case 4:
+                        battle.SelectDungeonType(4);
+                        SelectDungeonLevel();
+                        break;
+                }
+                
+            }
+        }
+        
+        private void PlayerHealthWarning()
+        {
+            CurrentState = GameState.PlayerHealthWarning;
+            while (CurrentState == GameState.PlayerHealthWarning)
+            {
+                Debug.WriteLine("여기 확인");
+                int select = UserChoice(CurrentState);
+                switch (select)
+                {
+                    case 0:
                         CurrentState = GameState.Village;
                         break;
                 }
@@ -728,6 +802,14 @@ namespace textdungeon.Play
                         player.ShowQuestDetail(args[0]);
                         QuestState state = player.GetQuestState(args[0]);
                         inputCount = (state == QuestState.NotStarted || state == QuestState.ObjectiveCompleted) ? 2 : 1;
+                        break;
+                    case GameState.DungeonLevelSelect:
+                        dungeonGate.SelectDungeonLevelList();
+                        inputCount = 4; //던전레벨개수
+                        break;
+                    case GameState.DungeonTypeSelect:
+                        dungeonGate.SelectSpiritTypeList();
+                        inputCount = 5; //정령던전한정 4가지원소
                         break;
                 }
 
