@@ -13,8 +13,14 @@ namespace textdungeon.Play
 {
     internal class Battle
     {
+        Random rand = new Random();
+        int dunlev = 0;
         //선택한 던전의 번호를 알아오는 변수
         int dungeonnum = 0;
+        //선택한 던전의 난이도를 알아오는 변수
+        int dungeonlevel = 0;
+        //선택한 던전의 타입을 알아오는 변수
+        int dungeontype = 0;
         public List<Monster> Enemies = new List<Monster>();
         public string BattleAttackEndMessage = "";
         public string BattleEnemiesAttackMessage = "";
@@ -29,89 +35,390 @@ namespace textdungeon.Play
             dungeonnum = selectdungeon;
         }
 
+        //유저가 선택한 던전레벨을 알아호는 void함수
+        public void SelectDungeonLevel(int selectdungeonlevel)
+        {
+            dungeonlevel = selectdungeonlevel;
+        }
+
+        //유저가 선택한 던전의 타입을 알아오는 void함수
+        public void SelectDungeonType(int selectdungeontype)
+        {
+            dungeontype = selectdungeontype;
+        }
+
         public void NewBattle(int enemieNum)
         {
             Enemies.Clear();
+            dunlev = rand.Next(1, 11);
+            bool bossCheck = false;
             if (dungeonnum == 1)
             {
-                for (int i = 0; i < enemieNum; i++)
+                if (dunlev < 4)
                 {
                     List<Monster> Goblines = new List<Monster>()
+                        {
+                            new Kobold(new Random().Next(1,dungeonlevel)),
+                        };
+                    for (int i = 0; i < enemieNum; i++)
                     {
-                        new Kobold(new Random().Next(1,4)),
-                        new Goblin(new Random().Next(1,4)),
-                        new Hobgoblin(new Random().Next(1,4)),
-                    };
-                    Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
-                    Enemies.Add(monster);
+                        Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else if (dunlev >= 4 && dunlev < 9)
+                {
+                    List<Monster> Goblines = new List<Monster>()
+                        {
+                            new Kobold(new Random().Next(1,dungeonlevel)),
+                            new Goblin(new Random().Next(1,dungeonlevel)),
+                        };
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        Monster monster = Goblines[new Random().Next(0, Goblines.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else
+                {
+                    List<Monster> Goblines = new List<Monster>()
+                        {
+                            new Kobold(new Random().Next(1,dungeonlevel)),
+                            new Goblin(new Random().Next(1,dungeonlevel)),
+                            new Hobgoblin(new Random().Next(5,dungeonlevel + 5)),
+                        };
+                    int check = new Random().Next(0, Goblines.Count);
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        if (bossCheck == false)
+                        {
+                            if (check == 2)
+                            {
+                                bossCheck = true;
+                            }
+                            Monster monster = Goblines[check];
+                            Enemies.Add(monster);
+                        }
+                        else
+                        {
+                            Monster monster = Goblines[check - 1];
+                            Enemies.Add(monster);
+                        }
+                    }
                 }
             }
             else if (dungeonnum == 2)
             {
-                for (int i = 0; i < enemieNum; i++)
+                if (dunlev < 4)
                 {
                     List<Monster> Undeads = new List<Monster>()
                     {
-                        new Zombie(new Random().Next(1,4)),
-                        new Ghost(new Random().Next(1,4)),
-                        new Ghoul(new Random().Next(1,4)),
-                        new Banshee(new Random().Next(1,4)),
-                        new Skeleton(new Random().Next(1,4))
+                        new Zombie(new Random().Next(1,dungeonlevel)),
+                        new Ghost(new Random().Next(1,dungeonlevel)),
                     };
-                    Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
-                    Enemies.Add(monster);
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else if (dunlev >= 4 && dunlev < 9)
+                {
+                    List<Monster> Undeads = new List<Monster>()
+                    {
+                        new Zombie(new Random().Next(1,dungeonlevel)),
+                        new Ghost(new Random().Next(1,dungeonlevel)),
+                        new Ghoul(new Random().Next(1,dungeonlevel)),
+                        new Skeleton(new Random().Next(1,dungeonlevel))
+                    };
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        Monster monster = Undeads[new Random().Next(0, Undeads.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else
+                {
+                    List<Monster> Undeads = new List<Monster>()
+                    {
+                        new Zombie(new Random().Next(1,dungeonlevel)),
+                        new Ghost(new Random().Next(1,dungeonlevel)),
+                        new Ghoul(new Random().Next(1,dungeonlevel)),
+                        new Banshee(new Random().Next(5,dungeonlevel + 5)),
+                        new Skeleton(new Random().Next(1,dungeonlevel))
+                    };
+                    int check = new Random().Next(0, Undeads.Count);
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        if (bossCheck == false)
+                        {
+                            if (check == 2)
+                            {
+                                bossCheck = true;
+                            }
+                            Monster monster = Undeads[check];
+                            Enemies.Add(monster);
+                        }
+                        else
+                        {
+                            Monster monster = Undeads[check - 1];
+                            Enemies.Add(monster);
+                        }
+                    }
                 }
             }
             else if (dungeonnum == 3)
             {
-                for (int i = 0; i < enemieNum; i++)
+                if (dungeontype == 1)
                 {
-                    List<Monster> Spirit = new List<Monster>()
+                    if (dunlev < 9)
                     {
-                        new Undine(new Random().Next(1,4)),
-                        new Sylph(new Random().Next(1,4)),
-                        new Salamandra(new Random().Next(1,4)),
-                        new Gnome(new Random().Next(1,4))
-                    };
-                    Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
-                    Enemies.Add(monster);
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Undine(new Random().Next(1,dungeonlevel)),
+                            };
+                        for (int i = 0; i < enemieNum; i++)
+                        {
+                            Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
+                            Enemies.Add(monster);
+                        }
+                    }
+                    else
+                    {
+
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Undine(new Random().Next(1,dungeonlevel)),
+                                new Elquiness(new Random().Next(5,dungeonlevel + 5)),
+                            };
+                        int check = new Random().Next(0, Spirit.Count);
+                        for (int i = 0; i < Enemies.Count; i++)
+                        {
+                            if (bossCheck == false)
+                            {
+                                if (check == 2)
+                                {
+                                    bossCheck = true;
+                                }
+                                Monster monster = Spirit[check];
+                                Enemies.Add(monster);
+                            }
+                            else
+                            {
+                                Monster monster = Spirit[check - 1];
+                                Enemies.Add(monster);
+                            }
+                        }
+                    }
+                }
+                else if (dungeontype == 2)
+                {
+                    if (dunlev < 9)
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Sylph(new Random().Next(1, dungeonlevel)),
+                            };
+                        for (int i = 0; i < enemieNum; i++)
+                        {
+                            Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
+                            Enemies.Add(monster);
+                        }
+                    }
+                    else
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Sylph(new Random().Next(1, dungeonlevel)),
+                                new Sylphid(new Random().Next(5,dungeonlevel + 5)),
+                            };
+                        int check = new Random().Next(0, Spirit.Count);
+                        for (int i = 0; i < Enemies.Count; i++)
+                        {
+                            if (bossCheck == false)
+                            {
+                                if (check == 2)
+                                {
+                                    bossCheck = true;
+                                }
+                                Monster monster = Spirit[check];
+                                Enemies.Add(monster);
+                            }
+                            else
+                            {
+                                Monster monster = Spirit[check - 1];
+                                Enemies.Add(monster);
+                            }
+                        }
+                    }
+                }
+                else if (dungeontype == 3)
+                {
+                    if (dunlev < 9)
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Gnome(new Random().Next(1, dungeonlevel))
+                            };
+                        for (int i = 0; i < enemieNum; i++)
+                        {
+                            Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
+                            Enemies.Add(monster);
+                        }
+                    }
+                    else
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Gnome(new Random().Next(1, dungeonlevel)),
+                                new Gnoass(new Random().Next(5, dungeonlevel + 5)),
+                            };
+                        int check = new Random().Next(0, Spirit.Count);
+                        for (int i = 0; i < Enemies.Count; i++)
+                        {
+                            if (bossCheck == false)
+                            {
+                                if (check == 2)
+                                {
+                                    bossCheck = true;
+                                }
+                                Monster monster = Spirit[check];
+                                Enemies.Add(monster);
+                            }
+                            else
+                            {
+                                Monster monster = Spirit[check - 1];
+                                Enemies.Add(monster);
+                            }
+                        }
+                    }
+                }
+                else if (dungeontype == 4)
+                {
+                    if (dunlev < 9)
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Salamandra(new Random().Next(1, dungeonlevel)),
+                            };
+                        for (int i = 0; i < enemieNum; i++)
+                        {
+                            Monster monster = Spirit[new Random().Next(0, Spirit.Count)];
+                            Enemies.Add(monster);
+                        }
+                    }
+                    else
+                    {
+                        List<Monster> Spirit = new List<Monster>()
+                            {
+                                new Salamandra(new Random().Next(1, dungeonlevel)),
+                                new Ifrit(new Random().Next(5,dungeonlevel + 5)),
+                            };
+                        int check = new Random().Next(0, Spirit.Count);
+                        for (int i = 0; i < Enemies.Count; i++)
+                        {
+                            if (bossCheck == false)
+                            {
+                                if (check == 2)
+                                {
+                                    bossCheck = true;
+                                }
+                                Monster monster = Spirit[check];
+                                Enemies.Add(monster);
+                            }
+                            else
+                            {
+                                Monster monster = Spirit[check - 1];
+                                Enemies.Add(monster);
+                            }
+                        }
+                    }
                 }
             }
             else if (dungeonnum == 4)
             {
-                for (int i = 0; i < enemieNum; i++)
+                if (dunlev < 4)
                 {
-                    List<Monster> Unicon = new List<Monster>()
+                    List<Monster> Orcs = new List<Monster>()
+                        {
+                            new Orc(new Random().Next(1,dungeonlevel)),
+                            new Ogre(new Random().Next(1,dungeonlevel)),
+                        };
+                    for (int i = 0; i < enemieNum; i++)
                     {
-                        new Unicon(1)
-                    };
-                    Monster monster = Unicon[new Random().Next(0, Unicon.Count)];
-                    Enemies.Add(monster);
+                        Monster monster = Orcs[new Random().Next(0, Orcs.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else if (dunlev >= 4 && dunlev < 9)
+                {
+                    List<Monster> Orcs = new List<Monster>()
+                        {
+                            new Troll(new Random().Next(1, dungeonlevel)),
+                            new Orc(new Random().Next(1, dungeonlevel)),
+                            new Ogre(new Random().Next(1, dungeonlevel)),
+                        };
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        Monster monster = Orcs[new Random().Next(0, Orcs.Count)];
+                        Enemies.Add(monster);
+                    }
+                }
+                else
+                {
+                    List<Monster> Orcs = new List<Monster>()
+                        {
+                            new Troll(new Random().Next(1, dungeonlevel)),
+                            new Orc(new Random().Next(1, dungeonlevel)),
+                            new Ogre(new Random().Next(1, dungeonlevel)),
+                            new OgreMage(new Random().Next(5, dungeonlevel + 5))
+                        };
+                    int check = new Random().Next(0, Orcs.Count);
+                    for (int i = 0; i < enemieNum; i++)
+                    {
+                        if (bossCheck == false)
+                        {
+                            if (check == 2)
+                            {
+                                bossCheck = true;
+                            }
+                            Monster monster = Orcs[check];
+                            Enemies.Add(monster);
+                        }
+                        else
+                        {
+                            Monster monster = Orcs[check - 1];
+                            Enemies.Add(monster);
+                        }
+                    }
                 }
             }
             else if (dungeonnum == 5)
             {
-                for (int i = 0; i < enemieNum; i++)
-                {
-                    List<Monster> Titan = new List<Monster>()
+                List<Monster> Unicon = new List<Monster>()
                     {
-                        new Titan(1)
+                        new Unicon(new Random().Next(1, dungeonlevel))
                     };
-                    Monster monster = Titan[new Random().Next(0, Titan.Count)];
-                    Enemies.Add(monster);
-                }
+                Monster monster = Unicon[new Random().Next(0, Unicon.Count)];
+                Enemies.Add(monster);
             }
             else if (dungeonnum == 6)
             {
-                for (int i = 0; i < enemieNum; i++)
-                {
-                    List<Monster> Dragon = new List<Monster>()
+                List<Monster> Titan = new List<Monster>()
                     {
-                        new Dragon(1)
+                        new Titan(new Random().Next(1, dungeonlevel))
                     };
-                    Monster monster = Dragon[new Random().Next(0, Dragon.Count)];
-                    Enemies.Add(monster);
-                }
+                Monster monster = Titan[new Random().Next(0, Titan.Count)];
+                Enemies.Add(monster);
+            }
+            else if (dungeonnum == 7)
+            {
+                List<Monster> Dragon = new List<Monster>()
+                    {
+                        new Dragon(new Random().Next(1, dungeonlevel))
+                    };
+                Monster monster = Dragon[new Random().Next(0, Dragon.Count)];
+                Enemies.Add(monster);
             }
         }
 
@@ -374,11 +681,11 @@ namespace textdungeon.Play
                     Console.WriteLine();
                     Console.WriteLine($"던전에서 몬스터 {Enemies.Count}마리를 잡았습니다.");
                     Console.WriteLine();
-                    Console.WriteLine($"Lv.{player.Level} {player.Name}");
                     GetBattleReward(player);
+                    Console.WriteLine($"Lv.{player.Level} {player.Name}");
                     Console.WriteLine($"HP {PlayerPastHealth} -> {player.Health}");
                     Console.WriteLine();
-                    Printing.SelectWriteLine(0, "다음");
+                    Console.WriteLine("0. 다음");
                     break;
                 case GameState.BattlePlayerDead:
                     Printing.HighlightText("You Lose\n", ConsoleColor.DarkRed);
