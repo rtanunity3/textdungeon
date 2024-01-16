@@ -294,21 +294,6 @@ namespace textdungeon.Play
                 }
             }
         }
-        
-        private void PlayerHealthWarning()
-        {
-            CurrentState = GameState.PlayerHealthWarning;
-            while (CurrentState == GameState.PlayerHealthWarning)
-            {
-                int select = UserChoice(CurrentState);
-                switch (select)
-                {
-                    case 0:
-                        CurrentState = GameState.Village;
-                        break;
-                }
-            }
-        }
         private void ExploreDungeon()
         {
             CurrentState = GameState.DungeonResult;
