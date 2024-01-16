@@ -131,7 +131,7 @@ namespace textdungeon.Screen
                     Console.WriteLine();
                 }
             }
-            Console.WriteLine(s);
+            Console.Write(s);
             Console.ResetColor();
         }
 
