@@ -34,7 +34,7 @@ namespace textdungeon.Play
                 new Dungeon("분노한 정령의숲", 40, 2500, 20, 5),
                 new Dungeon("더러운 오크동굴", 40, 2500, 25, 5),
                 new Dungeon("유니콘 둥지",40, 2500, 35, 5),
-                new Dungeon("타이탄의 연무장", 38, 2500, 17, 5),
+                new Dungeon("타이탄의 연무장", 40, 2500, 38, 5),
                 new Dungeon("드래곤 레어",40, 2500, 40, 5)
             };
         }

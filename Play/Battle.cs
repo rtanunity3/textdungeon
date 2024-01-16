@@ -66,7 +66,7 @@ namespace textdungeon.Play
                         Enemies.Add(monster);
                     }
                 }
-                else if (dunlev >= 4 && dunlev < 9)
+                else if (dunlev >= 4 && dunlev < 8)
                 {
                     List<Monster> Goblines = new List<Monster>()
                         {
@@ -87,23 +87,23 @@ namespace textdungeon.Play
                             new Goblin(new Random().Next(1,dungeonlevel)),
                             new Hobgoblin(new Random().Next(5,dungeonlevel + 5)),
                         };
-                    int check = new Random().Next(0, Goblines.Count);
                     for (int i = 0; i < enemieNum; i++)
                     {
-                        if (bossCheck == false)
+                        int check;
+                        if (bossCheck)
                         {
+                            check = new Random().Next(0, Goblines.Count - 1);
+                        }
+                        else
+                        {
+                            check = new Random().Next(0, Goblines.Count);
                             if (check == 2)
                             {
                                 bossCheck = true;
                             }
-                            Monster monster = Goblines[check];
-                            Enemies.Add(monster);
                         }
-                        else
-                        {
-                            Monster monster = Goblines[check - 1];
-                            Enemies.Add(monster);
-                        }
+                        Monster monster = Goblines[check];
+                        Enemies.Add(monster);
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace textdungeon.Play
                         Enemies.Add(monster);
                     }
                 }
-                else if (dunlev >= 4 && dunlev < 9)
+                else if (dunlev >= 4 && dunlev < 8)
                 {
                     List<Monster> Undeads = new List<Monster>()
                     {
@@ -147,23 +147,23 @@ namespace textdungeon.Play
                         new Banshee(new Random().Next(5,dungeonlevel + 5)),
                         new Skeleton(new Random().Next(1,dungeonlevel))
                     };
-                    int check = new Random().Next(0, Undeads.Count);
-                    for (int i = 0; i < enemieNum; i++)
+                    for(int i = 0; i < enemieNum; i++)
                     {
-                        if (bossCheck == false)
+                        int check;
+                        if (bossCheck)
                         {
-                            if (check == 2)
-                            {
-                                bossCheck = true;
-                            }
-                            Monster monster = Undeads[check];
-                            Enemies.Add(monster);
+                            check = new Random().Next(0, Undeads.Count - 1);
                         }
                         else
                         {
-                            Monster monster = Undeads[check - 1];
-                            Enemies.Add(monster);
+                            check = new Random().Next(0, Undeads.Count);
+                            if (check == 4)
+                            {
+                                bossCheck = true;
+                            }
                         }
+                        Monster monster = Undeads[check];
+                        Enemies.Add(monster);
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace textdungeon.Play
             {
                 if (dungeontype == 1)
                 {
-                    if (dunlev < 9)
+                    if (dunlev < 8)
                     {
                         List<Monster> Spirit = new List<Monster>()
                             {
@@ -185,35 +185,34 @@ namespace textdungeon.Play
                     }
                     else
                     {
-
                         List<Monster> Spirit = new List<Monster>()
                             {
                                 new Undine(new Random().Next(1,dungeonlevel)),
                                 new Elquiness(new Random().Next(5,dungeonlevel + 5)),
                             };
-                        int check = new Random().Next(0, Spirit.Count);
-                        for (int i = 0; i < Enemies.Count; i++)
+                        for (int i = 0; i < enemieNum; i++)
                         {
-                            if (bossCheck == false)
+                            int check;
+                            if (bossCheck)
                             {
-                                if (check == 2)
-                                {
-                                    bossCheck = true;
-                                }
-                                Monster monster = Spirit[check];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count - 1);
                             }
                             else
                             {
-                                Monster monster = Spirit[check - 1];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count);
+                                if (check == 1)
+                                {
+                                    bossCheck = true;
+                                }
                             }
+                            Monster monster = Spirit[check];
+                            Enemies.Add(monster);
                         }
                     }
                 }
                 else if (dungeontype == 2)
                 {
-                    if (dunlev < 9)
+                    if (dunlev < 8)
                     {
                         List<Monster> Spirit = new List<Monster>()
                             {
@@ -232,29 +231,29 @@ namespace textdungeon.Play
                                 new Sylph(new Random().Next(1, dungeonlevel)),
                                 new Sylphid(new Random().Next(5,dungeonlevel + 5)),
                             };
-                        int check = new Random().Next(0, Spirit.Count);
-                        for (int i = 0; i < Enemies.Count; i++)
+                        for (int i = 0; i < enemieNum; i++)
                         {
-                            if (bossCheck == false)
+                            int check;
+                            if (bossCheck)
                             {
-                                if (check == 2)
-                                {
-                                    bossCheck = true;
-                                }
-                                Monster monster = Spirit[check];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count - 1);
                             }
                             else
                             {
-                                Monster monster = Spirit[check - 1];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count);
+                                if (check == 1)
+                                {
+                                    bossCheck = true;
+                                }
                             }
+                            Monster monster = Spirit[check];
+                            Enemies.Add(monster);
                         }
                     }
                 }
                 else if (dungeontype == 3)
                 {
-                    if (dunlev < 9)
+                    if (dunlev < 8)
                     {
                         List<Monster> Spirit = new List<Monster>()
                             {
@@ -273,29 +272,29 @@ namespace textdungeon.Play
                                 new Gnome(new Random().Next(1, dungeonlevel)),
                                 new Gnoass(new Random().Next(5, dungeonlevel + 5)),
                             };
-                        int check = new Random().Next(0, Spirit.Count);
-                        for (int i = 0; i < Enemies.Count; i++)
+                        for (int i = 0; i < enemieNum; i++)
                         {
-                            if (bossCheck == false)
+                            int check;
+                            if (bossCheck)
                             {
-                                if (check == 2)
-                                {
-                                    bossCheck = true;
-                                }
-                                Monster monster = Spirit[check];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count - 1);
                             }
                             else
                             {
-                                Monster monster = Spirit[check - 1];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count);
+                                if (check == 1)
+                                {
+                                    bossCheck = true;
+                                }
                             }
+                            Monster monster = Spirit[check];
+                            Enemies.Add(monster);
                         }
                     }
                 }
                 else if (dungeontype == 4)
                 {
-                    if (dunlev < 9)
+                    if (dunlev < 8)
                     {
                         List<Monster> Spirit = new List<Monster>()
                             {
@@ -314,23 +313,23 @@ namespace textdungeon.Play
                                 new Salamandra(new Random().Next(1, dungeonlevel)),
                                 new Ifrit(new Random().Next(5,dungeonlevel + 5)),
                             };
-                        int check = new Random().Next(0, Spirit.Count);
-                        for (int i = 0; i < Enemies.Count; i++)
+                        for (int i = 0; i < enemieNum; i++)
                         {
-                            if (bossCheck == false)
+                            int check;
+                            if (bossCheck)
                             {
-                                if (check == 2)
-                                {
-                                    bossCheck = true;
-                                }
-                                Monster monster = Spirit[check];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count - 1);
                             }
                             else
                             {
-                                Monster monster = Spirit[check - 1];
-                                Enemies.Add(monster);
+                                check = new Random().Next(0, Spirit.Count);
+                                if (check == 1)
+                                {
+                                    bossCheck = true;
+                                }
                             }
+                            Monster monster = Spirit[check];
+                            Enemies.Add(monster);
                         }
                     }
                 }
@@ -350,7 +349,7 @@ namespace textdungeon.Play
                         Enemies.Add(monster);
                     }
                 }
-                else if (dunlev >= 4 && dunlev < 9)
+                else if (dunlev >= 4 && dunlev < 8)
                 {
                     List<Monster> Orcs = new List<Monster>()
                         {
@@ -373,23 +372,23 @@ namespace textdungeon.Play
                             new Ogre(new Random().Next(1, dungeonlevel)),
                             new OgreMage(new Random().Next(5, dungeonlevel + 5))
                         };
-                    int check = new Random().Next(0, Orcs.Count);
                     for (int i = 0; i < enemieNum; i++)
                     {
-                        if (bossCheck == false)
+                        int check;
+                        if (bossCheck)
                         {
-                            if (check == 2)
-                            {
-                                bossCheck = true;
-                            }
-                            Monster monster = Orcs[check];
-                            Enemies.Add(monster);
+                            check = new Random().Next(0, Orcs.Count - 1);
                         }
                         else
                         {
-                            Monster monster = Orcs[check - 1];
-                            Enemies.Add(monster);
+                            check = new Random().Next(0, Orcs.Count);
+                            if (check == 3)
+                            {
+                                bossCheck = true;
+                            }
                         }
+                        Monster monster = Orcs[check];
+                        Enemies.Add(monster);
                     }
                 }
             }
