@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace textdungeon.Play
 {
     internal class Inventory
@@ -23,7 +17,7 @@ namespace textdungeon.Play
         public void DisplayInventory()
         {
             Console.WriteLine("Inventory:");
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 Console.WriteLine($"{item.Name}");
             }

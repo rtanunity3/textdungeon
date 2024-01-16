@@ -8,13 +8,15 @@ namespace textdungeon.Play
         public int FailPer { get; set; }  //실패 확률
         public int RewardGold { get; set; } // 보상 골드
         public int RecomDef { get; set; } // 권장 방어력
+        public int RewardExp { get; set; } // 보상 경험치
 
-        public Dungeon(string name, int failPer, int rewardGold, int recomDef)
+        public Dungeon(string name, int failPer, int rewardGold, int recomDef, int rewardExp)
         {
             Name = name;
             FailPer = failPer;
             RewardGold = rewardGold;
             RecomDef = recomDef;
+            RewardExp = rewardExp;
         }
     }
 
@@ -26,10 +28,14 @@ namespace textdungeon.Play
         {
             ReservedDungeon = 0;
             DungeonList = new List<Dungeon> {
-                new Dungeon("", 0, 0, 0),
-                new Dungeon("쉬운 던전", 40, 1000, 5),
-                new Dungeon("일반 던전", 40, 1700, 11),
-                new Dungeon("어려운 던전", 40, 2500, 17)
+                new Dungeon("", 0, 0, 0, 0),
+                new Dungeon("고블린 소굴", 40, 1000, 5 , 1),
+                new Dungeon("저주받은 지하묘지", 40, 1700, 11, 3),
+                new Dungeon("분노한 정령의숲", 40, 2500, 20, 5),
+                new Dungeon("더러운 오크동굴", 40, 2500, 25, 5),
+                new Dungeon("유니콘 둥지",40, 2500, 35, 5),
+                new Dungeon("타이탄의 연무장", 40, 2500, 38, 5),
+                new Dungeon("드래곤 레어",40, 2500, 40, 5)
             };
         }
 
@@ -38,22 +44,88 @@ namespace textdungeon.Play
             return DungeonList.Count;
         }
 
+        public void SelectDungeonLevelList()
+        {
+            Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(3, 5);
+            Printing.DrawSkeletonDoor();
+            Console.SetCursorPosition(56, 3);
+            Printing.HighlightText("던전입장", ConsoleColor.DarkYellow);
+            Console.SetCursorPosition(45, 5);
+            Printing.HighlightText("입장하실 던전난이도를 정해주세요\n\n", ConsoleColor.DarkYellow);
+            Console.SetCursorPosition(40, 7);
+            Printing.HighlightText("주의! 낮은확률로 보스몬스터가 출현합니다!\n", ConsoleColor.Red);
+            Console.WriteLine();
+            for (int i = 1; i <= 3; i++)
+            {
+                Console.SetCursorPosition(43, Console.GetCursorPosition().Top);
+                Printing.SelectWrite(i, $"레벨 {i}까지의 몬스터가 출현합니다\n");
+            }
+            Console.SetCursorPosition(43, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(0, "마을로 돌아가기\n");
+        }
+
+        public void SelectSpiritTypeList()
+        {
+            Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(3, 5);
+            Printing.DrawSkeletonDoor();
+            Console.SetCursorPosition(56, 3);
+            Printing.HighlightText("던전입장", ConsoleColor.DarkYellow);
+            Console.SetCursorPosition(43, Console.GetCursorPosition().Top + 2);
+            Console.WriteLine("입장하실던전의 타입을 선택해주세요\n");
+            Console.SetCursorPosition(47, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(1, "맑은물이 흐르는 호수\n");
+            Console.SetCursorPosition(47, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(2, "칼날바람의 숲\n");
+            Console.SetCursorPosition(47, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(3, "영원히타오르는 불의숲\n");
+            Console.SetCursorPosition(47, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(4, "단단한 대지\n");
+            Console.SetCursorPosition(47, Console.GetCursorPosition().Top);
+            Printing.SelectWrite(0, "던전메뉴로 돌아가기\n");
+        }
+
         public void DisplayDungeonList()
         {
             Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(3, 5);
+            Printing.DrawSkeletonDoor();
+            Console.SetCursorPosition(56, 3);
             Printing.HighlightText("던전입장", ConsoleColor.DarkYellow);
             Console.WriteLine();
+            Console.SetCursorPosition(35, Console.GetCursorPosition().Top + 1);
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
 
             for (int i = 1; i < DungeonList.Count; i++)
             {
+                Console.SetCursorPosition(38, Console.GetCursorPosition().Top);
                 Printing.SelectWrite(i, DungeonList[i].Name);
-                Console.SetCursorPosition(20, 2 + i);
+                Console.SetCursorPosition(59, Console.GetCursorPosition().Top);
                 Console.WriteLine($"| 방어력 {DungeonList[i].RecomDef} 이상 권장");
             }
-
+            Console.SetCursorPosition(38, Console.GetCursorPosition().Top);
             Printing.SelectWriteLine(0, "나가기");
+            Console.WriteLine();
+        }
+        
+        public void DisplayHealthWarning()
+        {
+            Console.Clear();
+            Printing.DrawFrame();
+            Console.SetCursorPosition(54, 3);
+            Printing.HighlightText("던전입장 불가", ConsoleColor.DarkYellow);
+            Console.SetCursorPosition(40, Console.GetCursorPosition().Top + 2);
+            Console.WriteLine("체력이 부족하여 던전에 입장할 수 없습니다.");
+            Console.SetCursorPosition(44, Console.GetCursorPosition().Top);
+            Console.WriteLine("휴식을 취하여 체력을 회복해 주세요.");
+            Console.WriteLine();
+            Console.SetCursorPosition(55, Console.GetCursorPosition().Top);
+            Printing.SelectWriteLine(0, "뒤로가기");
             Console.WriteLine();
         }
 
@@ -122,6 +194,7 @@ namespace textdungeon.Play
             Console.WriteLine("[탐험 결과]");
 
             // 방어력에 따른 체력 손실 계산
+            // FIXME : 방어력 오버로 최소값이 -인 경우 발생 가능
             int minusHP = Util.GenRandomNumber(20 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef)
                 , 35 - (playerDefSum - DungeonList[ReservedDungeon].RecomDef));
             Console.Write("체 력 : ");
@@ -135,7 +208,7 @@ namespace textdungeon.Play
             player.Gold += plusGold;
 
             // 경험치
-            player.AddExp(1);
+            player.AddExp(DungeonList[ReservedDungeon].RewardExp);
 
             Console.WriteLine();
             Printing.SelectWriteLine(0, "나가기");

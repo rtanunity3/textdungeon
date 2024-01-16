@@ -1,0 +1,119 @@
+{
+  "CharacterClass": {
+    "Warrior": {
+      "AttPow": 10,
+      "DefPow": 5,
+      "MaxHealth": 100,
+      "Health": 100,
+      "MaxMana": 20,
+      "Mana": 20,
+      "Gold": 1000,
+      "Skill": [
+        {
+          "SkillType": "Single",
+          "Name": "강격",
+          "DamagePercentage": 1.2,
+          "Mana": 5
+        },
+        {
+          "SkillType": "Single",
+          "Name": "이중타격",
+          "DamagePercentage": 1.8,
+          "Mana": 15
+        }
+      ]
+    },
+    "Mage": {
+      "AttPow": 5,
+      "DefPow": 3,
+      "MaxHealth": 80,
+      "Health": 80,
+      "MaxMana": 50,
+      "Mana": 50,
+      "Gold": 3000,
+      "Skill": [
+        {
+          "SkillType": "Single",
+          "Name": "불화살",
+          "DamagePercentage": 1.3,
+          "Mana": 5
+        },
+        {
+          "SkillType": "Multiple",
+          "Name": "블리자드",
+          "DamagePercentage": 1.8,
+          "Mana": 20
+        }
+      ]
+    },
+    "Archer": {
+      "AttPow": 8,
+      "DefPow": 4,
+      "MaxHealth": 90,
+      "Health": 90,
+      "MaxMana": 30,
+      "Mana": 30,
+      "Gold": 1500,
+      "Skill": [
+        {
+          "SkillType": "Multiple",
+          "Name": "연사",
+          "DamagePercentage": 0.9,
+          "Mana": 10
+        },
+        {
+          "SkillType": "Single",
+          "Name": "저격",
+          "DamagePercentage": 2.2,
+          "Mana": 20
+        }
+      ]
+    },
+    "Thief": {
+      "AttPow": 7,
+      "DefPow": 3,
+      "MaxHealth": 85,
+      "Health": 85,
+      "MaxMana": 25,
+      "Mana": 25,
+      "Gold": 1000,
+      "Skill": [
+        {
+          "SkillType": "Single",
+          "Name": "기습",
+          "DamagePercentage": 1.5,
+          "Mana": 10
+        },
+        {
+          "SkillType": "Single",
+          "Name": "함정",
+          "DamagePercentage": 2.0,
+          "Mana": 15
+        }
+      ]
+    },
+    "Cleric": {
+      "AttPow": 6,
+      "DefPow": 4,
+      "MaxHealth": 95,
+      "Health": 95,
+      "MaxMana": 40,
+      "Mana": 40,
+      "Gold": 3000,
+      "Skill": [
+        {
+          "SkillType": "Single",
+          "Name": "신성타격",
+          "DamagePercentage": 1.5,
+          "Mana": 10
+        },
+        {
+          "SkillType": "Self",
+          "Name": "치료",
+          "DamagePercentage": 1.5,
+          "Mana": 10
+        }
+      ]
+    }
+  }
+}
