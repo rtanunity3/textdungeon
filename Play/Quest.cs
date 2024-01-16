@@ -122,7 +122,13 @@ namespace textdungeon.Play
             // 퀘스트 출력
             Printing.SelectWrite(i, QuestName);
             Console.Write(" - ");
-            Printing.HighlightText(EnumHandler.GetQuestStateKr(State), ConsoleColor.Cyan);
+            Printing.HighlightText(EnumHandler.GetQuestStateKr(State)
+                , State == QuestState.Completed ?
+                    ConsoleColor.DarkCyan :
+                    State == QuestState.ObjectiveCompleted ?
+                        ConsoleColor.Cyan :
+                        ConsoleColor.White
+                );
             Console.WriteLine();
         }
 
@@ -139,7 +145,19 @@ namespace textdungeon.Play
             switch (Type)
             {
                 case QuestType.MonsterHunt:
-                    Console.WriteLine($"- 몬스터 잡기 ({CurGoalCount}/{GoalCount})");
+                    // !HACK : 하드코딩
+                    if (GoalId == 0)
+                    {
+                        Console.WriteLine($"- 몬스터 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
+                    else if (GoalId == 2)
+                    {
+                        Console.WriteLine($"- 고블린 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
+                    else if (GoalId == 23)
+                    {
+                        Console.WriteLine($"- 드래곤 사냥 ({CurGoalCount}/{GoalCount})");
+                    }
                     break;
                 case QuestType.EquipItem:
                     Console.WriteLine("- 장비 착용하기");
@@ -155,8 +173,8 @@ namespace textdungeon.Play
             {
                 Console.WriteLine($"{item.Name} x {item.Quantity}");
             }
-            Console.WriteLine($"{RewardGold} G");
-            Console.WriteLine($"{RewardExp} Exp");
+            if (RewardGold > 0) Console.WriteLine($"{RewardGold} G");
+            if (RewardExp > 0) Console.WriteLine($"{RewardExp} Exp");
             Console.WriteLine();
 
 
@@ -176,7 +194,7 @@ namespace textdungeon.Play
                     Printing.SelectWriteLine(0, "나가기");
                     break;
                 case QuestState.Completed:
-                    Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.Completed), ConsoleColor.Cyan);
+                    Printing.HighlightText(EnumHandler.GetQuestStateKr(QuestState.Completed), ConsoleColor.DarkCyan);
                     Console.WriteLine();
                     Printing.SelectWriteLine(0, "나가기");
                     break;
