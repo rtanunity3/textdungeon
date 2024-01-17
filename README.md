@@ -139,3 +139,6 @@ Visual Studio 2022 community
 ## 치트키
 
 게임 중 gold 입력시 +5000골드
+
+## 그 외 위키
+https://github.com/rtanunity3/textdungeon/wiki  
